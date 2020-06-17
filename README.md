@@ -21,3 +21,9 @@ This repository contains all the projects, classwork, as well as homework relate
 * Modelación de la ingeneería con matemática computacional (MATLAB)
 * Programación orientada a objetos II (c++)
 
+
+## Programming Languages
+* Python
+* MATLAB
+* R
+* C++
