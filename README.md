@@ -12,5 +12,10 @@ This repository contains all the projects, classwork, as well as homework relate
 * Modelación computacional del movimiento (MATLAB)
 * Pensamiento computacional (Python)
 
+## Second semester CS related classes
 
+* Programación orientada a objetos (c++)
+* Modelación computacional aplicando leyes de conservación (MATLAB)
+* Modelación computacional del movimiento (MATLAB)
+* Pensamiento computacional (Python)
 
