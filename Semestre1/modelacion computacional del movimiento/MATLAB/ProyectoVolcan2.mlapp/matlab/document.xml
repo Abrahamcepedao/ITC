@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body><w:p><w:pPr><w:pStyle w:val="code"/></w:pPr><w:r><w:t><![CDATA[classdef ProyectoVolcan < matlab.apps.AppBase
+
+    % Properties that correspond to app components
+    properties (Access = public)
+        Simulador                       matlab.ui.Figure
+        GridLayout                      matlab.ui.container.GridLayout
+        LeftPanel                       matlab.ui.container.Panel
+        UIAxes                          matlab.ui.control.UIAxes
+        RightPanel                      matlab.ui.container.Panel
+        UITable                         matlab.ui.control.Table
+        AlturaVolcanEditFieldLabel      matlab.ui.control.Label
+        AlturaVolcanEditField           matlab.ui.control.NumericEditField
+        VelocidadinicialEditFieldLabel  matlab.ui.control.Label
+        VelocidadinicialEditField       matlab.ui.control.NumericEditField
+        AnguloEditFieldLabel            matlab.ui.control.Label
+        AnguloEditField                 matlab.ui.control.NumericEditField
+        tEditFieldLabel                 matlab.ui.control.Label
+        tEditField                      matlab.ui.control.NumericEditField
+        MasaproyectilEditFieldLabel     matlab.ui.control.Label
+        MasaproyectilEditField          matlab.ui.control.NumericEditField
+        SimularButton                   matlab.ui.control.Button
+        Button                          matlab.ui.control.Button
+        mLabel                          matlab.ui.control.Label
+        msLabel                         matlab.ui.control.Label
+        kgLabel                         matlab.ui.control.Label
+        sLabel                          matlab.ui.control.Label
+        Label                           matlab.ui.control.Label
+        CoeficientefriccionEditFieldLabel  matlab.ui.control.Label
+        CoeficientefriccionEditField    matlab.ui.control.NumericEditField
+        Label_2                         matlab.ui.control.Label
+        ExportardatosButton             matlab.ui.control.Button
+        AlturaMaximaLabel               matlab.ui.control.Label
+        VelocidadImpactoLabel           matlab.ui.control.Label
+        PuntodeimpactoxLabel            matlab.ui.control.Label
+        ResultadosLabel                 matlab.ui.control.Label
+        Label_3                         matlab.ui.control.Label
+        AlturaMaxima                    matlab.ui.control.NumericEditField
+        VelocidadImpacto                matlab.ui.control.NumericEditField
+        mLabel_2                        matlab.ui.control.Label
+        msLabel_2                       matlab.ui.control.Label
+        Impacto                         matlab.ui.control.NumericEditField
+        mLabel_3                        matlab.ui.control.Label
+    end
+
+    % Properties that correspond to apps with auto-reflow
+    properties (Access = private)
+        onePanelWidth = 576;
+    end
+
+    % Callbacks that handle component events
+    methods (Access = private)
+
+        % Code that executes after component creation
+        function startupFcn(app)
+            movegui(app.Simulador,'center');
+        end
+
+        % Changes arrangement of the app based on UIFigure width
+        function updateAppLayout(app, event)
+            currentFigureWidth = app.Simulador.Position(3);
+            if(currentFigureWidth <= app.onePanelWidth)
+                % Change to a 2x1 grid
+                app.GridLayout.RowHeight = {532, 532};
+                app.GridLayout.ColumnWidth = {'1x'};
+                app.RightPanel.Layout.Row = 2;
+                app.RightPanel.Layout.Column = 1;
+            else
+                % Change to a 1x2 grid
+                app.GridLayout.RowHeight = {'1x'};
+                app.GridLayout.ColumnWidth = {540, '1x'};
+                app.RightPanel.Layout.Row = 1;
+                app.RightPanel.Layout.Column = 2;
+            end
+        end
+
+        % Button pushed function: SimularButton
+        function SimularButtonPushed(app, event)
+            set(app.UITable,'Data',[])
+        
+            %%Variables
+            dt = app.tEditField.Value;%%Delta t
+            x0 = 0;%%X inicial
+            y0 = app.AlturaVolcanEditField.Value;%%Y inicial
+            v = app.VelocidadinicialEditField.Value;%%Velocidad inicial
+            a = app.AnguloEditField.Value*(pi/180);%%Angulo inicial
+            m = app.MasaproyectilEditField.Value;%%Masa
+            cfri = app.CoeficientefriccionEditField.Value*(-1);%%coeficiente de cuerpo circular en el aire
+            
+            %%Variables finales
+            AlturaMaxima = 0;
+            VelocidadImpacto = 0;
+            PuntoImpacto = "[0,0]";
+            
+            %%Constantes
+            g = -9.81;%% gravedad
+            
+            %%Escala de la grafica
+            xmove = 1000;
+            maxheight = ((v^2*(sin(a))^2)/abs(2*g))+y0+500;
+            
+            %%Image background
+            img = imread('background.png');
+            imagesc(app.UIAxes,img);
+            img2 = flip(img ,1);
+            imagesc(app.UIAxes, [-400 xmove], [-200 maxheight], img2);
+            ax = app.UIAxes;
+            ax.YDir = 'normal';
+            
+            %%Modelado
+            i = 1;
+            graphc = true;
+            vx0 = v*cos(a);
+            vy0 = v*sin(a);
+            
+            
+            %%Caso 0
+            %SIN FRICCION
+                vx1 = vx0;
+                vy1 = vy0;
+                x1 = x0;
+                y1 = y0;
+                ay1 =0;
+            
+            %CON FRICCION
+                vx2 = vx0;
+                vy2 = vy0;
+                fx = cfri*vx2;
+                fy = cfri*vy2;
+                ax = 0;
+                ay = 0;
+                x2 = x0;
+                y2 = y0;
+            
+                fxa = fx;
+                fya = fy;
+                vx2a = vx2;
+                vy2a = vy2;
+            
+                
+            while graphc
+                hold(app.UIAxes,"on");
+                %%CASO 1
+                if i == 1
+                %%SF
+                    ay1 =g;
+                    vx1 = vx1;
+                    vy1 = vy1;
+                    x1 = i*vx1;
+                    y1 = vy1+(1/2)*(g*i^2)+y0;
+                    
+                    vy1a = vy1;
+                    y1a = y1;
+                %%CF
+                    vx2 = vx2+ax;
+                    vy2 = vy2+ay;
+                    fx = cfri*vx2;
+                    fy = cfri*vy2;
+                    ax = fxa/m;
+                    ay = fya/m+g;
+                    x2 = x2+vx2a;
+                    y2 = y2+vy2a;
+                    
+                    fxa = fx;
+                    fya = fy;
+                    vx2a = vx2;
+                    vy2a = vy2;
+                end
+                %%SF
+                    ay1 = g;
+                    vx1 = vx1;
+                    vy1 = vy1+ay1;
+                    x1 = i*vx1;
+                    y1 = vy1a+y1a;
+                    
+                    vy1a = vy1;
+                    y1a = y1;
+                %%CF
+                    vx2 = vx2+ax;
+                    vy2 = vy2+ay;
+                    fx = cfri*vx2;
+                    fy = cfri*vy2;
+                    ax = fxa/m;
+                    ay = fya/m+g;
+                    
+                    y2a = y2;
+                    
+                    x2 = x2+vx2a;
+                    y2 = y2+vy2a;
+                    
+                    fxa = fx;
+                    fya = fy;
+                    vx2a = vx2;
+                    vy2a = vy2;
+                    
+                
+                 if y2 >= AlturaMaxima
+                     AlturaMaxima = y2;
+                 end
+                
+                %%app.UITable.Data= {i x1 y1 x2 y2};
+     
+                data=get(app.UITable, 'data'); % Get data as a string
+                data(end+1,:)=[i x1 y1 x2 y2 vx1 vy1 vx2 vy2]; % Add new row of 0's as a cell type
+                set(app.UITable, 'data', data);
+                            
+                ylim(app.UIAxes,[0 maxheight]);
+                xlim(app.UIAxes,[0 xmove]);
+                            
+                plot(app.UIAxes,x1,y1,'-or');
+                plot(app.UIAxes,x2,y2,'-ob');
+                    
+                title(app.UIAxes,'Modelado de la posicion de un proyectil volcanico');
+                xlabel(app.UIAxes,'Posicion en x (m)');
+                ylabel(app.UIAxes,'Posicion en y (m)');
+                legend(app.UIAxes,{'Sin friccion','Con friccion'},'Location','southwest');
+                    
+                %%disp(vy);
+                pause(0.1)
+                hold(app.UIAxes,'off');
+                
+                i=i+1;
+                if y2 <=0
+                    graphc = false;
+                    app.AlturaMaxima.Value = AlturaMaxima;
+                    app.VelocidadImpacto.Value = sqrt(vx2^2+vy2^2);
+                    app.Impacto.Value = x2;
+                end
+            end
+        end
+
+        % Button pushed function: Button
+        function ButtonPushed(app, event)
+            decodedValue = "Proyecto realizado para Modelacion computacional del movimiento Equipo:Abraham Cepeda, A00827666 Alejandro Gonzalez, A01570396 Axel Villanueva, A00828073 Hernan Salinas, A01570409 Juan Carlos Garfias, A01652138 (ITESM, 2019)";
+            
+            fig = figure("Name",'Informacion');
+            hPan = uipanel(fig,'Units','normalized');
+
+            uicontrol(hPan, 'Style','text', 'HorizontalAlignment','center', ...
+            'FontSize',10, 'Units','normalized', 'Position',[0.2 0.4 0.6 0.2], ...
+            'String',decodedValue);
+        end
+
+        % Button pushed function: ExportardatosButton
+        function ExportardatosButtonPushed(app, event)
+            data = get(app.UITable, 'data');
+            columns = get(app.UITable, 'columnname');
+            columns = reshape(columns, [1,9]);
+            filename = 'Datos_proyectil.xls';
+            xlswrite(filename, data, 1, 'A2');
+            xlswrite(filename, columns, 1, 'A1:I1');
+            command = 'start excel Datos_proyectil.xls';
+            command2 = 'open Datos_proyectil.xls';
+            system(command);
+            system(command2);
+        end
+    end
+
+    % Component initialization
+    methods (Access = private)
+
+        % Create UIFigure and components
+        function createComponents(app)
+
+            % Create Simulador and hide until all components are created
+            app.Simulador = uifigure('Visible', 'off');
+            app.Simulador.AutoResizeChildren = 'off';
+            app.Simulador.Position = [100 100 1090 532];
+            app.Simulador.Name = 'UI Figure';
+            app.Simulador.Resize = 'off';
+            app.Simulador.SizeChangedFcn = createCallbackFcn(app, @updateAppLayout, true);
+
+            % Create GridLayout
+            app.GridLayout = uigridlayout(app.Simulador);
+            app.GridLayout.ColumnWidth = {540, '1x'};
+            app.GridLayout.RowHeight = {'1x'};
+            app.GridLayout.ColumnSpacing = 0;
+            app.GridLayout.RowSpacing = 0;
+            app.GridLayout.Padding = [0 0 0 0];
+            app.GridLayout.Scrollable = 'on';
+
+            % Create LeftPanel
+            app.LeftPanel = uipanel(app.GridLayout);
+            app.LeftPanel.Layout.Row = 1;
+            app.LeftPanel.Layout.Column = 1;
+
+            % Create UIAxes
+            app.UIAxes = uiaxes(app.LeftPanel);
+            title(app.UIAxes, 'Modelado de la posicion de un proyectil volcanico')
+            xlabel(app.UIAxes, 'Posicion en x (m)')
+            ylabel(app.UIAxes, 'Posicion en y (m)')
+            app.UIAxes.PlotBoxAspectRatio = [1.08196721311475 1 1];
+            app.UIAxes.Position = [7 28 512 485];
+
+            % Create RightPanel
+            app.RightPanel = uipanel(app.GridLayout);
+            app.RightPanel.Layout.Row = 1;
+            app.RightPanel.Layout.Column = 2;
+
+            % Create UITable
+            app.UITable = uitable(app.RightPanel);
+            app.UITable.ColumnName = {'Tiempo (s)'; 'x1'; 'y1'; 'x2'; 'y2'; 'vx1'; 'vy1'; 'vx2'; 'vy2'};
+            app.UITable.RowName = {};
+            app.UITable.Position = [13 247 527 279];
+
+            % Create AlturaVolcanEditFieldLabel
+            app.AlturaVolcanEditFieldLabel = uilabel(app.RightPanel);
+            app.AlturaVolcanEditFieldLabel.HorizontalAlignment = 'right';
+            app.AlturaVolcanEditFieldLabel.Position = [13 202 76 22];
+            app.AlturaVolcanEditFieldLabel.Text = 'Altura Volcan';
+
+            % Create AlturaVolcanEditField
+            app.AlturaVolcanEditField = uieditfield(app.RightPanel, 'numeric');
+            app.AlturaVolcanEditField.ValueDisplayFormat = '%.3f';
+            app.AlturaVolcanEditField.Position = [111 202 93 22];
+            app.AlturaVolcanEditField.Value = 2547.429;
+
+            % Create VelocidadinicialEditFieldLabel
+            app.VelocidadinicialEditFieldLabel = uilabel(app.RightPanel);
+            app.VelocidadinicialEditFieldLabel.HorizontalAlignment = 'right';
+            app.VelocidadinicialEditFieldLabel.Position = [13 162 91 22];
+            app.VelocidadinicialEditFieldLabel.Text = 'Velocidad inicial';
+
+            % Create VelocidadinicialEditField
+            app.VelocidadinicialEditField = uieditfield(app.RightPanel, 'numeric');
+            app.VelocidadinicialEditField.ValueDisplayFormat = '%.3f';
+            app.VelocidadinicialEditField.Position = [111 162 93 22];
+            app.VelocidadinicialEditField.Value = 114.37;
+
+            % Create AnguloEditFieldLabel
+            app.AnguloEditFieldLabel = uilabel(app.RightPanel);
+            app.AnguloEditFieldLabel.Position = [21 70 46 22];
+            app.AnguloEditFieldLabel.Text = 'Angulo ';
+
+            % Create AnguloEditField
+            app.AnguloEditField = uieditfield(app.RightPanel, 'numeric');
+            app.AnguloEditField.ValueDisplayFormat = '%.3f';
+            app.AnguloEditField.Position = [111 70 93 22];
+            app.AnguloEditField.Value = 85;
+
+            % Create tEditFieldLabel
+            app.tEditFieldLabel = uilabel(app.RightPanel);
+            app.tEditFieldLabel.HorizontalAlignment = 'right';
+            app.tEditFieldLabel.Position = [13 28 25 22];
+            app.tEditFieldLabel.Text = 'Δt';
+
+            % Create tEditField
+            app.tEditField = uieditfield(app.RightPanel, 'numeric');
+            app.tEditField.ValueDisplayFormat = '%.3f';
+            app.tEditField.Position = [111 28 93 22];
+            app.tEditField.Value = 1;
+
+            % Create MasaproyectilEditFieldLabel
+            app.MasaproyectilEditFieldLabel = uilabel(app.RightPanel);
+            app.MasaproyectilEditFieldLabel.HorizontalAlignment = 'right';
+            app.MasaproyectilEditFieldLabel.Position = [13 116 83 22];
+            app.MasaproyectilEditFieldLabel.Text = 'Masa proyectil';
+
+            % Create MasaproyectilEditField
+            app.MasaproyectilEditField = uieditfield(app.RightPanel, 'numeric');
+            app.MasaproyectilEditField.ValueDisplayFormat = '%.3f';
+            app.MasaproyectilEditField.Position = [111 116 93 22];
+            app.MasaproyectilEditField.Value = 100;
+
+            % Create SimularButton
+            app.SimularButton = uibutton(app.RightPanel, 'push');
+            app.SimularButton.ButtonPushedFcn = createCallbackFcn(app, @SimularButtonPushed, true);
+            app.SimularButton.Position = [255 28 124 22];
+            app.SimularButton.Text = 'Simular';
+
+            % Create Button
+            app.Button = uibutton(app.RightPanel, 'push');
+            app.Button.ButtonPushedFcn = createCallbackFcn(app, @ButtonPushed, true);
+            app.Button.Position = [515 213 25 22];
+            app.Button.Text = '?';
+
+            % Create mLabel
+            app.mLabel = uilabel(app.RightPanel);
+            app.mLabel.Position = [209 202 25 22];
+            app.mLabel.Text = 'm';
+
+            % Create msLabel
+            app.msLabel = uilabel(app.RightPanel);
+            app.msLabel.Position = [209 162 25 22];
+            app.msLabel.Text = 'm/s';
+
+            % Create kgLabel
+            app.kgLabel = uilabel(app.RightPanel);
+            app.kgLabel.Position = [209 116 25 22];
+            app.kgLabel.Text = 'kg';
+
+            % Create sLabel
+            app.sLabel = uilabel(app.RightPanel);
+            app.sLabel.Position = [209 28 25 22];
+            app.sLabel.Text = 's';
+
+            % Create Label
+            app.Label = uilabel(app.RightPanel);
+            app.Label.Position = [209 70 25 22];
+            app.Label.Text = '°';
+
+            % Create CoeficientefriccionEditFieldLabel
+            app.CoeficientefriccionEditFieldLabel = uilabel(app.RightPanel);
+            app.CoeficientefriccionEditFieldLabel.HorizontalAlignment = 'right';
+            app.CoeficientefriccionEditFieldLabel.Position = [239 202 115 22];
+            app.CoeficientefriccionEditFieldLabel.Text = 'Coeficiente friccion';
+
+            % Create CoeficientefriccionEditField
+            app.CoeficientefriccionEditField = uieditfield(app.RightPanel, 'numeric');
+            app.CoeficientefriccionEditField.Position = [378 202 72 22];
+            app.CoeficientefriccionEditField.Value = 0.47;
+
+            % Create Label_2
+            app.Label_2 = uilabel(app.RightPanel);
+            app.Label_2.Position = [456 202 25 22];
+            app.Label_2.Text = 'μ';
+
+            % Create ExportardatosButton
+            app.ExportardatosButton = uibutton(app.RightPanel, 'push');
+            app.ExportardatosButton.ButtonPushedFcn = createCallbackFcn(app, @ExportardatosButtonPushed, true);
+            app.ExportardatosButton.Position = [409 26 107 26];
+            app.ExportardatosButton.Text = 'Exportar datos';
+
+            % Create AlturaMaximaLabel
+            app.AlturaMaximaLabel = uilabel(app.RightPanel);
+            app.AlturaMaximaLabel.Position = [255 134 82 22];
+            app.AlturaMaximaLabel.Text = 'Altura Maxima';
+
+            % Create VelocidadImpactoLabel
+            app.VelocidadImpactoLabel = uilabel(app.RightPanel);
+            app.VelocidadImpactoLabel.Position = [255 105 104 22];
+            app.VelocidadImpactoLabel.Text = 'Velocidad Impacto';
+
+            % Create PuntodeimpactoxLabel
+            app.PuntodeimpactoxLabel = uilabel(app.RightPanel);
+            app.PuntodeimpactoxLabel.Position = [255 73 116 22];
+            app.PuntodeimpactoxLabel.Text = 'Punto de impacto (x)';
+
+            % Create ResultadosLabel
+            app.ResultadosLabel = uilabel(app.RightPanel);
+            app.ResultadosLabel.FontSize = 14;
+            app.ResultadosLabel.FontWeight = 'bold';
+            app.ResultadosLabel.Position = [255 170 81 22];
+            app.ResultadosLabel.Text = 'Resultados';
+
+            % Create Label_3
+            app.Label_3 = uilabel(app.RightPanel);
+            app.Label_3.Position = [255 164 269 22];
+            app.Label_3.Text = '_______________________________________';
+
+            % Create AlturaMaxima
+            app.AlturaMaxima = uieditfield(app.RightPanel, 'numeric');
+            app.AlturaMaxima.Position = [378 134 103 22];
+
+            % Create VelocidadImpacto
+            app.VelocidadImpacto = uieditfield(app.RightPanel, 'numeric');
+            app.VelocidadImpacto.Position = [378 105 103 22];
+
+            % Create mLabel_2
+            app.mLabel_2 = uilabel(app.RightPanel);
+            app.mLabel_2.Position = [491 130 25 22];
+            app.mLabel_2.Text = 'm';
+
+            % Create msLabel_2
+            app.msLabel_2 = uilabel(app.RightPanel);
+            app.msLabel_2.Position = [491 105 25 22];
+            app.msLabel_2.Text = 'm/s';
+
+            % Create mLabel_3
+            app.mLabel_3 = uilabel(app.RightPanel);
+            app.mLabel_3.Position = [490 73 25 22];
+            app.mLabel_3.Text = 'm';
+
+            % Create Impacto
+            app.Impacto = uieditfield(app.RightPanel, 'numeric');
+            app.Impacto.Position = [378 73 103 22];
+
+            % Show the figure after all components are created
+            app.Simulador.Visible = 'on';
+        end
+    end
+
+    % App creation and deletion
+    methods (Access = public)
+
+        % Construct app
+        function app = ProyectoVolcan
+
+            % Create UIFigure and components
+            createComponents(app)
+
+            % Register the app with App Designer
+            registerApp(app, app.Simulador)
+
+            % Execute the startup function
+            runStartupFcn(app, @startupFcn)
+
+            if nargout == 0
+                clear app
+            end
+        end
+
+        % Code that executes before app deletion
+        function delete(app)
+
+            % Delete UIFigure when app is deleted
+            delete(app.Simulador)
+        end
+    end
+end]]></w:t></w:r></w:p></w:body></w:document>

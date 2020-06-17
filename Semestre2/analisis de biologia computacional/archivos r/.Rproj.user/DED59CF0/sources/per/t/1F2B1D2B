@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1588450117762.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3202295631",
+    "id" : "1F2B1D2B",
+    "lastKnownWriteTime" : 1588550282,
+    "last_content_update" : 1588550282916,
+    "path" : "~/Documents/ITESM/Semestre 2/analisis de biologia computacional/archivos r/proyecto/proyecto_2.r",
+    "project_path" : "proyecto/proyecto_2.r",
+    "properties" : {
+        "cursorPosition" : "67,58",
+        "scrollLine" : "52",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
