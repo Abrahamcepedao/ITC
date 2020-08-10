@@ -4,8 +4,15 @@ The class "ListaT.h" is the one that uses templates. Therefore, the main file in
 
 ## Activity requirements
 The class must have the following capabilities (methods):
-* Insert element
+* Insert element 
 * Erase last element
 * Get element
 * Get size of array
 * Print entire array
+
+## Complexity of each function
+* Insert element       - O(1)
+* Erase last element   - O(1)
+* Get element          - O(1)
+* Get size of array    - O(1)
+* Print entire array   - O(N)
