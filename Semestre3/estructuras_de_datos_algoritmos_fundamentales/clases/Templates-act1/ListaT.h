@@ -15,45 +15,49 @@ class Lista{
         Lista();
 
         void insert(T num);
-        void erase();
-        int getData(int index);
+        T erase();
+        T getData(int index);
         int getSize(){return size;};
         void print();
 
 };
 
-Lista::Lista(){
+template<class T>
+Lista<T>::Lista() {
     size = 0;
 }
 
-void Lista::insert(int num){
-    if(size < MAX){
+template<class T>
+void Lista<T>::insert(T num) {
+    if (size < MAX) {
         data[size] = num;
         size++;
     }
 }
 
-void Lista::erase(){
-    if(size > 0){
-        cout << "last num: " << data[size-1] << endl;
-        size--;
-    } else{
-        cout << "No elements.." << endl;
-    }
-}
 template<class T>
-T Lista::getData(int index){
-    if(index >= 0 && index < size){
-        return data[index];
+T Lista<T>::erase() {
+    if (size > 0) {
+        size--;
+        return data[size];
     } else{
-        return 0;
+        throw runtime_error("No elements..");
     }
 }
 
-void Lista::print(){
-    for(int i = 0; i < size; i++){
+template<class T>
+T Lista<T>::getData(int index) {
+    if (index >= 0 && index < size) {
+        return data[index];
+    } else{
+        throw runtime_error("Index out of bounds");
+    }
+}
+
+template<class T>
+void Lista<T>::print() {
+    for (int i = 0; i < size; i++) {
         cout << "[" << i << "]" << " - " << data[i] << endl;
     }
 }
-
 #endif
