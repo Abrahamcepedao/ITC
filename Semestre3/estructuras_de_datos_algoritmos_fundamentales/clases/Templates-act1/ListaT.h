@@ -7,12 +7,12 @@ using namespace std;
 const int MAX = 100;
 
 template<class T>
-class Lista{
+class ListaT{
     private:
         T data [MAX];
         int size;
     public:
-        Lista();
+        ListaT();
 
         void insert(T num);
         T erase();
@@ -23,20 +23,22 @@ class Lista{
 };
 
 template<class T>
-Lista<T>::Lista() {
+ListaT<T>::ListaT() {
     size = 0;
 }
 
 template<class T>
-void Lista<T>::insert(T num) {
+void ListaT<T>::insert(T num) {
     if (size < MAX) {
         data[size] = num;
         size++;
+    } else{
+        throw runtime_error("Exceeded MAX..");
     }
 }
 
 template<class T>
-T Lista<T>::erase() {
+T ListaT<T>::erase() {
     if (size > 0) {
         size--;
         return data[size];
@@ -46,7 +48,7 @@ T Lista<T>::erase() {
 }
 
 template<class T>
-T Lista<T>::getData(int index) {
+T ListaT<T>::getData(int index) {
     if (index >= 0 && index < size) {
         return data[index];
     } else{
@@ -55,9 +57,9 @@ T Lista<T>::getData(int index) {
 }
 
 template<class T>
-void Lista<T>::print() {
+void ListaT<T>::print() {
     for (int i = 0; i < size; i++) {
-        cout << "[" << i << "]" << " - " << data[i] << endl;
+        cout << "[" << i << "]" << " - " << data[i] << '\n';
     }
 }
 #endif
