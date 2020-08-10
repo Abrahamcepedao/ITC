@@ -1,3 +1,0 @@
-uestra();
-    cout << endl;
-    cout << 
