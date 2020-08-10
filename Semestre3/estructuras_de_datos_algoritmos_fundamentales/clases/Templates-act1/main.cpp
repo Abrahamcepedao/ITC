@@ -1,9 +1,14 @@
+// This program manipulates an array that can have several datatypes since the class uses Templates
+// Abraham Cepeda Oseguera
+// A00827666
+// August 10th 2020
 #include<iostream>
 #include<string>
 #include "ListaT.h"
 
 using namespace std;
 
+//Menu function
 int menu(){
     cout << "1 Insert" << '\n';
     cout << "2 Erase" << '\n';
@@ -12,19 +17,22 @@ int menu(){
     cout << "5 Print" << '\n';
     cout << "0 Exit" << '\n';
     int ans;
-    cin >> ans;
+    cin >> ans;  //read answer
     return ans;
 }
-
+//Main function
 int main(){
+    //Create object
     ListaT<int> myList;
+    //Populate object
     for(int i = 1; i < 21; i++){
         myList.insert(i);
     }
-
+    //Begin program that will continue while ans != 0
     int ans = 1;
     while(ans != 0){
-        ans = menu();
+        ans = menu(); //Get answer from menu
+        // This switch analyzes the answer given by the user and calls the object's method respectively
         switch (ans){
             case 1:
                 int num;
