@@ -1,13 +1,14 @@
-// This program manipulates an array that can have several datatypes since the class uses Templates
+// This algorithm calculates de factorail of any given number
 // Abraham Cepeda Oseguera
 // A00827666
-// August 10th 2020
+// August 13th 2020
 #include<iostream>
 #include<string>
 using namespace std;
 
+// Factorial function - O(n)
 int factorial(int n){
-    return (n<= 1 ? 1 : (n*factorial(n-1)));
+    return n <= 1 ? 1 : n * factorial(n-1);
 }
 
 int main(){

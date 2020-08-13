@@ -1,7 +1,12 @@
+// This algorithm calculates de y power of an x number
+// Abraham Cepeda Oseguera
+// A00827666
+// August 13th 2020
 #include <iostream>
 using namespace std;
 
-int power(int x, int y){
+// Recursive power - O(n)
+int power(int x, int y) {
     return y > 1 ? x * power(x, y-1) : x;
 }
 
