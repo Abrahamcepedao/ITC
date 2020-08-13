@@ -1,10 +1,6 @@
 #include <iostream>
 using namespace std;
 
-/* int fibonacciIter(int n){
-
-} */
-
 int fibonacciRec(int n){
     return ((n == 0 || n == 1) ? 1: (fibonacciRec(n-1)+fibonacciRec(n-2)));
 }
