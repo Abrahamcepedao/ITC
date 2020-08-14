@@ -5,7 +5,7 @@ This activity consists of several algorithms that implements recursion to solve 
 * Factorial   - O(n)
 * Sumas       - O(n)
 * Pyramid     - O(n)
-* Fibonacci   - O(2n)
+* Fibonacci   - O(n)
 * Bacteria    - O(n)
 * Investment  - O(n)
 * Power       - O(n)
