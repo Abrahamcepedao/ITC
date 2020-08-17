@@ -1,4 +1,4 @@
-// This algorithm calculates de value of the number in the fibonacci sequence of any given position
+// This algorithm sort a  vector with the exchange method
 // Abraham Cepeda Oseguera
 // A00827666
 // August 17th 2020
