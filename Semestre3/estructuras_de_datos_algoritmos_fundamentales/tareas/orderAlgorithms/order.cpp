@@ -8,7 +8,10 @@
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <time.h>
+#include <chrono>
+#include <ctime>
 using namespace std;
+using namespace std::chrono;
 
 template<class T>
 void exchange(vector<T> &vect, int num1, int num2){
@@ -18,7 +21,9 @@ void exchange(vector<T> &vect, int num1, int num2){
 }
 
 template<class T>
-void orderExchange(vector<T> &vect, int &comp, int &inter){
+void orderExchange(vector<T> &vect, int &comp, int &inter, double &duration){
+    chrono::time_point<chrono::system_clock> start, stop;
+    start = chrono::system_clock::now();
     for(int i = 0; i < vect.size(); i++){
         for(int j = i+1; j < vect.size(); j++){
             comp++;
@@ -28,10 +33,15 @@ void orderExchange(vector<T> &vect, int &comp, int &inter){
             }
         }
     }
+    stop = chrono::system_clock::now();
+    chrono::duration<double> elapsed_seconds = stop - start;
+    duration = elapsed_seconds.count();
 }
 
 template<class T>
-void orderBubble(vector<T> &vect, int &comp, int &inter){
+void orderBubble(vector<T> &vect, int &comp, int &inter, double &duration){
+    chrono::time_point<chrono::system_clock> start, stop;
+    start = chrono::system_clock::now();
     for(int i = 0; i < vect.size(); i++){
         for(int j = 0; j < (vect.size()-i); j++){
             comp++;
@@ -41,10 +51,15 @@ void orderBubble(vector<T> &vect, int &comp, int &inter){
             }
         }
     }
+    stop = chrono::system_clock::now();
+    chrono::duration<double> elapsed_seconds = stop - start;
+    duration = elapsed_seconds.count();
 }
 
 template<class T>
-void orderSelection(vector<T> &vect, int &comp, int &inter){
+void orderSelection(vector<T> &vect, int &comp, int &inter, double &duration){
+    chrono::time_point<chrono::system_clock> start, stop;
+    start = chrono::system_clock::now();
     T min;
     for(int i = 0; i < vect.size(); i++){
         min = i;
@@ -59,16 +74,20 @@ void orderSelection(vector<T> &vect, int &comp, int &inter){
             exchange(vect, i, min);
         }
     }
+    stop = chrono::system_clock::now();
+    chrono::duration<double> elapsed_seconds = stop - start;
+    duration = elapsed_seconds.count();
 }
 
 
 template<class T>
-void printVector(vector<T> vect, int comp, int inter){
+void printVector(vector<T> vect, int comp, int inter, double duration){
     for(int i = 0; i < vect.size(); i++){
         cout << vect[i] << " ";
     }
-    cout << "\nComparisons: " << comp << "\n";
-    cout << "Exchanges:   " << inter << "\n";
+    printf("\n<----Comparisons: %d\n", comp);
+    printf("<----Exhanges: %d\n", inter);
+    printf("<----Duration: %.6fs\n", duration);
 }
 
 template<class T>
@@ -92,26 +111,27 @@ int menu(){
 
 int main(){
     int n, ans = 1;
+    
     cout << "Enter the n value: ";
     cin >> n;
     while(ans != 0){
         vector<int> vect;
         createVector(vect, n, 100);
         int comp = 0, inter = 0;
+        double duration;
         ans = menu();
-        printVector(vect, comp, inter);
         switch (ans){
             case 1:
                 cout << "\nOrdered vector by Exchange\n";
-                orderExchange(vect, comp, inter);
+                orderExchange(vect, comp, inter, duration);
                 break;
             case 2:
                 cout << "\nOrdered vector by Bubble\n";
-                orderExchange(vect, comp, inter);
+                orderBubble(vect, comp, inter, duration);
                 break;
             case 3:
                 cout << "\nOrdered vector by Direct Selection\n";
-                orderSelection(vect, comp, inter);
+                orderSelection(vect, comp, inter, duration);
                 break;
             case 4:
                 cout << "\nOrdered vector by Merge\n";
@@ -121,7 +141,7 @@ int main(){
                 break;
         }
         if(ans != 0){
-            printVector(vect, comp, inter);
+            printVector(vect, comp, inter, duration);
         } else{
             cout << "The program has finished\n";
         }
