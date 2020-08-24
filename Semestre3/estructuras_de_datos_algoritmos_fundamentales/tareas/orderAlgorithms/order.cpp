@@ -119,6 +119,15 @@ void orderInsertion(vector<T> &vect, int &comp, int &inter, double &duration){
     duration = elapsed_seconds.count();
 }
 
+template<class T>
+T sequentialSearch(vector<T> vect, T elem){
+    for(int i = 0; i < vect.size(); i++){
+        if(elem == vect[i]){
+            return i;
+        }
+    }
+    throw runtime_error("Element was not found...\n");
+}
 
 template<class T>
 void printVector(vector<T> vect, int comp, int inter, double duration){
@@ -180,6 +189,17 @@ int main(){
                 cout << "\nOrdered vector by Insertion\n";
                 orderInsertion(vect, comp, inter, duration);
                 break;
+            case 5:
+                int num;
+                cout << "\nFind by Sequential search\n";
+                cout << "Enter the number you  want to find: ";
+                cin >> num;
+                try{
+                    int index = sequentialSearch(vect, num);
+                    cout << "The " << num << " is located at: " << sequentialSearch(vect, num) << "\n";
+                } catch(runtime_error& e){
+                    cout << e.what();
+                }
             default:
                 break;
         }
