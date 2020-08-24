@@ -120,13 +120,30 @@ void orderInsertion(vector<T> &vect, int &comp, int &inter, double &duration){
 }
 
 template<class T>
-T sequentialSearch(vector<T> vect, T elem){
+T sequentialSearch(vector<T> vect, T elem, int &comp, double &duration){
+    chrono::time_point<chrono::system_clock> start, stop;
+    start = chrono::system_clock::now();
     for(int i = 0; i < vect.size(); i++){
+        comp++;
         if(elem == vect[i]){
+            stop = chrono::system_clock::now();
+            chrono::duration<double> elapsed_seconds = stop - start;
+            duration = elapsed_seconds.count();
             return i;
         }
     }
     throw runtime_error("Element was not found...\n");
+    stop = chrono::system_clock::now();
+    chrono::duration<double> elapsed_seconds = stop - start;
+    duration = elapsed_seconds.count();
+}
+
+template<class T>
+void simeplePrintVector(vector<T> vect){
+    for(int i = 0; i < vect.size(); i++){
+        cout << vect[i] << " ";
+    }
+    cout << "\n";
 }
 
 template<class T>
@@ -162,15 +179,17 @@ int menu(){
 
 int main(){
     int n, ans = 1;
-    cout << "Enter the n value: ";
+    cout << "Enter the number of values: ";
     cin >> n;
 
     while(ans != 0){
         vector<int> vect;
+        ans = menu();
         createVector(vect, n, 100);
+        simeplePrintVector(vect);
         int comp = 0, inter = 0;
         double duration;
-        ans = menu();
+       
 
         switch (ans){
             case 1:
@@ -195,8 +214,8 @@ int main(){
                 cout << "Enter the number you  want to find: ";
                 cin >> num;
                 try{
-                    int index = sequentialSearch(vect, num);
-                    cout << "The " << num << " is located at: " << sequentialSearch(vect, num) << "\n";
+                    int index = sequentialSearch(vect, num, comp, duration);
+                    cout << "The " << num << " is located at: " << sequentialSearch(vect, num, comp, duration) << " index\n";
                 } catch(runtime_error& e){
                     cout << e.what();
                 }
