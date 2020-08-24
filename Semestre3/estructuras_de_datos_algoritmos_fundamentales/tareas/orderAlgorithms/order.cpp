@@ -42,12 +42,15 @@ template<class T>
 void orderBubble(vector<T> &vect, int &comp, int &inter, double &duration){
     chrono::time_point<chrono::system_clock> start, stop;
     start = chrono::system_clock::now();
-    for(int i = 0; i < vect.size(); i++){
+    bool cont = true;
+    for(int i = 0; i < vect.size() && cont; i++){
+        cont = false;
         for(int j = 0; j < (vect.size()-i); j++){
             comp++;
             if(vect[j] > vect[j+1]){
                 inter++;
                 exchange(vect, j, j+1);
+                cont = true;
             }
         }
     }
@@ -79,6 +82,43 @@ void orderSelection(vector<T> &vect, int &comp, int &inter, double &duration){
     duration = elapsed_seconds.count();
 }
 
+template<class T>
+void orderInsertion(vector<T> &vect, int &comp, int &inter, double &duration){
+    chrono::time_point<chrono::system_clock> start, stop;
+    start = chrono::system_clock::now();
+    /* int c = 1, i = 0;
+    while(c < vect.size()){
+        int aux = c;
+        while(vect[c] < vect[i] && i >= 0){
+            comp++;
+            inter++;
+            exchange(vect, i, c);
+            c--;
+            i--;
+        }
+        comp++;
+        c = aux+1;
+        i = aux;
+    } */
+    int c = 1, i = 0, aux = 1;
+    while(c < vect.size()){
+        comp++;
+        if(vect[c] < vect[i] && i >= 0){
+            inter++;
+            exchange(vect, i, c);
+            c--;
+            i--;
+        } else{
+            aux++;
+            c = aux;
+            i = aux-1;
+        }
+    }
+    stop = chrono::system_clock::now();
+    chrono::duration<double> elapsed_seconds = stop - start;
+    duration = elapsed_seconds.count();
+}
+
 
 template<class T>
 void printVector(vector<T> vect, int comp, int inter, double duration){
@@ -103,6 +143,7 @@ int menu(){
     cout << "\n\n\n\n1. Order by Exchange\n";
     cout << "2. Order by Bubble\n";
     cout << "3. Order by Selection\n";
+    cout << "4. Order by Insertion\n";
     cout << "0. To exit\n\n";
     cout << "Enter answer: ";
     cin >> ans;
@@ -111,15 +152,16 @@ int menu(){
 
 int main(){
     int n, ans = 1;
-    
     cout << "Enter the n value: ";
     cin >> n;
+
     while(ans != 0){
         vector<int> vect;
         createVector(vect, n, 100);
         int comp = 0, inter = 0;
         double duration;
         ans = menu();
+
         switch (ans){
             case 1:
                 cout << "\nOrdered vector by Exchange\n";
@@ -134,17 +176,19 @@ int main(){
                 orderSelection(vect, comp, inter, duration);
                 break;
             case 4:
-                cout << "\nOrdered vector by Merge\n";
-                //orderExchange(vect);
+                cout << "\nOrdered vector by Insertion\n";
+                orderInsertion(vect, comp, inter, duration);
                 break;
             default:
                 break;
         }
+
         if(ans != 0){
             printVector(vect, comp, inter, duration);
         } else{
             cout << "The program has finished\n";
         }
     }
+
     return 0;
 }

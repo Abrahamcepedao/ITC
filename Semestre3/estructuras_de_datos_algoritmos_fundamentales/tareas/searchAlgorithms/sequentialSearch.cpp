@@ -8,7 +8,11 @@
 using namespace std;
 
 int sequentialSearch(vector<int> numbers, int  num){
-    
+    for(int i = 0; i < numbers.size(); i++){
+        if(num == numbers[i]){
+            return i;
+        }
+    }
     return -1;
 }
 

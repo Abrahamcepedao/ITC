@@ -2,6 +2,6 @@
 This activity consists of several algorithms that implements order algorithms
 
 ## Complexity of each algorithm
-* Exchange  - O(n)
-* Bubble    - O(n)
-* Merge     - O(n)
+* Exchange  - O(n^2)
+* Bubble    - O(n^2)
+* Merge     - O(n^2)
