@@ -7,13 +7,14 @@
 #include <vector>
 using namespace std;
 
-int sequentialSearch(vector<int> numbers, int  num){
-    for(int i = 0; i < numbers.size(); i++){
-        if(num == numbers[i]){
+template<class T>
+T sequentialSearch(vector<T> vect, T elem){
+    for(int i = 0; i < vect.size(); i++){
+        if(elem == vect[i]){
             return i;
         }
     }
-    return -1;
+    throw runtime_error("Element was not found...\n");
 }
 
 int main(){
@@ -26,6 +27,12 @@ int main(){
     }
     cout << "Enter the value you want to look for: ";
     cin >> num;
-    cout << "The " << num << " is located at: " << sequentialSearch(numbers, num) << "\n";
+    try{
+        int index = sequentialSearch(numbers, num);
+        cout << "The " << num << " is located at: " << sequentialSearch(numbers, num) << "\n";
+    } catch(runtime_error& e){
+        cout << e.what();
+    }
+    
     return 0;
 }

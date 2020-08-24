@@ -144,6 +144,7 @@ int menu(){
     cout << "2. Order by Bubble\n";
     cout << "3. Order by Selection\n";
     cout << "4. Order by Insertion\n";
+    cout << "5. Sequential search\n";
     cout << "0. To exit\n\n";
     cout << "Enter answer: ";
     cin >> ans;
