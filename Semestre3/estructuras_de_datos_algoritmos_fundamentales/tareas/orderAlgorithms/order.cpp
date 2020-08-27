@@ -139,7 +139,30 @@ T sequentialSearch(vector<T> vect, T elem, int &comp, double &duration){
 }
 
 template<class T>
-void simeplePrintVector(vector<T> vect){
+T binarySearch(vector<T> vect, T elem, int &comp, double &duration){
+    chrono::time_point<chrono::system_clock> start, stop;
+    start = chrono::system_clock::now();
+    int low = 0;
+    int high = vect.size() - 1;
+    while(low <= high){
+        int medium = (high + low) / 2;
+        comp++;
+        if(vect[medium] == elem){
+            return medium;
+        } else if(vect[medium] > elem){
+            high = medium - 1;
+        } else{
+            low = medium + 1;
+        }
+    }
+    throw runtime_error("Element was not found...\n");
+    stop = chrono::system_clock::now();
+    chrono::duration<double> elapsed_seconds = stop - start;
+    duration = elapsed_seconds.count();
+}
+
+template<class T>
+void simplePrintVector(vector<T> vect){
     for(int i = 0; i < vect.size(); i++){
         cout << vect[i] << " ";
     }
@@ -151,16 +174,16 @@ void printVector(vector<T> vect, int comp, int inter, double duration){
     for(int i = 0; i < vect.size(); i++){
         cout << vect[i] << " ";
     }
-    printf("\n<----Comparisons: %d\n", comp);
+    printf("\n<----Comparisons/iterations: %d\n", comp);
     printf("<----Exhanges: %d\n", inter);
     printf("<----Duration: %.6fs\n", duration);
 }
 
 template<class T>
-void createVector(vector<T> &vect, int n, int max){
+void createVector(vector<T> &vect, int n){
     srand(time(NULL));
     for(int i = 0; i < n; i++){
-        vect.push_back(rand() % max + 1);
+        vect.push_back(rand() % n + 1);
     }
 }
 
@@ -171,6 +194,7 @@ int menu(){
     cout << "3. Order by Selection\n";
     cout << "4. Order by Insertion\n";
     cout << "5. Sequential search\n";
+    cout << "6. Binary search\n";
     cout << "0. To exit\n\n";
     cout << "Enter answer: ";
     cin >> ans;
@@ -185,11 +209,10 @@ int main(){
     while(ans != 0){
         vector<int> vect;
         ans = menu();
-        createVector(vect, n, 100);
-        simeplePrintVector(vect);
-        int comp = 0, inter = 0;
+        createVector(vect, n);
+        simplePrintVector(vect);
+        int comp = 0, inter = 0, num;
         double duration;
-       
 
         switch (ans){
             case 1:
@@ -209,13 +232,27 @@ int main(){
                 orderInsertion(vect, comp, inter, duration);
                 break;
             case 5:
-                int num;
                 cout << "\nFind by Sequential search\n";
                 cout << "Enter the number you  want to find: ";
                 cin >> num;
+                orderInsertion(vect, comp, inter, duration);
+                comp = 0, inter = 0, duration = 0.0;
                 try{
                     int index = sequentialSearch(vect, num, comp, duration);
-                    cout << "The " << num << " is located at: " << sequentialSearch(vect, num, comp, duration) << " index\n";
+                    cout << "The " << num << " is located at: " << index << " index\n";
+                } catch(runtime_error& e){
+                    cout << e.what();
+                }
+                break;
+            case 6:
+                cout << "\nFind by Binary search\n";
+                cout << "Enter the number you  want to find: ";
+                cin >> num;
+                orderInsertion(vect, comp, inter, duration);
+                comp = 0, inter = 0, duration = 0.0;
+                try{
+                    int index = binarySearch(vect, num, comp, duration);
+                    cout << "The " << num << " is located at: " << index << " index\n";
                 } catch(runtime_error& e){
                     cout << e.what();
                 }
