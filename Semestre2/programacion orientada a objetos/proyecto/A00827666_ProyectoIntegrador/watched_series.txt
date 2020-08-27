@@ -1,0 +1,3 @@
+abraham	series_70	29
+abraham	series_90	8
+abraham	series_345	0

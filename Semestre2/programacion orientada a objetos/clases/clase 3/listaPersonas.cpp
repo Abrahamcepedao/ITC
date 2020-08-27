@@ -1,0 +1,89 @@
+
+#include <iostream>
+using namespace std;
+
+#include "Estudiante.h"
+#include "Maestro.h"
+
+int main() {
+    
+    // COMPLETAR: Declara un arreglo de apuntadores a objeto de tipo Persona
+    Persona *personas[10];
+    int cantPersonas;
+    char opcionPersona, opcionMenu;
+    int edad, edadIni, edadFin;
+    string nombre, carrera, departamento;
+    
+    cout << "Cuantas personas hay? ";
+    cin >> cantPersonas;
+    
+    for (int c = 0; c < cantPersonas; c++){
+        cout << "a) Estudiante, b) Maestro y c) Ninguno de los dos" << endl;
+        cin >> opcionPersona;
+        
+        cout << "Nombre? ";
+        cin >> nombre;
+        
+        cout << "Edad? ";
+        cin >> edad;
+        
+        if (opcionPersona == 'a') {
+            cout << "Carrera? ";
+            cin >> carrera;
+            
+            // COMPLETAR: Agrega al estudiante a la lista de personas
+            personas[c] = new Estudiante(nombre, edad, carrera);
+        }else if (opcionPersona == 'b') {
+            cout << "Departamento? ";
+            cin >> departamento;
+            
+            // COMPLETAR: Agrega al maestro a la lista de personas
+            personas[c] = new Maestro(nombre, edad, departamento);
+        }else {
+            
+            // COMPLETAR: Agrega a la persona a la lista de personas
+            personas[c] = new Persona(nombre, edad);
+        }
+    }
+    do{
+        //cout << "Menu de opciones " << endl;
+        //cout << endl;
+        //cout << "a) muestra todas las personas " << endl;
+        //cout << "b) muestra personas en un rango de edad " << endl;
+        //cout << "c) terminar " << endl;
+        //cout << "opcion -> " << endl;
+        cin >> opcionMenu;
+        
+        switch (opcionMenu) {
+            case 'a':  {
+                
+                // COMPLETAR: Muestra la lista de personas
+                // cada persona tiene que mostrarse usando su propia version del muestraDatos
+                for(int i = 0; i < cantPersonas; i++){
+                    personas[i]->muestraDatos();
+                }
+                break;
+            }
+                
+            case 'b':  {
+                int edadTmp;
+                //cout << "edad inicial ";
+                cin >> edadIni;
+                //cout << "edad final? ";
+                cin >> edadFin;
+                
+                // COMPLETAR: Muestra la lista de personas cuya edad cae en el rango especificado
+                // cada persona tiene que mostrarse usando su propia version del muestraDatos
+                for(int i = 0; i < cantPersonas; i++){
+                    if (personas[i]->getEdad() >= edadIni && personas[i]->getEdad() <= edadFin){
+                        personas[i]->muestraDatos();
+                    }
+                }
+                break;
+            }
+        }
+        
+    } while (opcionMenu != 'c');
+    
+    return 0;
+}

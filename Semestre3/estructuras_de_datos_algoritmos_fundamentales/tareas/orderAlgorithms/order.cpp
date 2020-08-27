@@ -120,7 +120,7 @@ void orderInsertion(vector<T> &vect, int &comp, int &inter, double &duration){
 }
 
 template<class T>
-T sequentialSearch(vector<T> vect, T elem, int &comp, double &duration){
+int sequentialSearch(vector<T> vect, T elem, int &comp, double &duration){
     chrono::time_point<chrono::system_clock> start, stop;
     start = chrono::system_clock::now();
     for(int i = 0; i < vect.size(); i++){
@@ -139,7 +139,7 @@ T sequentialSearch(vector<T> vect, T elem, int &comp, double &duration){
 }
 
 template<class T>
-T binarySearch(vector<T> vect, T elem, int &comp, double &duration){
+int binarySearch(vector<T> vect, T elem, int &comp, double &duration){
     chrono::time_point<chrono::system_clock> start, stop;
     start = chrono::system_clock::now();
     int low = 0;
