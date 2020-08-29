@@ -9,12 +9,14 @@
 #include <vector>
 using namespace std;
 
+//Function to exchange the value of two elements in a given vector O(1)
 void exchange(vector<char> &vect, int num1, int num2){
     int num = vect[num1];
     vect[num1] = vect[num2];
     vect[num2] = num;
 }
 
+//Function to order a given vector O(n^2)
 void orderInsertion(vector<char> &vect){
     int c = 1, i = 0, aux = 1;
     while(c < vect.size()){
@@ -30,6 +32,7 @@ void orderInsertion(vector<char> &vect){
     }
 }
 
+//Function to find a given element using sequential search O(log n)
 template<class T>
 void sequentialSearch(vector<T> vect, int &comp, T elem){
     int step = 0;
@@ -42,6 +45,7 @@ void sequentialSearch(vector<T> vect, int &comp, T elem){
     }
 }
 
+//Function to find a given element using binary search O(log n)
 template<class T>
 void binarySearch(vector<T> vect, int &comp, T elem){
     int low = 0;
@@ -62,6 +66,7 @@ void binarySearch(vector<T> vect, int &comp, T elem){
     }
 }
 
+//Function to find the unique character
 char uniqueLetter(string letters){
     char c[letters.size() + 1];
     strcpy(c, letters.c_str());
@@ -73,6 +78,20 @@ char uniqueLetter(string letters){
     throw runtime_error("Could not find unique letter\n\n");
 }
 
+//Function to eliminate the duplicate characters O(n)
+template<class T>
+void eliminateDuplicates(vector<T> &vect){
+    int length = vect.size(), count = 1;
+    while(count < length){
+        if(vect[count] == vect[count-1]){
+            vect.erase(vect.begin()+(count));
+            length--;
+        }
+        count++;
+    }
+}
+
+//Function to convert the string to a vector O(n)
 template<class T>
 void createVector(vector<T> &vect, string letters){
     for(int i = 0; i < letters.size(); i++){
@@ -80,6 +99,7 @@ void createVector(vector<T> &vect, string letters){
     }
 }
 
+// Function to print the vector O(n)
 template<class T>
 void simplePrintVector(vector<T> vect){
     for(int i = 0; i < vect.size(); i++){
@@ -89,23 +109,30 @@ void simplePrintVector(vector<T> vect){
 }
 
 int main(){
-    int n, count = 0;
-    cin >> n;
-    string letters;
-    ifstream lettersFile;
-    lettersFile.open("letters.txt");
-    while(lettersFile >> letters && count < n){
-        int comp = 0;
-        char uL = uniqueLetter(letters); // get unique letter
-        vector<char> vLetters;
-        createVector(vLetters, letters); // convert string to vector
-        orderInsertion(vLetters); // order vector
-        sequentialSearch(vLetters, comp, uL); // find letter (Sequential)
-        cout << " ";
-        comp = 0; // restart comp counter
-        binarySearch(vLetters, comp, uL); // find letter binary
-        cout << "\n";
-        count++;
+    string fileNumbers[] = {"01", "02", "03", "04"};
+    for (int i = 0; i < 4; i++){
+        ifstream lettersFile(fileNumbers[i] + ".in");
+        cout << "\n\n<-----File " << fileNumbers[i] << "------>\n";
+        int n, count = 0;
+        string letters;
+        while(lettersFile >> letters){
+            if(count != 0){
+                int comp = 0;
+                char uL = uniqueLetter(letters); // get unique letter
+                vector<char> vLetters;
+                createVector(vLetters, letters);      // convert string to vector
+                orderInsertion(vLetters);             // order vector
+                //simplePrintVector(vLetters);
+                eliminateDuplicates(vLetters); // eliminar duplicados
+                //simplePrintVector(vLetters);
+                sequentialSearch(vLetters, comp, uL); // find letter (Sequential)
+                cout << " ";
+                comp = 0;                         // restart comp counter
+                binarySearch(vLetters, comp, uL); // find letter binary
+                cout << "\n";  
+            }
+            count++;
+        }
     }
     return 0;
 }

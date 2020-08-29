@@ -2,5 +2,5 @@
 This activity consists of several algorithms that implements binary and sequential search algorithms
 
 ## Complexity of each algorithm
-* Binary      - O(n)
+* Binary      - O(log n)
 * Sequential  - O(n)
