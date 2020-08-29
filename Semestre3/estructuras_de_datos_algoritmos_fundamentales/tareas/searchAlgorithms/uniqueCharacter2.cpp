@@ -92,6 +92,7 @@ int main(){
     string fileNumbers[] = {"01", "02", "03", "04"};
     for (int i = 0; i < 4; i++){
         ifstream lettersFile(fileNumbers[i] + ".in");
+        cout << "\n\n<-----File " << fileNumbers[i] << "------>\n";
         int n, count = 0;
         string letters;
         while(lettersFile >> letters){
