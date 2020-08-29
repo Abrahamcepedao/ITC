@@ -74,12 +74,25 @@ char uniqueLetter(string letters){
 }
 
 template<class T>
+void eliminateDuplicates(vector<T> &vect){
+    int length = vect.size(), count = 1;
+    while(count < length){
+        if(vect[count] == vect[count-1]){
+            vect.erase(vect.begin()+(count));
+            length--;
+        }
+        count++;
+    }
+}
+
+template<class T>
 void createVector(vector<T> &vect, string letters){
     for(int i = 0; i < letters.size(); i++){
         vect.push_back(letters[i]);
     }
 }
 
+// Function to print the vector O(n)
 template<class T>
 void simplePrintVector(vector<T> vect){
     for(int i = 0; i < vect.size(); i++){
@@ -102,6 +115,9 @@ int main(){
                 vector<char> vLetters;
                 createVector(vLetters, letters);      // convert string to vector
                 orderInsertion(vLetters);             // order vector
+                //simplePrintVector(vLetters);
+                eliminateDuplicates(vLetters); // eliminar duplicados
+                //simplePrintVector(vLetters);
                 sequentialSearch(vLetters, comp, uL); // find letter (Sequential)
                 cout << " ";
                 comp = 0;                         // restart comp counter
