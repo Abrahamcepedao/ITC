@@ -106,7 +106,7 @@ void orderInsertion(vector<T> &vect, int &comp, int &inter, double &duration){
 }
 
 template<class T>
-void merge(vector<T> &vect, int l, int m, int r){
+void merge(vector<T> &vect, int l, int m, int r, int &comp, int &iter){
     int i = 0, j = 0, count = l;
     vector<T> vect1, vect2;
     for(int e = l; e <= m; e++){
@@ -116,6 +116,8 @@ void merge(vector<T> &vect, int l, int m, int r){
         vect2.push_back(vect[k]);
     }
     while(i < (m-l+1) && j < (r-m)){
+        comp++;
+        iter++;
         if(vect1[i] > vect2[j]){
             vect[count] = vect2[j];
             j++;
@@ -126,11 +128,13 @@ void merge(vector<T> &vect, int l, int m, int r){
         count++;
     }
     while(i < (m - l + 1)){
+        iter++;
         vect[count] = vect1[i];
         count++;
         i++;
     }
     while(j < (r-m)){
+        iter++;
         vect[count] = vect2[j];
         count++;
         j++;
@@ -138,12 +142,12 @@ void merge(vector<T> &vect, int l, int m, int r){
 } 
 
 template<class T>
-void orderMerge(vector<T> &vect, int l, int r){
+void orderMerge(vector<T> &vect, int l, int r, int &comp, int &iter){
     if(l < r){
         int m = l + (r-l) / 2;
-        orderMerge(vect, l, m);
-        orderMerge(vect, m+1, r);
-        merge(vect, l, m, r);
+        orderMerge(vect, l, m, comp, iter);
+        orderMerge(vect, m + 1, r, comp, iter);
+        merge(vect, l, m, r, comp, iter);
     }
 }
 
@@ -242,7 +246,8 @@ int main(){
         simplePrintVector(vect);
         int comp = 0, inter = 0, num;
         double duration;
-
+        chrono::time_point<chrono::system_clock> start, stop;
+        chrono::duration<double> elapsed_seconds;
         switch (ans){
             case 1:
                 cout << "\nOrdered vector by Exchange\n";
@@ -261,8 +266,12 @@ int main(){
                 orderInsertion(vect, comp, inter, duration);
                 break;
             case 5:
+                start = chrono::system_clock::now();
                 cout << "\nOrdered vector by Merge\n";
-                orderMerge(vect, 0, vect.size()-1);
+                orderMerge(vect, 0, vect.size()-1, comp, inter);
+                stop = chrono::system_clock::now();
+                elapsed_seconds = stop - start;
+                duration = elapsed_seconds.count();
                 break;
             case 6:
                 cout << "\nFind by Sequential search\n";
@@ -289,6 +298,7 @@ int main(){
                 } catch(runtime_error& e){
                     cout << e.what();
                 }
+                break;
             default:
                 break;
         }
