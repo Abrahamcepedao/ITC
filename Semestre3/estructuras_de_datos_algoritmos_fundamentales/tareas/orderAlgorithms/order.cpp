@@ -86,20 +86,6 @@ template<class T>
 void orderInsertion(vector<T> &vect, int &comp, int &inter, double &duration){
     chrono::time_point<chrono::system_clock> start, stop;
     start = chrono::system_clock::now();
-    /* int c = 1, i = 0;
-    while(c < vect.size()){
-        int aux = c;
-        while(vect[c] < vect[i] && i >= 0){
-            comp++;
-            inter++;
-            exchange(vect, i, c);
-            c--;
-            i--;
-        }
-        comp++;
-        c = aux+1;
-        i = aux;
-    } */
     int c = 1, i = 0, aux = 1;
     while(c < vect.size()){
         comp++;
@@ -117,6 +103,48 @@ void orderInsertion(vector<T> &vect, int &comp, int &inter, double &duration){
     stop = chrono::system_clock::now();
     chrono::duration<double> elapsed_seconds = stop - start;
     duration = elapsed_seconds.count();
+}
+
+template<class T>
+void merge(vector<T> &vect, int l, int m, int r){
+    int i = 0, j = 0, count = l;
+    vector<T> vect1, vect2;
+    for(int e = l; e <= m; e++){
+        vect1.push_back(vect[e]);
+    }
+    for(int k = m+1; k <= r; k++){
+        vect2.push_back(vect[k]);
+    }
+    while(i < (m-l+1) && j < (r-m)){
+        if(vect1[i] > vect2[j]){
+            vect[count] = vect2[j];
+            j++;
+        } else{
+            vect[count] = vect1[i];
+            i++;
+        }
+        count++;
+    }
+    while(i < (m - l + 1)){
+        vect[count] = vect1[i];
+        count++;
+        i++;
+    }
+    while(j < (r-m)){
+        vect[count] = vect2[j];
+        count++;
+        j++;
+    }
+} 
+
+template<class T>
+void orderMerge(vector<T> &vect, int l, int r){
+    if(l < r){
+        int m = l + (r-l) / 2;
+        orderMerge(vect, l, m);
+        orderMerge(vect, m+1, r);
+        merge(vect, l, m, r);
+    }
 }
 
 template<class T>
@@ -193,8 +221,9 @@ int menu(){
     cout << "2. Order by Bubble\n";
     cout << "3. Order by Selection\n";
     cout << "4. Order by Insertion\n";
-    cout << "5. Sequential search\n";
-    cout << "6. Binary search\n";
+    cout << "5. Order by Merge\n";
+    cout << "6. Sequential search\n";
+    cout << "7. Binary search\n";
     cout << "0. To exit\n\n";
     cout << "Enter answer: ";
     cin >> ans;
@@ -232,6 +261,10 @@ int main(){
                 orderInsertion(vect, comp, inter, duration);
                 break;
             case 5:
+                cout << "\nOrdered vector by Merge\n";
+                orderMerge(vect, 0, vect.size()-1);
+                break;
+            case 6:
                 cout << "\nFind by Sequential search\n";
                 cout << "Enter the number you  want to find: ";
                 cin >> num;
@@ -244,7 +277,7 @@ int main(){
                     cout << e.what();
                 }
                 break;
-            case 6:
+            case 7:
                 cout << "\nFind by Binary search\n";
                 cout << "Enter the number you  want to find: ";
                 cin >> num;

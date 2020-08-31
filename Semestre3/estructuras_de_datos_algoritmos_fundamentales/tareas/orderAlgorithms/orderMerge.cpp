@@ -10,7 +10,6 @@ using namespace std;
 
 template<class T>
 void merge(vector<T> &vect, int l, int m, int r){
-    // there must  be condition
     int i = 0, j = 0, count = l;
     vector<T> vect1, vect2;
     for(int e = l; e <= m; e++){
