@@ -9,13 +9,6 @@
 using namespace std;
 
 template<class T>
-void exchange(vector<T> &vect, int num1, int num2){
-    int num = vect[num1];
-    vect[num1] = vect[num2];
-    vect[num2] = num;
-}
-
-template<class T>
 void merge(vector<T> &vect, int l, int m, int r){
     // there must  be condition
     int i = 0, j = 0, count = l;
