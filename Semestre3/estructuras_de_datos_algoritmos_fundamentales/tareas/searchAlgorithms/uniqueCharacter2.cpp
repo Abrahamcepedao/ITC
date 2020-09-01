@@ -16,57 +16,19 @@ void exchange(vector<char> &vect, int num1, int num2){
     vect[num2] = num;
 }
 
-//Function to order a given vector O(n^2)
-/* void orderInsertion(vector<char> &vect){
-    int c = 1, i = 0, aux = 1;
-    while(c < vect.size()){
-        if(vect[c] < vect[i] && i >= 0){
-            exchange(vect, i, c);
-            c--;
-            i--;
-        } else{
-            aux++;
-            c = aux;
-            i = aux-1;
-        }
-    }
-} */
-
-//Function to find a given element using sequential search O(log n)
-/* template<class T>
-void sequentialSearch(vector<T> vect, int &comp, T elem){
-    int step = 0;
-    for(int i = 0; i < vect.size() && step == 0; i++){
-        comp++;
-        if(vect[i] == elem){
-            cout << vect[i] << " " << comp;
-            step = 1;
-        }
-    }
-} */
-
 //Function to find a given element using binary search O(log n)
 template<class T>
-void binarySearch(vector<T> vect, int &comp, T elem){
-    int low = 0;
-    int high = vect.size() - 1;
-    int step = 0;
-    while(low <= high && step == 0){
-        int medium = (high + low) / 2;
+void binarySearch(vector<T> vect, int &comp){
+    int low = 0, high = vect.size()-1,step = 0, mid;
+    while(low <= high  &&  step == 0){
+        mid = (high + low) / 2 % 2 != 0 ? (high + low) / 2 + 1 : (high + low) / 2;
         comp++;
-        //cout << "-->" << vect[medium] << " " << comp << endl;
-        if(vect[medium] == elem){
-            cout << vect[medium] << " " << comp;
-            step = 1;
-        } else if(vect[medium] > elem){
-            high = medium - 1;
-        } else{
-            low = medium + 1;
-        }
+        vect[mid] == vect[mid + 1] ? low = mid + 2: (vect[mid] == vect[mid - 1]) ? high = mid - 2 : step = 1;
     }
+    cout << vect[mid] << " " << comp;
 }
 
-//Function to find the unique character
+//Function to find the unique character O(n)
 void uniqueSequential(string letters, int &comp){
     int step = 0;
     char c[letters.size() + 1];
@@ -79,19 +41,6 @@ void uniqueSequential(string letters, int &comp){
         }
     }
 }
-
-//Function to eliminate the duplicate characters O(n)
-/* template<class T>
-void eliminateDuplicates(vector<T> &vect){
-    int length = vect.size(), count = 1;
-    while(count < length){
-        if(vect[count] == vect[count-1]){
-            vect.erase(vect.begin()+(count));
-            length--;
-        }
-        count++;
-    }
-} */
 
 //Function to convert the string to a vector O(n)
 template<class T>
@@ -115,25 +64,17 @@ int main(){
     for (int i = 0; i < 4; i++){
         ifstream lettersFile(fileNumbers[i] + ".in");
         cout << "\n\n<-----File " << fileNumbers[i] << "------>\n";
-        int n, count = 0;
+        int n, count = 0, comp = 0;
         string letters;
         while(lettersFile >> letters){
             if(count != 0){
-                int comp = 0;
-                //get unique letter using sequential search
-                //get unique letter using binary search
-
-                uniqueSequential(letters, comp); // get unique letter
+                comp = 0;
                 vector<char> vLetters;
+                uniqueSequential(letters, comp); // get unique letter
                 createVector(vLetters, letters);      // convert string to vector
-                //orderInsertion(vLetters);             // order vector
-                //simplePrintVector(vLetters);
-                //eliminateDuplicates(vLetters); // eliminar duplicados
-                //simplePrintVector(vLetters);
-                //sequentialSearch(vLetters, comp, uL); // find letter (Sequential)
                 cout << " ";
                 comp = 0;                         // restart comp counter
-                //binarySearch(vLetters, comp, uL); // find letter binary
+                binarySearch(vLetters, comp); // get unique letter with binary search
                 cout << "\n";  
             }
             count++;
