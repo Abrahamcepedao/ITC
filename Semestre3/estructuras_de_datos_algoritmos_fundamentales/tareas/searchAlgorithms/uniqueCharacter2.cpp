@@ -28,12 +28,12 @@ void binarySearch(vector<T> vect, int &comp){
     cout << vect[mid] << " " << comp;
 }
 
-//Function to find the unique character O(n)
+//Function to find the unique character O(n/2)  =>  O(n)
 void uniqueSequential(string letters, int &comp){
     int step = 0;
     char c[letters.size() + 1];
     strcpy(c, letters.c_str());
-    for(int i = 0; i < letters.size() && step == 0; i++){
+    for(int i = 0; i < letters.size() && step == 0; i+=2){
         comp++;
         if(c[i] != c[i+1] && c[i] != c[i-1]){
             cout << c[i] << " " << comp;
@@ -60,17 +60,17 @@ void simplePrintVector(vector<T> vect){
 }
 
 int main(){
-    string fileNumbers[] = {"01", "02", "03", "04"};
+    string fileNumbers[] = {"01", "02", "03", "04"};  // name of input file
     for (int i = 0; i < 4; i++){
-        ifstream lettersFile(fileNumbers[i] + ".in");
+        ifstream lettersFile(fileNumbers[i] + ".in"); //  read input  file
         cout << "\n\n<-----File " << fileNumbers[i] << "------>\n";
-        int n, count = 0, comp = 0;
+        int count = 0, comp = 0;
         string letters;
         while(lettersFile >> letters){
             if(count != 0){
                 comp = 0;
-                vector<char> vLetters;
-                uniqueSequential(letters, comp); // get unique letter
+                vector<char> vLetters; // initiliaze empty vector
+                uniqueSequential(letters, comp); // get unique letter usign sequential search
                 createVector(vLetters, letters);      // convert string to vector
                 cout << " ";
                 comp = 0;                         // restart comp counter
