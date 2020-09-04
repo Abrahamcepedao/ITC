@@ -1,0 +1,1 @@
+while(vect[pos] < vect[begin] && pos != end){

@@ -9,17 +9,37 @@
 using namespace std;
 
 template<class T>
-void sort(vector<T> &vect, int l, int m, int r){
-    
+void exchange(vector<T> &vect, int num1, int num2){
+    int num = vect[num1];
+    vect[num1] = vect[num2];
+    vect[num2] = num;
+}
+
+template<class T>
+int separate(vector<T> &vect, int begin, int end){
+    int pos = begin+1, r = end;
+    while(pos < r){
+        while(vect[pos] < vect[begin] && pos != end){
+            pos++;
+        }
+        while(vect[r] >= vect[begin] && r != begin){
+            r--;
+        }
+        (r > pos) ? exchange(vect, pos, r) : exchange(vect, begin, r);
+    }
+    if(vect[begin] > vect[r]){
+        exchange(vect, begin, r);
+    }
+    return r;
 } 
 
 template<class T>
 void orderQuick(vector<T> &vect, int l, int r){
+    int pos;
     if(l < r){
-        int m = l + (r-l) / 2;
-        orderMerge(vect, l, m);
-        orderMerge(vect, m+1, r);
-        merge(vect, l, m, r);
+        pos = separate(vect, l, r);
+        orderQuick(vect, l, pos-1);
+        orderQuick(vect, pos+1, r);
     }
 }
 
