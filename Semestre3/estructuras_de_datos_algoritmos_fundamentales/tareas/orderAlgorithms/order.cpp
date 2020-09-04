@@ -152,6 +152,39 @@ void orderMerge(vector<T> &vect, int l, int r, int &comp, int &iter){
 }
 
 template<class T>
+int separate(vector<T> &vect, int begin, int end, int &comp, int &inter){
+    int pos = begin+1, r = end;
+    while(pos < r){
+        comp++;
+        while(vect[pos] < vect[begin] && pos != end){
+            pos++;
+            comp++;
+        }
+        while(vect[r] >= vect[begin] && r != begin){
+            r--;
+            comp++;
+        }
+        (r > pos) ? exchange(vect, pos, r) : exchange(vect, begin, r);
+        inter++;
+    }
+    if(vect[begin] > vect[r]){
+        exchange(vect, begin, r);
+    }
+    return r;
+} 
+
+template<class T>
+void orderQuick(vector<T> &vect, int l, int r, int &comp, int &inter){
+    int pos;
+    if(l < r){
+        pos = separate(vect, l, r, comp, inter);
+        orderQuick(vect, l, pos-1, comp, inter);
+        orderQuick(vect, pos+1, r, comp, inter);
+    }
+}
+
+
+template<class T>
 int sequentialSearch(vector<T> vect, T elem, int &comp, double &duration){
     chrono::time_point<chrono::system_clock> start, stop;
     start = chrono::system_clock::now();
@@ -226,8 +259,9 @@ int menu(){
     cout << "3. Order by Selection\n";
     cout << "4. Order by Insertion\n";
     cout << "5. Order by Merge\n";
-    cout << "6. Sequential search\n";
-    cout << "7. Binary search\n";
+    cout << "6. Order by Quick\n";
+    cout << "7. Sequential search\n";
+    cout << "8. Binary search\n";
     cout << "0. To exit\n\n";
     cout << "Enter answer: ";
     cin >> ans;
@@ -274,6 +308,14 @@ int main(){
                 duration = elapsed_seconds.count();
                 break;
             case 6:
+                start = chrono::system_clock::now();
+                cout << "\nOrdered vector by Quick sort\n";
+                orderQuick(vect, 0, vect.size() - 1, comp, inter);
+                stop = chrono::system_clock::now();
+                elapsed_seconds = stop - start;
+                duration = elapsed_seconds.count();
+                break;
+            case 7:
                 cout << "\nFind by Sequential search\n";
                 cout << "Enter the number you  want to find: ";
                 cin >> num;
@@ -286,7 +328,7 @@ int main(){
                     cout << e.what();
                 }
                 break;
-            case 7:
+            case 8:
                 cout << "\nFind by Binary search\n";
                 cout << "Enter the number you  want to find: ";
                 cin >> num;
@@ -302,7 +344,6 @@ int main(){
             default:
                 break;
         }
-
         if(ans != 0){
             printVector(vect, comp, inter, duration);
         } else{
