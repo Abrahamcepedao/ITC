@@ -6,16 +6,26 @@
 #include <string>
 #include <vector>
 #include <stdio.h> 
-#include <stdlib.h> 
+#include <stdlib.h>
+#include <math.h>
 #include <time.h>
 #include <chrono>
 #include <ctime>
+#include <random>
 using namespace std;
 using namespace std::chrono;
 
+
+char lettersC[26] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+                          'r', 's', 't', 'u', 'v', 'w', 'x',
+                          'y', 'z'};
+
+string lettersS[26] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+
+
 template<class T>
 void exchange(vector<T> &vect, int num1, int num2){
-    int num = vect[num1];
+    T num = vect[num1];
     vect[num1] = vect[num2];
     vect[num2] = num;
 }
@@ -63,7 +73,7 @@ template<class T>
 void orderSelection(vector<T> &vect, int &comp, int &inter, double &duration){
     chrono::time_point<chrono::system_clock> start, stop;
     start = chrono::system_clock::now();
-    T min;
+    int min;
     for(int i = 0; i < vect.size(); i++){
         min = i;
         for(int j = i+1; j < vect.size(); j++){
@@ -169,6 +179,7 @@ int separate(vector<T> &vect, int begin, int end, int &comp, int &inter){
     }
     if(vect[begin] > vect[r]){
         exchange(vect, begin, r);
+        inter++;
     }
     return r;
 } 
@@ -245,11 +256,49 @@ void printVector(vector<T> vect, int comp, int inter, double duration){
 }
 
 template<class T>
-void createVector(vector<T> &vect, int n){
+void createVectorInt(vector<T> &vect, int n){
     srand(time(NULL));
     for(int i = 0; i < n; i++){
         vect.push_back(rand() % n + 1);
     }
+}
+
+template<class T>
+void createVectorDouble(vector<T> &vect, double n){
+    default_random_engine generator;
+    uniform_real_distribution<double> dist(0.0, n);
+    for(int i = 0; i < n; i++){
+        vect.push_back(dist(generator));
+        cout << dist(generator) << " ";
+    }
+}
+
+template<class T>
+void createVectorChar(vector<T> &vect, int n){
+    srand(time(NULL));
+    for(int i = 0; i < n; i++){
+        vect.push_back(lettersC[rand() % 24 + 1]);
+    }
+}
+
+template<class T>
+void createVectorString(vector<T> &vect, int n){
+    srand(time(NULL));
+    for(int i = 0; i < n; i++){
+        vect.push_back(lettersS[rand() % 24 + 1]);
+    }
+}
+
+int typeMenu(){
+    int ans;
+    cout << "\n\n\n\n1. Integers\n";
+    cout << "2. Doubles\n";
+    cout << "3. Character\n";
+    cout << "4. String\n";
+    cout << "0. To exit\n\n";
+    cout << "Enter answer: ";
+    cin >> ans;
+    return ans;
 }
 
 int menu(){
@@ -269,85 +318,298 @@ int menu(){
 }
 
 int main(){
-    int n, ans = 1;
+    int n, ans = 1, typeAns;
     cout << "Enter the number of values: ";
     cin >> n;
-
+    typeAns = typeMenu();
     while(ans != 0){
-        vector<int> vect;
         ans = menu();
-        createVector(vect, n);
-        simplePrintVector(vect);
-        int comp = 0, inter = 0, num;
+        
+        int comp = 0, inter = 0;
         double duration;
         chrono::time_point<chrono::system_clock> start, stop;
         chrono::duration<double> elapsed_seconds;
-        switch (ans){
-            case 1:
-                cout << "\nOrdered vector by Exchange\n";
-                orderExchange(vect, comp, inter, duration);
-                break;
-            case 2:
-                cout << "\nOrdered vector by Bubble\n";
-                orderBubble(vect, comp, inter, duration);
-                break;
-            case 3:
-                cout << "\nOrdered vector by Direct Selection\n";
-                orderSelection(vect, comp, inter, duration);
-                break;
-            case 4:
-                cout << "\nOrdered vector by Insertion\n";
-                orderInsertion(vect, comp, inter, duration);
-                break;
-            case 5:
-                start = chrono::system_clock::now();
-                cout << "\nOrdered vector by Merge\n";
-                orderMerge(vect, 0, vect.size()-1, comp, inter);
-                stop = chrono::system_clock::now();
-                elapsed_seconds = stop - start;
-                duration = elapsed_seconds.count();
-                break;
-            case 6:
-                start = chrono::system_clock::now();
-                cout << "\nOrdered vector by Quick sort\n";
-                orderQuick(vect, 0, vect.size() - 1, comp, inter);
-                stop = chrono::system_clock::now();
-                elapsed_seconds = stop - start;
-                duration = elapsed_seconds.count();
-                break;
-            case 7:
-                cout << "\nFind by Sequential search\n";
-                cout << "Enter the number you  want to find: ";
-                cin >> num;
-                orderInsertion(vect, comp, inter, duration);
-                comp = 0, inter = 0, duration = 0.0;
-                try{
-                    int index = sequentialSearch(vect, num, comp, duration);
-                    cout << "The " << num << " is located at: " << index << " index\n";
-                } catch(runtime_error& e){
-                    cout << e.what();
-                }
-                break;
-            case 8:
-                cout << "\nFind by Binary search\n";
-                cout << "Enter the number you  want to find: ";
-                cin >> num;
-                orderInsertion(vect, comp, inter, duration);
-                comp = 0, inter = 0, duration = 0.0;
-                try{
-                    int index = binarySearch(vect, num, comp, duration);
-                    cout << "The " << num << " is located at: " << index << " index\n";
-                } catch(runtime_error& e){
-                    cout << e.what();
-                }
-                break;
-            default:
-                break;
-        }
-        if(ans != 0){
-            printVector(vect, comp, inter, duration);
-        } else{
-            cout << "The program has finished\n";
+
+        if(typeAns == 1){
+            vector<int> vect;
+            createVectorInt(vect, n);
+            simplePrintVector(vect);
+            int num;
+            switch (ans){
+                case 1:
+                    cout << "\nOrdered vector by Exchange\n";
+                    orderExchange(vect, comp, inter, duration);
+                    break;
+                case 2:
+                    cout << "\nOrdered vector by Bubble\n";
+                    orderBubble(vect, comp, inter, duration);
+                    break;
+                case 3:
+                    cout << "\nOrdered vector by Direct Selection\n";
+                    orderSelection(vect, comp, inter, duration);
+                    break;
+                case 4:
+                    cout << "\nOrdered vector by Insertion\n";
+                    orderInsertion(vect, comp, inter, duration);
+                    break;
+                case 5:
+                    start = chrono::system_clock::now();
+                    cout << "\nOrdered vector by Merge\n";
+                    orderMerge(vect, 0, vect.size()-1, comp, inter);
+                    stop = chrono::system_clock::now();
+                    elapsed_seconds = stop - start;
+                    duration = elapsed_seconds.count();
+                    break;
+                case 6:
+                    start = chrono::system_clock::now();
+                    cout << "\nOrdered vector by Quick sort\n";
+                    orderQuick(vect, 0, vect.size() - 1, comp, inter);
+                    stop = chrono::system_clock::now();
+                    elapsed_seconds = stop - start;
+                    duration = elapsed_seconds.count();
+                    break;
+                case 7:
+                    cout << "\nFind by Sequential search\n";
+                    cout << "Enter the number you  want to find: ";
+                    cin >> num;
+                    orderInsertion(vect, comp, inter, duration);
+                    comp = 0, inter = 0, duration = 0.0;
+                    try{
+                        int index = sequentialSearch(vect, num, comp, duration);
+                        cout << "The " << num << " is located at: " << index << " index\n";
+                    } catch(runtime_error& e){
+                        cout << e.what();
+                    }
+                    break;
+                case 8:
+                    cout << "\nFind by Binary search\n";
+                    cout << "Enter the number you  want to find: ";
+                    cin >> num;
+                    orderInsertion(vect, comp, inter, duration);
+                    comp = 0, inter = 0, duration = 0.0;
+                    try{
+                        int index = binarySearch(vect, num, comp, duration);
+                        cout << "The " << num << " is located at: " << index << " index\n";
+                    } catch(runtime_error& e){
+                        cout << e.what();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if(ans != 0){
+                simplePrintVector(vect);
+            }
+        } else if(typeAns == 2){
+            vector<double> vect;
+            createVectorDouble(vect, n);
+            simplePrintVector(vect);
+            double num;
+            switch (ans){
+                case 1:
+                    cout << "\nOrdered vector by Exchange\n";
+                    orderExchange(vect, comp, inter, duration);
+                    break;
+                case 2:
+                    cout << "\nOrdered vector by Bubble\n";
+                    orderBubble(vect, comp, inter, duration);
+                    break;
+                case 3:
+                    cout << "\nOrdered vector by Direct Selection\n";
+                    orderSelection(vect, comp, inter, duration);
+                    break;
+                case 4:
+                    cout << "\nOrdered vector by Insertion\n";
+                    orderInsertion(vect, comp, inter, duration);
+                    break;
+                case 5:
+                    start = chrono::system_clock::now();
+                    cout << "\nOrdered vector by Merge\n";
+                    orderMerge(vect, 0, vect.size()-1, comp, inter);
+                    stop = chrono::system_clock::now();
+                    elapsed_seconds = stop - start;
+                    duration = elapsed_seconds.count();
+                    break;
+                case 6:
+                    start = chrono::system_clock::now();
+                    cout << "\nOrdered vector by Quick sort\n";
+                    orderQuick(vect, 0, vect.size() - 1, comp, inter);
+                    stop = chrono::system_clock::now();
+                    elapsed_seconds = stop - start;
+                    duration = elapsed_seconds.count();
+                    break;
+                case 7:
+                    cout << "\nFind by Sequential search\n";
+                    cout << "Enter the number you  want to find: ";
+                    cin >> num;
+                    orderInsertion(vect, comp, inter, duration);
+                    comp = 0, inter = 0, duration = 0.0;
+                    try{
+                        int index = sequentialSearch(vect, num, comp, duration);
+                        cout << "The " << num << " is located at: " << index << " index\n";
+                    } catch(runtime_error& e){
+                        cout << e.what();
+                    }
+                    break;
+                case 8:
+                    cout << "\nFind by Binary search\n";
+                    cout << "Enter the number you  want to find: ";
+                    cin >> num;
+                    orderInsertion(vect, comp, inter, duration);
+                    comp = 0, inter = 0, duration = 0.0;
+                    try{
+                        int index = binarySearch(vect, num, comp, duration);
+                        cout << "The " << num << " is located at: " << index << " index\n";
+                    } catch(runtime_error& e){
+                        cout << e.what();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if(ans != 0){
+                simplePrintVector(vect);
+            }
+        }else if(typeAns == 3){
+            vector<char> vect;
+            createVectorChar(vect, n);
+            simplePrintVector(vect);
+            char charac;
+            switch (ans){
+                case 1:
+                    cout << "\nOrdered vector by Exchange\n";
+                    orderExchange(vect, comp, inter, duration);
+                    break;
+                case 2:
+                    cout << "\nOrdered vector by Bubble\n";
+                    orderBubble(vect, comp, inter, duration);
+                    break;
+                case 3:
+                    cout << "\nOrdered vector by Direct Selection\n";
+                    orderSelection(vect, comp, inter, duration);
+                    break;
+                case 4:
+                    cout << "\nOrdered vector by Insertion\n";
+                    orderInsertion(vect, comp, inter, duration);
+                    break;
+                case 5:
+                    start = chrono::system_clock::now();
+                    cout << "\nOrdered vector by Merge\n";
+                    orderMerge(vect, 0, vect.size()-1, comp, inter);
+                    stop = chrono::system_clock::now();
+                    elapsed_seconds = stop - start;
+                    duration = elapsed_seconds.count();
+                    break;
+                case 6:
+                    start = chrono::system_clock::now();
+                    cout << "\nOrdered vector by Quick sort\n";
+                    orderQuick(vect, 0, vect.size() - 1, comp, inter);
+                    stop = chrono::system_clock::now();
+                    elapsed_seconds = stop - start;
+                    duration = elapsed_seconds.count();
+                    break;
+                case 7:
+                    cout << "\nFind by Sequential search\n";
+                    cout << "Enter the number you  want to find: ";
+                    cin >> charac;
+                    orderInsertion(vect, comp, inter, duration);
+                    comp = 0, inter = 0, duration = 0.0;
+                    try{
+                        int index = sequentialSearch(vect, charac, comp, duration);
+                        cout << "The " << charac << " is located at: " << index << " index\n";
+                    } catch(runtime_error& e){
+                        cout << e.what();
+                    }
+                    break;
+                case 8:
+                    cout << "\nFind by Binary search\n";
+                    cout << "Enter the number you  want to find: ";
+                    cin >> charac;
+                    orderInsertion(vect, comp, inter, duration);
+                    comp = 0, inter = 0, duration = 0.0;
+                    try{
+                        int index = binarySearch(vect, charac, comp, duration);
+                        cout << "The " << charac << " is located at: " << index << " index\n";
+                    } catch(runtime_error& e){
+                        cout << e.what();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if(ans != 0){
+                simplePrintVector(vect);
+            }
+        }else if(typeAns == 4){
+            vector<string> vect;
+            createVectorString(vect, n);
+            simplePrintVector(vect);
+            string word;
+            switch (ans){
+                case 1:
+                    cout << "\nOrdered vector by Exchange\n";
+                    orderExchange(vect, comp, inter, duration);
+                    break;
+                case 2:
+                    cout << "\nOrdered vector by Bubble\n";
+                    orderBubble(vect, comp, inter, duration);
+                    break;
+                case 3:
+                    cout << "\nOrdered vector by Direct Selection\n";
+                    orderSelection(vect, comp, inter, duration);
+                    break;
+                case 4:
+                    cout << "\nOrdered vector by Insertion\n";
+                    orderInsertion(vect, comp, inter, duration);
+                    break;
+                case 5:
+                    start = chrono::system_clock::now();
+                    cout << "\nOrdered vector by Merge\n";
+                    orderMerge(vect, 0, vect.size()-1, comp, inter);
+                    stop = chrono::system_clock::now();
+                    elapsed_seconds = stop - start;
+                    duration = elapsed_seconds.count();
+                    break;
+                case 6:
+                    start = chrono::system_clock::now();
+                    cout << "\nOrdered vector by Quick sort\n";
+                    orderQuick(vect, 0, vect.size() - 1, comp, inter);
+                    stop = chrono::system_clock::now();
+                    elapsed_seconds = stop - start;
+                    duration = elapsed_seconds.count();
+                    break;
+                case 7:
+                    cout << "\nFind by Sequential search\n";
+                    cout << "Enter the letters you  want to find: ";
+                    cin >> word;
+                    orderInsertion(vect, comp, inter, duration);
+                    comp = 0, inter = 0, duration = 0.0;
+                    try{
+                        int index = sequentialSearch(vect, word, comp, duration);
+                        cout << "The " << word << " is located at: " << index << " index\n";
+                    } catch(runtime_error& e){
+                        cout << e.what();
+                    }
+                    break;
+                case 8:
+                    cout << "\nFind by Binary search\n";
+                    cout << "Enter the letters you  want to find: ";
+                    cin >> word;
+                    orderInsertion(vect, comp, inter, duration);
+                    comp = 0, inter = 0, duration = 0.0;
+                    try{
+                        int index = binarySearch(vect, word, comp, duration);
+                        cout << "The " << word << " is located at: " << index << " index\n";
+                    } catch(runtime_error& e){
+                        cout << e.what();
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if(ans != 0){
+                simplePrintVector(vect);
+            }
         }
     }
 
