@@ -282,7 +282,7 @@ template<class T>
 void createVectorChar(vector<T> &vect, int n){
     random_device rd;
     mt19937 mt(rd());
-    uniform_int_distribution<int> dist(0, n);
+    uniform_int_distribution<int> dist(0, 25);
     for(int i = 0; i < n; i++){
         vect.push_back(lettersC[dist(mt)]);
     }
@@ -292,7 +292,7 @@ template<class T>
 void createVectorString(vector<T> &vect, int n){
     random_device rd;
     mt19937 mt(rd());
-    uniform_int_distribution<int> dist(0, n);
+    uniform_int_distribution<int> dist(0, 25);
     for(int i = 0; i < n; i++){
         vect.push_back(lettersS[dist(mt)] + lettersS[dist(mt)]);
     }
@@ -519,7 +519,7 @@ int main(){
                     break;
                 case 7:
                     cout << "\nFind by Sequential search\n";
-                    cout << "Enter the number you  want to find: ";
+                    cout << "Enter the character you  want to find: ";
                     cin >> charac;
                     orderInsertion(vect, comp, inter, duration);
                     comp = 0, inter = 0, duration = 0.0;
@@ -532,7 +532,7 @@ int main(){
                     break;
                 case 8:
                     cout << "\nFind by Binary search\n";
-                    cout << "Enter the number you  want to find: ";
+                    cout << "Enter the character you  want to find: ";
                     cin >> charac;
                     orderInsertion(vect, comp, inter, duration);
                     comp = 0, inter = 0, duration = 0.0;
