@@ -30,67 +30,12 @@ struct Registry{
     int sec;
     string ip;
     string err;
+
     bool operator>(const Registry ry){
-        if(getMonthIndex(mon) > getMonthIndex(ry.mon)){
-            return true;
-        } else if(getMonthIndex(mon) < getMonthIndex(ry.mon)){
-            return false;
-        } else{
-            if(day > ry.day){
-                return true;
-            } else if(day < ry.day){
-                return false;
-            } else{
-                if(hour > ry.hour){
-                    return true;
-                } else if(hour < ry.hour){
-                    return false;
-                } else{
-                    if(min > ry.min){
-                        return true;
-                    } else if(min < ry.min){
-                        return false;
-                    } else{
-                        if(sec > ry.sec){
-                            return true;
-                        } else{
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
+        return getMonthIndex(mon) > getMonthIndex(ry.mon) ? true : getMonthIndex(mon) < getMonthIndex(ry.mon) ? false : day > ry.day ? true : day < ry.day ? false : hour > ry.hour ? true : hour < ry.hour ? false : min > ry.min ? true : min < ry.min ? false : sec > ry.sec ? true : false;
     }
     bool operator>=(const Registry ry){
-        if(getMonthIndex(mon) > getMonthIndex(ry.mon)){
-            return true;
-        } else if(getMonthIndex(mon) < getMonthIndex(ry.mon)){
-            return false;
-        } else{
-            if(day > ry.day){
-                return true;
-            } else if(day < ry.day){
-                return false;
-            } else{
-                if(hour > ry.hour){
-                    return true;
-                } else if(hour < ry.hour){
-                    return false;
-                } else{
-                    if(min > ry.min){
-                        return true;
-                    } else if(min < ry.min){
-                        return false;
-                    } else{
-                        if(sec < ry.sec){
-                            return false;
-                        } else {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
+        return getMonthIndex(mon) > getMonthIndex(ry.mon) ? true : getMonthIndex(mon) < getMonthIndex(ry.mon) ? false : day > ry.day ? true : day < ry.day ? false : hour > ry.hour ? true : hour < ry.hour ? false : min > ry.min ? true : min < ry.min ? false : sec < ry.sec ? false : true;
     }
 
     
