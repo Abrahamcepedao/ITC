@@ -30,6 +30,7 @@ void exchange(vector<T> &vect, int num1, int num2){
     vect[num2] = num;
 }
 
+// Exchange algorithm - Comlplexity O(n^2)
 template<class T>
 void orderExchange(vector<T> &vect, int &comp, int &inter, double &duration){
     chrono::time_point<chrono::system_clock> start, stop;
@@ -48,6 +49,7 @@ void orderExchange(vector<T> &vect, int &comp, int &inter, double &duration){
     duration = elapsed_seconds.count();
 }
 
+// Bubble algorithm - Comlplexity O(n^2)
 template<class T>
 void orderBubble(vector<T> &vect, int &comp, int &inter, double &duration){
     chrono::time_point<chrono::system_clock> start, stop;
@@ -69,6 +71,7 @@ void orderBubble(vector<T> &vect, int &comp, int &inter, double &duration){
     duration = elapsed_seconds.count();
 }
 
+// Selection algorithm - Comlplexity O(n^2)
 template<class T>
 void orderSelection(vector<T> &vect, int &comp, int &inter, double &duration){
     chrono::time_point<chrono::system_clock> start, stop;
@@ -92,6 +95,7 @@ void orderSelection(vector<T> &vect, int &comp, int &inter, double &duration){
     duration = elapsed_seconds.count();
 }
 
+// Insertion algorithm - Comlplexity O(n^2)
 template<class T>
 void orderInsertion(vector<T> &vect, int &comp, int &inter, double &duration){
     chrono::time_point<chrono::system_clock> start, stop;
@@ -115,6 +119,7 @@ void orderInsertion(vector<T> &vect, int &comp, int &inter, double &duration){
     duration = elapsed_seconds.count();
 }
 
+// Merge function
 template<class T>
 void merge(vector<T> &vect, int l, int m, int r, int &comp, int &iter){
     int i = 0, j = 0, count = l;
@@ -151,6 +156,7 @@ void merge(vector<T> &vect, int l, int m, int r, int &comp, int &iter){
     }
 } 
 
+// Merge algorithm - Comlplexity O(nlogn)
 template<class T>
 void orderMerge(vector<T> &vect, int l, int r, int &comp, int &iter){
     if(l < r){
@@ -182,8 +188,9 @@ int separate(vector<T> &vect, int begin, int end, int &comp, int &inter){
         inter++;
     }
     return r;
-} 
+}
 
+// Quick sort algorithm - Comlplexity O(nlogn)
 template<class T>
 void orderQuick(vector<T> &vect, int l, int r, int &comp, int &inter){
     int pos;
@@ -194,7 +201,7 @@ void orderQuick(vector<T> &vect, int l, int r, int &comp, int &inter){
     }
 }
 
-
+// Sequential search algorithm - Comlplexity O(n)
 template<class T>
 int sequentialSearch(vector<T> vect, T elem, int &comp, double &duration){
     chrono::time_point<chrono::system_clock> start, stop;
@@ -214,6 +221,7 @@ int sequentialSearch(vector<T> vect, T elem, int &comp, double &duration){
     duration = elapsed_seconds.count();
 }
 
+// Binary search algorithm - Comlplexity O(logn)
 template<class T>
 int binarySearch(vector<T> vect, T elem, int &comp, double &duration){
     chrono::time_point<chrono::system_clock> start, stop;
@@ -237,6 +245,7 @@ int binarySearch(vector<T> vect, T elem, int &comp, double &duration){
     duration = elapsed_seconds.count();
 }
 
+// print algorithm - Comlplexity O(n)
 template<class T>
 void simplePrintVector(vector<T> vect){
     for(int i = 0; i < vect.size(); i++){
@@ -245,6 +254,7 @@ void simplePrintVector(vector<T> vect){
     cout << "\n";
 }
 
+// print algorithm - Comlplexity O(n)
 template<class T>
 void printVector(vector<T> vect, int comp, int inter, double duration){
     for(int i = 0; i < vect.size(); i++){
@@ -255,6 +265,7 @@ void printVector(vector<T> vect, int comp, int inter, double duration){
     printf("<----Duration: %.6fs\n", duration);
 }
 
+// Create vector (int) algorithm - Comlplexity O(n)
 template<class T>
 void createVectorInt(vector<T> &vect, int n){
     random_device rd;
@@ -265,19 +276,18 @@ void createVectorInt(vector<T> &vect, int n){
     }
 }
 
+// Create vector (double) algorithm - Comlplexity O(n)
 template<class T>
 void createVectorDouble(vector<T> &vect, double n){
     random_device rd;
     mt19937 mt(rd());
     uniform_real_distribution<double> dist(0.0, n);
-    /* default_random_engine generator;
-    uniform_real_distribution<double> dist(0.0, n); */
     for(int i = 0; i < n; i++){
-        /* vect.push_back(dist(generator)); */
         vect.push_back(dist(mt));
     }
 }
 
+// Create vector (char) algorithm - Comlplexity O(n)
 template<class T>
 void createVectorChar(vector<T> &vect, int n){
     random_device rd;
@@ -288,6 +298,7 @@ void createVectorChar(vector<T> &vect, int n){
     }
 }
 
+// Create vector (string) algorithm - Comlplexity O(n)
 template<class T>
 void createVectorString(vector<T> &vect, int n){
     random_device rd;
@@ -334,6 +345,7 @@ int main(){
     while(ans != 0){
         ans = menu();
         
+        //  initialize necesary variables
         int comp = 0, inter = 0;
         double duration;
         chrono::time_point<chrono::system_clock> start, stop;
