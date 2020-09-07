@@ -257,35 +257,44 @@ void printVector(vector<T> vect, int comp, int inter, double duration){
 
 template<class T>
 void createVectorInt(vector<T> &vect, int n){
-    srand(time(NULL));
+    random_device rd;
+    mt19937 mt(rd());
+    uniform_int_distribution<int> dist(0, n);
     for(int i = 0; i < n; i++){
-        vect.push_back(rand() % n + 1);
+        vect.push_back(dist(mt));
     }
 }
 
 template<class T>
 void createVectorDouble(vector<T> &vect, double n){
-    default_random_engine generator;
+    random_device rd;
+    mt19937 mt(rd());
     uniform_real_distribution<double> dist(0.0, n);
+    /* default_random_engine generator;
+    uniform_real_distribution<double> dist(0.0, n); */
     for(int i = 0; i < n; i++){
-        vect.push_back(dist(generator));
-        cout << dist(generator) << " ";
+        /* vect.push_back(dist(generator)); */
+        vect.push_back(dist(mt));
     }
 }
 
 template<class T>
 void createVectorChar(vector<T> &vect, int n){
-    srand(time(NULL));
+    random_device rd;
+    mt19937 mt(rd());
+    uniform_int_distribution<int> dist(0, n);
     for(int i = 0; i < n; i++){
-        vect.push_back(lettersC[rand() % 24 + 1]);
+        vect.push_back(lettersC[dist(mt)]);
     }
 }
 
 template<class T>
 void createVectorString(vector<T> &vect, int n){
-    srand(time(NULL));
+    random_device rd;
+    mt19937 mt(rd());
+    uniform_int_distribution<int> dist(0, n);
     for(int i = 0; i < n; i++){
-        vect.push_back(lettersS[rand() % 24 + 1]);
+        vect.push_back(lettersS[dist(mt)] + lettersS[dist(mt)]);
     }
 }
 
@@ -330,7 +339,7 @@ int main(){
         chrono::time_point<chrono::system_clock> start, stop;
         chrono::duration<double> elapsed_seconds;
 
-        if(typeAns == 1){
+        if(typeAns == 1  && ans != 0){
             vector<int> vect;
             createVectorInt(vect, n);
             simplePrintVector(vect);
@@ -398,9 +407,9 @@ int main(){
                     break;
             }
             if(ans != 0){
-                simplePrintVector(vect);
+                printVector(vect, comp, inter, duration);
             }
-        } else if(typeAns == 2){
+        } else if(typeAns == 2  && ans != 0){
             vector<double> vect;
             createVectorDouble(vect, n);
             simplePrintVector(vect);
@@ -468,9 +477,9 @@ int main(){
                     break;
             }
             if(ans != 0){
-                simplePrintVector(vect);
+                printVector(vect, comp, inter, duration);
             }
-        }else if(typeAns == 3){
+        }else if(typeAns == 3  && ans != 0){
             vector<char> vect;
             createVectorChar(vect, n);
             simplePrintVector(vect);
@@ -538,9 +547,9 @@ int main(){
                     break;
             }
             if(ans != 0){
-                simplePrintVector(vect);
+                printVector(vect, comp, inter, duration);
             }
-        }else if(typeAns == 4){
+        }else if(typeAns == 4  && ans != 0){
             vector<string> vect;
             createVectorString(vect, n);
             simplePrintVector(vect);
@@ -608,8 +617,10 @@ int main(){
                     break;
             }
             if(ans != 0){
-                simplePrintVector(vect);
+                printVector(vect, comp, inter, duration);
             }
+        } else{
+            cout <<  "The program has finished with ease..\n\n\n";
         }
     }
 
