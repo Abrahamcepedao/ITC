@@ -5,13 +5,51 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <limits>
 #include <cstdlib>
 #include <vector>
 #include <ctime>
+#include <iomanip>
 using namespace std;
 
 int daysMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 string months[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dic"};
+
+// Input validation
+int checkInt(int min, int max){
+    int num;
+    cin >> num;
+    while(1){
+        if(cin.fail()){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            cout << "Input must be a number.. try again!\n";
+            cin >> num;
+        }
+        if(!cin.fail()){
+            if(num < min || num > max){
+                cout << "Enter a valid number.. try again!\n";
+                cin >> num;
+            } else{
+                break;
+            }
+        }
+    }
+    return num;
+}
+
+string checkMonth(int num){
+    cout << (num != -1 ? "Enter month: " : "Enter a valid month: ");
+    string mon;
+    bool accept = false;
+    cin >> mon;
+    for(int i = 0; i < 12; i++){
+        if(mon == months[i]){
+            accept = true;
+        }
+    }
+    return (accept ? mon : checkMonth(-1));
+}
 
 int getMonthIndex(string str){
     for(int i = 0; i < 12; i++){
@@ -37,8 +75,6 @@ struct Registry{
     bool operator>=(const Registry ry){
         return getMonthIndex(mon) > getMonthIndex(ry.mon) ? true : getMonthIndex(mon) < getMonthIndex(ry.mon) ? false : day > ry.day ? true : day < ry.day ? false : hour > ry.hour ? true : hour < ry.hour ? false : min > ry.min ? true : min < ry.min ? false : sec < ry.sec ? false : true;
     }
-
-    
 };
 
 void split(vector<string> &vect, string str, string pattern){
@@ -90,13 +126,16 @@ void orderQuick(vector<T> &vect, int l, int r){
 }
 
 void printRegistry(Registry registry){
-    cout << "\n" << registry.mon << "  " << registry.day << "  " << registry.hour << ":" << registry.min << ":" << registry.sec << "  " << registry.ip << "  " << registry.err;
+    string date = to_string(registry.hour) + ":" + to_string(registry.min) + ":" + to_string(registry.sec);
+    cout << setw(5) << left << registry.mon << setw(4) << left << registry.day << setw(10) << left << date << setw(20) << left << registry.ip << setw(20) << registry.err << "\n";
 }
 
 void printRegistries(vector<Registry> registries){
+    cout << "Printing database ...\n\n";
     for(int i = 0; i < registries.size(); i++){
         printRegistry(registries[i]);
     }
+    cout << "\n\n";
 }
 
 void getErrorData(string &str, vector<string> values){
@@ -133,11 +172,93 @@ void readData(vector<Registry> &registries){
     }
 }
 
+int getIndexMonth(string mon, vector<Registry> &registries, int low, int high){
+    int index;
+    cout << "\n" << months[getMonthIndex(mon)] << " "; 
+    while(low <= high){
+        index = (high + low) / 2;
+        cout << index << " ";
+        if(getMonthIndex(registries[index].mon) == getMonthIndex(mon)){
+            return index;
+        } else if(getMonthIndex(registries[index].mon) > getMonthIndex(mon)){
+            high = index - 1;
+        } else{
+            low = index + 1;
+        }
+    }
+    /* if(getMonthIndex(mon) < 6){
+        cout << "\n" << months[getMonthIndex(mon)+1] << " ";
+    } else{
+        cout << "\n" << months[getMonthIndex(mon)-1] << " "; 
+    } */
+    /* cout << "\n" << getMonthIndex(mon) << " "; 
+    cout << "\n" << months[getMonthIndex(mon)+1] << " "; */
+    
+    //index = getMonthIndex(mon) < 6 ? getIndexMonth(months[getMonthIndex(mon)+1], registries, low, high) : getIndexMonth(months[getMonthIndex(mon)-1], registries, low, high);
+    index = getMonthIndex(mon) < 6 ? getIndexMonth(months[getMonthIndex(mon) + 1], registries, 0, registries.size()-1) : 4;
+    return index;
+}
+
+void searchByDate(vector<Registry> registries){
+    cout << "-> Searching by date...\n\n";
+    cout << "Enter first date..\n";
+    string mon = checkMonth(0);
+    cout << "Enter day: ";
+    int day = checkInt(1, daysMonth[getMonthIndex(mon)]);
+    cout << "Enter hour: ";
+    int hour = checkInt(0,23);
+    cout << "Enter minute: ";
+    int min = checkInt(0, 59);
+    cout << "Enter sec: ";
+    int sec2 = checkInt(0, 59);
+
+    int index = getIndexMonth(mon, registries, 0, registries.size()-1);
+    cout << "index" << index << endl;
+
+    /* cout << "Enter second date..";
+    string mon2 = checkMonth(0);
+    cout << "Enter day: ";
+    int day2 = checkInt(1, daysMonth[getMonthIndex(mon)]);
+    cout << "Enter hour: ";
+    int hour2 = checkInt(0, 23);
+    cout << "Enter minute: ";
+    int min2 = checkInt(0, 59);
+    cout << "Enter sec: ";
+    int sec2 = checkInt(0, 59); */
+    
+    
+}
+
+
+
+void menu(vector<Registry> &registries){
+    cout << "-> Select an option\n";
+    cout << "1. Print entire database\n";
+    cout << "2. Search by date\n";
+    cout << "3. Terminate\n";
+    int ans = checkInt(1, 3);
+    switch(ans){
+        case 1:
+            printRegistries(registries);
+            break;
+        case 2:
+            searchByDate(registries);
+            break;
+        case 3:
+            break;
+        default:
+            break;
+    }
+    (ans != 3 ? menu(registries) : void());
+}
+
 int main(){
     vector<Registry> registries; // create vector
     readData(registries); // read data
-    orderQuick(registries, 0, registries.size()-1);
-    printRegistries(registries);
-    
+    orderQuick(registries, 0, registries.size()-1); // order vector using quick sort
+    //printRegistries(registries); // print registries
+    cout << "\n\n\n<-----------------Welcome to the registry database!---------------->\n\n\n";
+    menu(registries);
+
     return 0;
 }
