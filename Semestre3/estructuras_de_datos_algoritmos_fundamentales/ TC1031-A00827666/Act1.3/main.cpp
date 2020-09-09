@@ -213,10 +213,12 @@ int getIndexMonthL(string mon, vector<Registry> &registries, int low, int high){
 
 int getIndexDay(int day, vector<Registry> &registries, int monIndex, int low, int high){
     int index;
+    int lowT = low;
+    int highT = high;
     while(low <= high){
         index = (high + low) / 2;
         if(registries[index].day == day){
-            if(index == 0 ||  registries[index].day > registries[index-1].day){
+            if(index == low ||  registries[index].day > registries[index-1].day){
                 return index;
             } else{
                 high = index - 1;
@@ -227,7 +229,7 @@ int getIndexDay(int day, vector<Registry> &registries, int monIndex, int low, in
             low = index + 1;
         }
     }
-    return day < getMonthIndex(registries[monIndex].mon) ? getIndexDay(day+1, registries, monIndex, low, high) : -1;
+    return day < daysMonth[getMonthIndex(registries[monIndex].mon)] ? getIndexDay(day + 1, registries, monIndex, lowT, highT) : -1;
 }
 
 void searchByDate(vector<Registry> registries){
@@ -247,6 +249,13 @@ void searchByDate(vector<Registry> registries){
     int indexL = getIndexMonthL(mon, registries, indexF, registries.size() - 1);
     cout << "indexF-> " << indexF << endl;
     cout << "indexL-> " << indexL << endl;
+    int indexD =  getIndexDay(day, registries, indexF, indexF, indexL);
+    while(indexD == -1){
+        cout << "Enter a prior day: ";
+        int newDay = checkInt(1, day-1);
+        indexD = getIndexDay(newDay, registries, indexF, indexF, indexL);
+    }
+    cout << "indexD-> " << indexD << endl;
     /* cout << "Enter second date..";
     string mon2 = checkMonth(0);
     cout << "Enter day: ";
