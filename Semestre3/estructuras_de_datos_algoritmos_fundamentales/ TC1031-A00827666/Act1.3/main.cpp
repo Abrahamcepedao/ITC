@@ -131,9 +131,9 @@ void printRegistry(Registry registry){
     cout << setw(5) << left << registry.mon << setw(4) << left << registry.day << setw(10) << left << date << setw(20) << left << registry.ip << setw(20) << registry.err << "\n";
 }
 
-void printRegistries(vector<Registry> registries){
+void fecthPrint(vector<Registry> &registries, int indexF, int indexL){
     cout << "Printing database ...\n\n";
-    for(int i = 0; i < registries.size(); i++){
+    for(int i = indexF; i <= indexL; i++){
         printRegistry(registries[i]);
     }
     cout << "\n\n";
@@ -232,28 +232,36 @@ int getIndexL(int elem, vector<Registry> &registries, int low, int high, int num
 
 void searchByDate(vector<Registry> registries){
     cout << "-> Searching by date...\n\n";
-    cout << "Enter first date..\n";
     string valuesText[] = {"month", "day", "hour", "minute", "second"};
-    vector<int> newValues(5, -1);
-    vector<int> values;
-    int indexF = 0, indexL = registries.size() - 1;
-
-    values.push_back(getMonthIndex(checkMonth(0)));
-    values.push_back(checkInt(1, daysMonth[values[0]], "day"));
-    values.push_back(checkInt(0, 23, "hour"));
-    values.push_back(checkInt(0, 59, "minute"));
-    values.push_back(checkInt(0, 59, "sec"));
+    vector<int> indexes;
+    for(int j = 0; j < 2; j++){
+        cout << (j == 0 ? "Enter first date..\n" : "Enter last date..\n");
     
-    for(int i = 0; i < 5; i++){
-        int tempIndex = indexF;
-        indexF = getIndexF(values[i], registries, indexF, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
-        while(indexF ==  -1){
-            newValues[i] = i == 0 ? getMonthIndex(checkMonth(1)) : checkInt(1, values[i] - 1, "a prior " + valuesText[i]);
-            indexF = getIndexF(newValues[i], registries, tempIndex, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
+        vector<int> newValues(5, -1);
+        vector<int> values;
+        int indexF = 0, indexL = registries.size() - 1;
+
+        values.push_back(getMonthIndex(checkMonth(0)));
+        values.push_back(checkInt(1, daysMonth[values[0]], "day"));
+        values.push_back(checkInt(0, 23, "hour"));
+        values.push_back(checkInt(0, 59, "minute"));
+        values.push_back(checkInt(0, 59, "sec"));
+        
+        for(int i = 0; i < 5; i++){
+            int tempIndex = indexF;
+            indexF = getIndexF(values[i], registries, indexF, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
+            while(indexF ==  -1){
+                newValues[i] = i == 0 ? getMonthIndex(checkMonth(1)) : checkInt(1, values[i] - 1, "a prior " + valuesText[i]);
+                indexF = getIndexF(newValues[i], registries, tempIndex, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
+            }
+            indexL = getIndexL(newValues[i] != -1 ? newValues[i] : values[i], registries, indexF, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
         }
-        indexL = getIndexL(newValues[i] != -1 ? newValues[i] : values[i], registries, indexF, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
+        printRegistry(registries[indexF]);
+        newValues.clear();
+        values.clear();
+        j == 0 ? indexes.push_back(indexF) : indexes.push_back(indexL);
     }
-    printRegistry(registries[indexF]);
+    registries[indexes[1]] > registries[indexes[0]] ? fecthPrint(registries, indexes[0], indexes[1]) : fecthPrint(registries, indexes[1], indexes[0]);
 }
 
 
@@ -266,7 +274,7 @@ void menu(vector<Registry> &registries){
     int ans = checkInt(1, 3, "option");
     switch(ans){
         case 1:
-            printRegistries(registries);
+            fecthPrint(registries, 0, registries.size()-1);
             break;
         case 2:
             searchByDate(registries);
