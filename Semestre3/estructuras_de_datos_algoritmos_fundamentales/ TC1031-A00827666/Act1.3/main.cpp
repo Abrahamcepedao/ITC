@@ -249,7 +249,7 @@ void searchByDate(vector<Registry> registries){
             int tempIndex = indexF;
             indexF = getIndexF(values[i], registries, indexF, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
             while(indexF ==  -1){
-                newValues[i] = i == 0 ? getMonthIndex(checkMonth(1)) : checkInt(1, values[i] - 1, "a prior " + valuesText[i]);
+                newValues[i] = i == 0 ? getMonthIndex(checkMonth(1)) : checkInt(i == 1 ? 1 : 0, values[i] - 1, "a prior " + valuesText[i]);
                 indexF = getIndexF(newValues[i], registries, tempIndex, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
             }
             indexL = getIndexL(newValues[i] != -1 ? newValues[i] : values[i], registries, indexF, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
