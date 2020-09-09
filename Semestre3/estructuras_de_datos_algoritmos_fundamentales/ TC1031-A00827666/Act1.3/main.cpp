@@ -172,31 +172,62 @@ void readData(vector<Registry> &registries){
     }
 }
 
-int getIndexMonth(string mon, vector<Registry> &registries, int low, int high){
+
+int getIndexMonthF(string mon, vector<Registry> &registries, int low, int high){
     int index;
-    cout << "\n" << months[getMonthIndex(mon)] << " "; 
     while(low <= high){
         index = (high + low) / 2;
-        cout << index << " ";
         if(getMonthIndex(registries[index].mon) == getMonthIndex(mon)){
-            return index;
+            if(index == low ||  getMonthIndex(registries[index].mon) > getMonthIndex(registries[index-1].mon)){
+                return index;
+            } else{
+                high = index - 1;
+            }
         } else if(getMonthIndex(registries[index].mon) > getMonthIndex(mon)){
             high = index - 1;
         } else{
             low = index + 1;
         }
     }
-    /* if(getMonthIndex(mon) < 6){
-        cout << "\n" << months[getMonthIndex(mon)+1] << " ";
-    } else{
-        cout << "\n" << months[getMonthIndex(mon)-1] << " "; 
-    } */
-    /* cout << "\n" << getMonthIndex(mon) << " "; 
-    cout << "\n" << months[getMonthIndex(mon)+1] << " "; */
-    
-    //index = getMonthIndex(mon) < 6 ? getIndexMonth(months[getMonthIndex(mon)+1], registries, low, high) : getIndexMonth(months[getMonthIndex(mon)-1], registries, low, high);
-    index = getMonthIndex(mon) < 6 ? getIndexMonth(months[getMonthIndex(mon) + 1], registries, 0, registries.size()-1) : 4;
-    return index;
+    return getMonthIndex(mon) < 6 ? getIndexMonthF(months[getMonthIndex(mon) + 1], registries, 0, registries.size() - 1) : getIndexMonthF(months[getMonthIndex(mon) - 1], registries, 0, registries.size() - 1);
+}
+
+int getIndexMonthL(string mon, vector<Registry> &registries, int low, int high){
+    int index;
+    while(low <= high){
+        index = (high + low) / 2;
+        if(getMonthIndex(registries[index].mon) == getMonthIndex(mon)){
+            if(index == high ||  getMonthIndex(registries[index].mon) < getMonthIndex(registries[index+1].mon)){
+                return index;
+            } else{
+                low = index + 1;
+            }
+        } else if(getMonthIndex(registries[index].mon) > getMonthIndex(mon)){
+            high = index - 1;
+        } else{
+            low = index + 1;
+        }
+    }
+    return getMonthIndex(mon) < 6 ? getIndexMonthF(months[getMonthIndex(mon) + 1], registries, 0, registries.size() - 1) : getIndexMonthF(months[getMonthIndex(mon) - 1], registries, 0, registries.size() - 1);
+}
+
+int getIndexDay(int day, vector<Registry> &registries, int monIndex, int low, int high){
+    int index;
+    while(low <= high){
+        index = (high + low) / 2;
+        if(registries[index].day == day){
+            if(index == 0 ||  registries[index].day > registries[index-1].day){
+                return index;
+            } else{
+                high = index - 1;
+            }
+        } else if(registries[index].day > day){
+            high = index - 1;
+        } else{
+            low = index + 1;
+        }
+    }
+    return day < getMonthIndex(registries[monIndex].mon) ? getIndexDay(day+1, registries, monIndex, low, high) : -1;
 }
 
 void searchByDate(vector<Registry> registries){
@@ -212,9 +243,10 @@ void searchByDate(vector<Registry> registries){
     cout << "Enter sec: ";
     int sec2 = checkInt(0, 59);
 
-    int index = getIndexMonth(mon, registries, 0, registries.size()-1);
-    cout << "index" << index << endl;
-
+    int indexF = getIndexMonthF(mon, registries, 0, registries.size() - 1);
+    int indexL = getIndexMonthL(mon, registries, indexF, registries.size() - 1);
+    cout << "indexF-> " << indexF << endl;
+    cout << "indexL-> " << indexL << endl;
     /* cout << "Enter second date..";
     string mon2 = checkMonth(0);
     cout << "Enter day: ";
