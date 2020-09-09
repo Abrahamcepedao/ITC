@@ -154,8 +154,7 @@ void readData(vector<Registry> &registries){
     vector<string> values;
     vector<string> date;
     string line;
-    int count = 0;
-    while(getline(file, line) && count < 10){
+    while(getline(file, line)){
         Registry registry;
         split(values, line, " "); // split each line " "
         registry.mon = values[0]; // get month
@@ -169,7 +168,6 @@ void readData(vector<Registry> &registries){
         registries.push_back(registry);
         values.clear();
         date.clear();
-        count++;
     }
 }
 
@@ -264,7 +262,14 @@ void searchByDate(vector<Registry> registries){
     registries[indexes[1]] > registries[indexes[0]] ? fecthPrint(registries, indexes[0], indexes[1]) : fecthPrint(registries, indexes[1], indexes[0]);
 }
 
-
+void writeData(vector<Registry> &registries){
+    ofstream orderedData("bitacoraOrdenada.txt");
+    for(int i = 0; i < registries.size(); i++){
+        string date = to_string(registries[i].hour) + ":" + to_string(registries[i].min) + ":" + to_string(registries[i].sec);
+        orderedData << setw(5) << left << registries[i].mon << setw(4) << left << registries[i].day << setw(10) << left << date << setw(20) << left << registries[i].ip << setw(20) << registries[i].err << "\n";
+    }
+    orderedData.close();
+}
 
 void menu(vector<Registry> &registries){
     cout << "\n\n\n-> Select an option\n";
@@ -294,6 +299,7 @@ int main(){
     orderQuick(registries, 0, registries.size()-1); // order vector using quick sort
     //printRegistries(registries); // print registries
     cout << "\n\n\n<-----------------Welcome to the registry database!---------------->\n\n\n";
+    writeData(registries);
     menu(registries);
     return 0;
 }
