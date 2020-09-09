@@ -16,19 +16,20 @@ int daysMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 string months[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dic"};
 
 // Input validation
-int checkInt(int min, int max){
+int checkInt(int min, int max, string inquiry){
     int num;
+    cout << "Enter " << inquiry << ": ";
     cin >> num;
     while(1){
         if(cin.fail()){
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(),'\n');
-            cout << "Input must be a number.. try again!\n";
+            cout << "Input must be a number.. try again: ";
             cin >> num;
         }
         if(!cin.fail()){
             if(num < min || num > max){
-                cout << "Enter a valid number.. try again!\n";
+                cout << "Enter a valid " << inquiry << ": ";
                 cin >> num;
             } else{
                 break;
@@ -236,23 +237,17 @@ void searchByDate(vector<Registry> registries){
     cout << "-> Searching by date...\n\n";
     cout << "Enter first date..\n";
     string mon = checkMonth(0);
-    cout << "Enter day: ";
-    int day = checkInt(1, daysMonth[getMonthIndex(mon)]);
-    cout << "Enter hour: ";
-    int hour = checkInt(0,23);
-    cout << "Enter minute: ";
-    int min = checkInt(0, 59);
-    cout << "Enter sec: ";
-    int sec2 = checkInt(0, 59);
-
+    int day = checkInt(1, daysMonth[getMonthIndex(mon)], "day");
+    int hour = checkInt(0,23, "hour");
+    int min = checkInt(0, 59, "minute");
+    int sec2 = checkInt(0, 59, "sec");
     int indexF = getIndexMonthF(mon, registries, 0, registries.size() - 1);
     int indexL = getIndexMonthL(mon, registries, indexF, registries.size() - 1);
     cout << "indexF-> " << indexF << endl;
     cout << "indexL-> " << indexL << endl;
     int indexD =  getIndexDay(day, registries, indexF, indexF, indexL);
     while(indexD == -1){
-        cout << "Enter a prior day: ";
-        int newDay = checkInt(1, day-1);
+        int newDay = checkInt(1, day-1, "a prior day");
         indexD = getIndexDay(newDay, registries, indexF, indexF, indexL);
     }
     cout << "indexD-> " << indexD << endl;
@@ -277,7 +272,7 @@ void menu(vector<Registry> &registries){
     cout << "1. Print entire database\n";
     cout << "2. Search by date\n";
     cout << "3. Terminate\n";
-    int ans = checkInt(1, 3);
+    int ans = checkInt(1, 3, "option");
     switch(ans){
         case 1:
             printRegistries(registries);
