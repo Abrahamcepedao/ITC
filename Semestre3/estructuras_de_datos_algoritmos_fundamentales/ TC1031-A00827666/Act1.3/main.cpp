@@ -40,7 +40,7 @@ int checkInt(int min, int max, string inquiry){
 }
 
 string checkMonth(int num){
-    cout << (num != -1 ? "Enter month: " : "Enter a valid month: ");
+    cout << (num == -1 ? "Enter a valid month: " : num == 0 ? "Enter month: " : "Enter a prior month: ");
     string mon;
     bool accept = false;
     cin >> mon;
@@ -174,125 +174,92 @@ void readData(vector<Registry> &registries){
 }
 
 
-int getIndexMonthF(string mon, vector<Registry> &registries, int low, int high){
-    int index;
+int getIndexF(int elem, vector<Registry> &registries, int low, int high, int num, int monIndex){
+    int index, lowT = low, highT = high;
+    int comparison[] = {11, daysMonth[monIndex]-1, 23, 59, 59};
     while(low <= high){
         index = (high + low) / 2;
-        if(getMonthIndex(registries[index].mon) == getMonthIndex(mon)){
-            if(index == low ||  getMonthIndex(registries[index].mon) > getMonthIndex(registries[index-1].mon)){
+        vector<int> numbers;
+        for(int i = -1; i < 1; i++){
+            numbers.push_back(getMonthIndex(registries[index+i].mon));
+            numbers.push_back(registries[index + i].day);
+            numbers.push_back(registries[index + i].hour);
+            numbers.push_back(registries[index + i].min);
+            numbers.push_back(registries[index + i].sec);
+        }
+        if(numbers[num+5] == elem){
+            if(index == low ||  numbers[num+5] > numbers[num]){
                 return index;
             } else{
                 high = index - 1;
             }
-        } else if(getMonthIndex(registries[index].mon) > getMonthIndex(mon)){
+        } else if(numbers[num+5] > elem){
             high = index - 1;
         } else{
             low = index + 1;
         }
     }
-    return getMonthIndex(mon) < 6 ? getIndexMonthF(months[getMonthIndex(mon) + 1], registries, 0, registries.size() - 1) : getIndexMonthF(months[getMonthIndex(mon) - 1], registries, 0, registries.size() - 1);
+    return elem < comparison[num] ? getIndexF(elem + 1, registries, lowT, highT, num, monIndex) : -1;
 }
 
-int getIndexMonthL(string mon, vector<Registry> &registries, int low, int high){
-    int index;
+int getIndexL(int elem, vector<Registry> &registries, int low, int high, int num, int monIndex){
+    int index, lowT = low, highT = high;
+    int comparison[] = {12, daysMonth[elem], 23, 60, 60};
     while(low <= high){
         index = (high + low) / 2;
-        if(getMonthIndex(registries[index].mon) == getMonthIndex(mon)){
-            if(index == high ||  getMonthIndex(registries[index].mon) < getMonthIndex(registries[index+1].mon)){
+        vector<int> numbers;
+        for(int i = 0; i < 2; i++){
+            numbers.push_back(getMonthIndex(registries[index+i].mon));
+            numbers.push_back(registries[index + i].day);
+            numbers.push_back(registries[index + i].hour);
+            numbers.push_back(registries[index + i].min);
+            numbers.push_back(registries[index + i].sec);
+        }
+        if(numbers[num] == elem){
+            if(index == high ||  numbers[num] < numbers[num+5]){
                 return index;
             } else{
                 low = index + 1;
             }
-        } else if(getMonthIndex(registries[index].mon) > getMonthIndex(mon)){
+        } else if(numbers[num] > elem){
             high = index - 1;
         } else{
             low = index + 1;
         }
     }
-    return getMonthIndex(mon) < 6 ? getIndexMonthF(months[getMonthIndex(mon) + 1], registries, 0, registries.size() - 1) : getIndexMonthF(months[getMonthIndex(mon) - 1], registries, 0, registries.size() - 1);
-}
-
-int getIndexDayF(int day, vector<Registry> &registries, int monIndex, int low, int high){
-    int index;
-    int lowT = low;
-    int highT = high;
-    while(low <= high){
-        index = (high + low) / 2;
-        if(registries[index].day == day){
-            if(index == low ||  registries[index].day > registries[index-1].day){
-                return index;
-            } else{
-                high = index - 1;
-            }
-        } else if(registries[index].day > day){
-            high = index - 1;
-        } else{
-            low = index + 1;
-        }
-    }
-    return day < daysMonth[getMonthIndex(registries[monIndex].mon)] ? getIndexDayF(day + 1, registries, monIndex, lowT, highT) : -1;
-}
-
-int getIndexDayL(int day, vector<Registry> &registries, int monIndex, int low, int high){
-    int index;
-    int lowT = low;
-    int highT = high;
-    while(low <= high){
-        index = (high + low) / 2;
-        if(registries[index].day == day){
-            if(index == high ||  registries[index].day < registries[index+1].day){
-                return index;
-            } else{
-                low = index + 1;
-            }
-        } else if(registries[index].day > day){
-            high = index - 1;
-        } else{
-            low = index + 1;
-        }
-    }
-    return day < daysMonth[getMonthIndex(registries[monIndex].mon)] ? getIndexDayL(day + 1, registries, monIndex, lowT, highT) : -1;
+    return elem < comparison[num] ? getIndexF(elem + 1, registries, lowT, highT, num, monIndex) : -1;
 }
 
 void searchByDate(vector<Registry> registries){
     cout << "-> Searching by date...\n\n";
     cout << "Enter first date..\n";
-    string mon = checkMonth(0);
-    int newDay = -1;
-    int day = checkInt(1, daysMonth[getMonthIndex(mon)], "day");
-    int hour = checkInt(0,23, "hour");
-    int min = checkInt(0, 59, "minute");
-    int sec2 = checkInt(0, 59, "sec");
-    int indexF = getIndexMonthF(mon, registries, 0, registries.size() - 1);
-    int indexL = getIndexMonthL(mon, registries, indexF, registries.size() - 1);
-    cout << "indexF-> " << indexF << endl;
-    cout << "indexL-> " << indexL << endl;
-    int indexDF =  getIndexDayF(day, registries, indexF, indexF, indexL);
-    while(indexDF == -1){
-        newDay = checkInt(1, day-1, "a prior day");
-        indexDF = getIndexDayF(newDay, registries, indexF, indexF, indexL);
+    string valuesText[] = {"month", "day", "hour", "minute", "second"};
+    vector<int> newValues(5, -1);
+    vector<int> values;
+    int indexF = 0, indexL = registries.size() - 1;
+
+    values.push_back(getMonthIndex(checkMonth(0)));
+    values.push_back(checkInt(1, daysMonth[values[0]], "day"));
+    values.push_back(checkInt(0, 23, "hour"));
+    values.push_back(checkInt(0, 59, "minute"));
+    values.push_back(checkInt(0, 59, "sec"));
+    
+    for(int i = 0; i < 5; i++){
+        int tempIndex = indexF;
+        indexF = getIndexF(values[i], registries, indexF, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
+        while(indexF ==  -1){
+            newValues[i] = i == 0 ? getMonthIndex(checkMonth(1)) : checkInt(1, values[i] - 1, "a prior " + valuesText[i]);
+            indexF = getIndexF(newValues[i], registries, tempIndex, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
+        }
+        indexL = getIndexL(newValues[i] != -1 ? newValues[i] : values[i], registries, indexF, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
     }
-    int indexDL =  getIndexDayL(newDay != -1 ? newDay : day, registries, indexF, indexDF, indexL);
-    cout << "indexDF-> " << indexDF << endl;
-    cout << "indexDL-> " << indexDL << endl;
-    /* cout << "Enter second date..";
-    string mon2 = checkMonth(0);
-    cout << "Enter day: ";
-    int day2 = checkInt(1, daysMonth[getMonthIndex(mon)]);
-    cout << "Enter hour: ";
-    int hour2 = checkInt(0, 23);
-    cout << "Enter minute: ";
-    int min2 = checkInt(0, 59);
-    cout << "Enter sec: ";
-    int sec2 = checkInt(0, 59); */
-    
-    
+    printRegistry(registries[indexF]);
 }
 
 
 
 void menu(vector<Registry> &registries){
-    cout << "-> Select an option\n";
+    cout << "\n\n\n-> Select an option\n";
     cout << "1. Print entire database\n";
     cout << "2. Search by date\n";
     cout << "3. Terminate\n";
@@ -305,6 +272,7 @@ void menu(vector<Registry> &registries){
             searchByDate(registries);
             break;
         case 3:
+            cout <<  "The program has finished with ease..\n\n";
             break;
         default:
             break;
@@ -319,6 +287,5 @@ int main(){
     //printRegistries(registries); // print registries
     cout << "\n\n\n<-----------------Welcome to the registry database!---------------->\n\n\n";
     menu(registries);
-
     return 0;
 }
