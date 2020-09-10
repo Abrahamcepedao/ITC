@@ -127,15 +127,37 @@ void orderQuick(vector<T> &vect, int l, int r){
 }
 
 void printRegistry(Registry registry){
-    string date = to_string(registry.hour) + ":" + to_string(registry.min) + ":" + to_string(registry.sec);
+    string date = (registry.hour < 10 ? "0" + to_string(registry.hour) : to_string(registry.hour)) + ":" + (registry.min < 10 ? "0" + to_string(registry.min) : to_string(registry.min)) + ":" + (registry.sec < 10 ? "0" + to_string(registry.sec) : to_string(registry.sec));
     cout << setw(5) << left << registry.mon << setw(4) << left << registry.day << setw(10) << left << date << setw(20) << left << registry.ip << setw(20) << registry.err << "\n";
 }
 
 void fecthPrint(vector<Registry> &registries, int indexF, int indexL){
     cout << "Printing database ...\n\n";
-    for(int i = indexF; i <= indexL; i++){
-        printRegistry(registries[i]);
+    cout << "From-> ";
+    printRegistry(registries[indexF]);
+    cout << "To->   ";
+    printRegistry(registries[indexL]);
+    cout << "\n";
+    int count = 1, i = indexF, pages = (indexL - indexF) / 20 + 1;
+    string ans;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    while(ans != "0" && count <= pages){
+        cout << "Printing page (" << count << "/" << pages << ")...\n";
+        while(i < (indexF + 20*count) && i <= indexL){
+            printRegistry(registries[i]);
+            i++;
+        }
+        count++;
+        cout << "Anything to go to next page\n";
+        cout << "0 to finish\n";
+        cout << "Enter option: ";
+        getline( cin, ans );
+        
     }
+    
+    /* for(int i = indexF; i <= indexL; i++){
+        printRegistry(registries[i]);
+    } */
     cout << "\n\n";
 }
 
@@ -202,7 +224,7 @@ int getIndexF(int elem, vector<Registry> &registries, int low, int high, int num
 
 int getIndexL(int elem, vector<Registry> &registries, int low, int high, int num, int monIndex){
     int index, lowT = low, highT = high;
-    int comparison[] = {12, daysMonth[elem], 23, 60, 60};
+    int comparison[] = {11, daysMonth[monIndex] - 1, 23, 59, 59};
     while(low <= high){
         index = (high + low) / 2;
         vector<int> numbers;
@@ -225,7 +247,7 @@ int getIndexL(int elem, vector<Registry> &registries, int low, int high, int num
             low = index + 1;
         }
     }
-    return elem < comparison[num] ? getIndexF(elem + 1, registries, lowT, highT, num, monIndex) : -1;
+    return elem < comparison[num] ? getIndexL(elem + 1, registries, lowT, highT, num, monIndex) : -1;
 }
 
 void searchByDate(vector<Registry> registries){
@@ -233,7 +255,7 @@ void searchByDate(vector<Registry> registries){
     string valuesText[] = {"month", "day", "hour", "minute", "second"};
     vector<int> indexes;
     for(int j = 0; j < 2; j++){
-        cout << (j == 0 ? "Enter first date..\n" : "Enter last date..\n");
+        cout << (j == 0 ? "Enter first date..\n" : "\n\nEnter last date..\n");
     
         vector<int> newValues(5, -1);
         vector<int> values;
@@ -249,15 +271,15 @@ void searchByDate(vector<Registry> registries){
             int tempIndex = indexF;
             indexF = getIndexF(values[i], registries, indexF, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
             while(indexF ==  -1){
-                newValues[i] = i == 0 ? getMonthIndex(checkMonth(1)) : checkInt(i == 1 ? 1 : 0, values[i] - 1, "a prior " + valuesText[i]);
-                indexF = getIndexF(newValues[i], registries, tempIndex, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
+                values[i]--;
+                values[i + 1] = i == 0 ? 1 : 0;
+                indexF = getIndexF(values[i], registries, tempIndex, indexL, i, values[0]);
             }
-            indexL = getIndexL(newValues[i] != -1 ? newValues[i] : values[i], registries, indexF, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
+            indexL = getIndexL(values[i], registries, indexF, indexL, i, values[0]);
         }
-        printRegistry(registries[indexF]);
         newValues.clear();
         values.clear();
-        j == 0 ? indexes.push_back(indexF) : indexes.push_back(indexL);
+        j == 0 ? indexes.push_back(indexF) : indexL != 0 && registries[indexL].day == registries[indexL+1].day ? indexes.push_back(indexL-1) : indexes.push_back(indexL);
     }
     registries[indexes[1]] > registries[indexes[0]] ? fecthPrint(registries, indexes[0], indexes[1]) : fecthPrint(registries, indexes[1], indexes[0]);
 }
@@ -265,7 +287,7 @@ void searchByDate(vector<Registry> registries){
 void writeData(vector<Registry> &registries){
     ofstream orderedData("bitacoraOrdenada.txt");
     for(int i = 0; i < registries.size(); i++){
-        string date = to_string(registries[i].hour) + ":" + to_string(registries[i].min) + ":" + to_string(registries[i].sec);
+        string date = (registries[i].hour < 10 ? "0" + to_string(registries[i].hour) : to_string(registries[i].hour)) + ":" + (registries[i].min < 10 ? "0" + to_string(registries[i].min) : to_string(registries[i].min)) + ":" + (registries[i].sec < 10 ? "0" + to_string(registries[i].sec) : to_string(registries[i].sec));
         orderedData << setw(5) << left << registries[i].mon << setw(4) << left << registries[i].day << setw(10) << left << date << setw(20) << left << registries[i].ip << setw(20) << registries[i].err << "\n";
     }
     orderedData.close();
