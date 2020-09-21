@@ -20,6 +20,7 @@ This repository contains all the projects, classwork, as well as homework relate
 
 ## Third semester CS related classes
 * Programación de estructuras de datos y algoritmos fundamentales (C++)
+* Modelación de sistemas mínimos y arquitecturas computacionales
 
 ## Programming Languages
 * Python
