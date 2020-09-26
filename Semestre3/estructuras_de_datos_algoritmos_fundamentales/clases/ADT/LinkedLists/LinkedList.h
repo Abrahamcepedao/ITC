@@ -10,8 +10,8 @@ class LinkedList{
         void addFirst(T data);
         void addLast(T data);
         bool deleteData(T data);
-        bool deleteAt(int index); // listo
-        T getData(int index);
+        bool deleteAt(int index);
+        T getData(int index); // listo
         bool updateAt(int index, T newData);
         bool updateData(T data, T newData);
         void operator[](int index);
@@ -107,12 +107,29 @@ bool LinkedList<T>::deleteAt(int index){
 
 template<class T>
 T LinkedList<T>::getData(int index){
-    if(!isEmpty() || index > 0 || index <= size){
+    if(!isEmpty() && index > 0 && index <= size){
         int count = 1;
         Node<T> *aux = head;
-        while(count < size){
+        while(count <= size){
             if(count == index){
                 return aux->data;
+            }
+            count++;
+            aux = aux->next;
+        }
+    }
+    throw runtime_error("Index out of range or list is empty\n");
+}
+
+template<class T>
+bool LinkedList<T>::updateAt(int index, T newData){
+    if(!isEmpty() && index > 0 && index <= size){
+        int count = 1;
+        Node<T> *aux = head;
+        while(count <= size){
+            if(count == index){
+                aux->data = newData;
+                return true;
             }
             count++;
             aux = aux->next;
