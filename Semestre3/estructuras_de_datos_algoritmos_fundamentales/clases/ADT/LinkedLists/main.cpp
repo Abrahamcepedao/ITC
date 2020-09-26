@@ -15,8 +15,14 @@ int main(){
         cout << "No se encontró el elemento\n";
     } 
     list.print();*/
-    list.deleteAt(1)
+    list.deleteAt(10);
     list.print();
+
+    try{
+        cout << list.getData(100) << "\n";
+    } catch(runtime_error& e) {
+        cout << e.what() << endl;
+    }
     /* Node<int> *node = new Node<int>(5);
     cout << node->data << endl;
     node->data = 6;

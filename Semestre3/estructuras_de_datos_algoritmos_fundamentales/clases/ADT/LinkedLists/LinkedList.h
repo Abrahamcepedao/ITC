@@ -106,6 +106,23 @@ bool LinkedList<T>::deleteAt(int index){
 }
 
 template<class T>
+T LinkedList<T>::getData(int index){
+    if(!isEmpty() || index > 0 || index <= size){
+        int count = 1;
+        Node<T> *aux = head;
+        while(count < size){
+            if(count == index){
+                return aux->data;
+            }
+            count++;
+            aux = aux->next;
+        }
+    }
+    throw runtime_error("Index out of range or list is empty\n");
+}
+
+
+template<class T>
 void LinkedList<T>::print(){
     Node<T> *aux = head;
     if(size > 0){
