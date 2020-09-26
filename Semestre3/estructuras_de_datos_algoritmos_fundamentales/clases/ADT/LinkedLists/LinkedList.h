@@ -7,7 +7,7 @@ class LinkedList{
         int size;
     public:
         LinkedList();
-        void addHead(T data);
+        void addFirst(T data);
         void addLast(T data);
         bool deleteData(T data);
         bool deleteAt(int index);
@@ -16,7 +16,7 @@ class LinkedList{
         bool updateData(T data, T newData);
         void operator[](int index);
         void print();
-        bool isEmpty(){return size == 0};
+        bool isEmpty(){return size == 0;};
 };
 
 template<class T>
@@ -26,7 +26,7 @@ LinkedList<T>::LinkedList(){
 }
 
 template<class T>
-void LinkedList<T>::addHead(T data){
+void LinkedList<T>::addFirst(T data){
     head = new Node<T>(data, head);
     size++;
 }
@@ -56,27 +56,32 @@ bool LinkedList<T>::deleteData(T data){
             return true;
         }
         Node<T> *auxF = head;
-        while(aux->data = data && aux->next != NULL){
+        int count = 0;
+        while(count < size){
             if(aux->data == data){
                 auxF->next = aux->next;
                 delete aux;
                 size--;
                 return true;
             }
+            count++;
             auxF = aux;
             aux = aux->next;
         }
     }
-    
     return false;
 }
 
 template<class T>
 void LinkedList<T>::print(){
     Node<T> *aux = head;
-    for(int i = 0; i < size; i++){
-        cout << aux->data << " ";
-        aux = aux->next;
+    if(size > 0){
+        for(int i = 0; i < size; i++){
+            cout << aux->data << " ";
+            aux = aux->next;
+        }
+    } else{
+        cout << "La lista esta vacía..";
     }
-    cout << endl;
+    cout << "\n";
 }

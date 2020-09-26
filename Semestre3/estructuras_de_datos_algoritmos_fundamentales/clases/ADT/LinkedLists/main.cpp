@@ -4,18 +4,17 @@ using namespace std;
 
 int main(){
     LinkedList<int> list;
-    for(int i = 9; i >= 0; i--){
-        list.addHead(i);
+    for(int i = 100; i > 0; i--){
+        list.addFirst(i);
     }
     list.print();
-    list.addLast(10);
-    list.print();
 
-    if(list.deleteData(5)){
+    if(list.deleteData(100)){
         cout << "Elemento borrado\n";
     } else{
         cout << "No se encontró el elemento\n";
     }
+    list.print();
     /* Node<int> *node = new Node<int>(5);
     cout << node->data << endl;
     node->data = 6;
