@@ -1,7 +1,25 @@
-#ifndef Node_h
-#define Node_h
+#pragma once
 template<class T>
-class Node{
+struct Node{
+    T data;
+    Node<T> *next;
+    Node(T data);
+    Node(T data, Node<T> *next);
+};
+
+template <class T>
+Node<T>::Node(T data){
+    this->data = data;
+    next = NULL;
+}
+
+template <class T>
+Node<T>::Node(T data, Node<T> *next){
+    this->data = data;
+    this->next = next;
+}
+
+/* class Node{
     private:
         T data;
         Node<T> *next;
@@ -22,7 +40,21 @@ class Node{
         //apend
 };
 
+template <class T>
+Node<T>::Node(){
+
+}
+
+
+template <class T>
+Node<T>::Node(T data){
+    this->data = data;
+    next = NULL;
+}
+
 template<class T>
-
-
-#endif
+Node<T>::Node(T data, Node<T> *next){
+    this->data = data;
+    this->next = next;
+}
+ */
