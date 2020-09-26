@@ -10,13 +10,14 @@ class LinkedList{
         void addFirst(T data);
         void addLast(T data);
         bool deleteData(T data);
-        bool deleteAt(int index);
+        bool deleteAt(int index); // listo
         T getData(int index);
         bool updateAt(int index, T newData);
         bool updateData(T data, T newData);
         void operator[](int index);
         void print();
         bool isEmpty(){return size == 0;};
+        int getSize(){return size;};
 };
 
 template<class T>
@@ -53,6 +54,7 @@ bool LinkedList<T>::deleteData(T data){
         if(aux->data == data){
             head = aux->next;
             size--;
+            cout << "Elemento borrado\n";
             return true;
         }
         Node<T> *auxF = head;
@@ -62,6 +64,7 @@ bool LinkedList<T>::deleteData(T data){
                 auxF->next = aux->next;
                 delete aux;
                 size--;
+                cout << "Elemento borrado\n";
                 return true;
             }
             count++;
@@ -69,6 +72,36 @@ bool LinkedList<T>::deleteData(T data){
             aux = aux->next;
         }
     }
+    cout << "No se encontró el elemento\n";
+    return false;
+}
+
+template<class T>
+bool LinkedList<T>::deleteAt(int index){
+    if(!isEmpty() || index > size || index < 0){
+        int count = 1;
+        Node<T> *aux = head;
+        if(index == count){
+            head = aux->next;
+            size--;
+            cout << "Elemento borrado\n";
+            return true;
+        }
+        Node<T> *auxF = head;
+        while(count < size){
+            if(count == index){
+                auxF->next = aux->next;
+                delete aux;
+                size--;
+                cout << "Elemento borrado\n";
+                return true;
+            }
+            count++;
+            auxF = aux;
+            aux = aux->next;
+        }
+    }
+    cout << "No se encontró el elemento\n";
     return false;
 }
 
