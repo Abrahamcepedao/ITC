@@ -23,7 +23,7 @@ class LinkedList{
         bool updateAt(int index, T newData);
         bool updateData(T data, T newData);
 
-        Node<T> *operator[](int index); // listo
+        Node<T> *operator[](int index);
         LinkedList<T> operator=(T list[]);
 
         void print();
@@ -81,7 +81,7 @@ bool LinkedList<T>::deleteData(T data){
         if(aux->data == data){
             head = aux->next;
             size--;
-            cout << "Node deleted\n";
+            cout << "Succes: node deleted\n";
             return true;
         }
         Node<T> *auxF = head;
@@ -91,7 +91,7 @@ bool LinkedList<T>::deleteData(T data){
                 auxF->next = aux->next;
                 delete aux;
                 size--;
-                cout << "Node deleted\n";
+                cout << "Succes: node deleted\n";
                 return true;
             }
             count++;
@@ -99,7 +99,7 @@ bool LinkedList<T>::deleteData(T data){
             aux = aux->next;
         }
     }
-    cout << "Node was not found\n";
+    cout << "Error: node was not found..\n";
     return false;
 }
 
@@ -110,22 +110,23 @@ bool LinkedList<T>::deleteData(T data){
 //Complexity: O(n)
 template<class T>
 bool LinkedList<T>::deleteAt(int index){
-    if(!isEmpty() || index > size || index < 0){
+    if(!isEmpty() && index <= size && index > 0){
         int count = 1;
         Node<T> *aux = head;
         if(index == count){
             head = aux->next;
             size--;
-            cout << "Node deleted\n";
+            cout << "Succes: node deleted\n";
             return true;
         }
         Node<T> *auxF = head;
-        while(count < size){
+        while(count <= size){
+            cout << count << " ";
             if(count == index){
                 auxF->next = aux->next;
                 delete aux;
                 size--;
-                cout << "Node deleted\n";
+                cout << "Succes: node deleted\n";
                 return true;
             }
             count++;
@@ -133,7 +134,7 @@ bool LinkedList<T>::deleteAt(int index){
             aux = aux->next;
         }
     }
-    cout << "Node was not found\n";
+    cout << "Error: node was not found\n";
     return false;
 }
 
@@ -155,7 +156,7 @@ T LinkedList<T>::getData(int index){
             aux = aux->next;
         }
     }
-    throw runtime_error("Index out of range or list is empty\n");
+    throw runtime_error("Error: index out of range or list is empty\n");
 }
 
 //Method: updateAt
@@ -171,13 +172,14 @@ bool LinkedList<T>::updateAt(int index, T newData){
         while(count <= size){
             if(count == index){
                 aux->data = newData;
+                cout << "Node updated succesfully\n";
                 return true;
             }
             count++;
             aux = aux->next;
         }
     }
-    throw runtime_error("Index out of range or list is empty\n");
+    throw runtime_error("Error: index out of range or list is empty\n");
 }
 
 //Method: updateData
@@ -193,13 +195,14 @@ bool LinkedList<T>::updateData(T data, T newData){
         while(count <= size){
             if(aux->data == data){
                 aux->data = newData;
+                cout << "Node updated succesfully\n";
                 return true;
             }
             count++;
             aux = aux->next;
         }
     }
-    throw runtime_error("Data was not found\n");
+    throw runtime_error("Error: data was not found\n");
 }
 
 //Method: operator[]
@@ -220,7 +223,7 @@ Node<T>* LinkedList<T>::operator[](int index){
             aux = aux->next;
         }
     }
-    throw runtime_error("Index out of range or list is empty\n");
+    throw runtime_error("Error: index out of range or list is empty\n");
 }
 
 //Method: operator=
@@ -236,7 +239,7 @@ LinkedList<T> LinkedList<T>::operator=(T list[]){
         }
         return *this;
     }
-    throw runtime_error("Enter a non empty list\n");
+    throw runtime_error("Error: enter a non empty list\n");
 }
 
 //Method: findData
@@ -257,7 +260,7 @@ int LinkedList<T>::findData(T data){
             aux = aux->next;
         }
     }
-    throw runtime_error("Enter a non empty list\n");
+    throw runtime_error("Error: index out of range\n");
 }
 
 //Method: print

@@ -7,7 +7,11 @@
 using namespace std;
 #include "LinkedList.h"
 
-// Input validation
+// Function: checkInt
+// Description: validates input to be of type (int) and in the range of the given values
+// Input: min (minimum value), max (maximum value)
+// Output: validated number
+// Complexity: best case O(1), worst case O(n) - depends on the user input
 int checkInt(int min, int max){
     int num;
     cin >> num;
@@ -29,10 +33,14 @@ int checkInt(int min, int max){
     }
     return num;
 }
-
+// Function: menu
+// Description: Prints the available choices for the user to select
+// Input: NA
+// Output: number that signifies the chosen option
+// Complexity: O(1) - depends on the user input
 int menu(){
     int ans;
-    cout << "<---Menu: select an option--->\n\n";
+    cout << "\n\n<---Menu: select an option--->\n\n";
     cout << "1. addFirst\n";
     cout << "2. addLast\n";
     cout << "3. deleteData\n";
@@ -120,7 +128,7 @@ int main(){
                 cout << "Enter index: ";
                 index = checkInt(1, list.getSize());
                 try{
-                    cout << list.getData(index) << "\n";
+                    cout << "data at [" << index << "] = " << list.getData(index) << "\n";
                 } catch(runtime_error& e){
                     cout << e.what();
                 }
@@ -130,7 +138,7 @@ int main(){
                 cout << "Enter data: ";
                 cin >> num;
                 try{
-                    list.findData(num);
+                    cout << "The index of (" << num << ") = " << list.findData(num);
                 } catch(runtime_error& e){
                     cout << e.what();
                 }
@@ -138,8 +146,10 @@ int main(){
             default:
                 break;
         }
+        cout << "\nCurrent linkedlist: ";
         list.print();
         ans = menu();
     }
+    cout << "The program has finished with ease..\n\n\n";
     return 0;
 }
