@@ -45,13 +45,19 @@ int menu(){
     cout << "2. addLast\n";
     cout << "3. deleteData\n";
     cout << "4. deleteAt\n";
-    cout << "5. updateAt\n";
-    cout << "6. updateData\n";
-    cout << "7. getData\n";
-    cout << "8. findData\n";
+    cout << "5. insertAt\n";
+    cout << "6. updateAt\n";
+    cout << "7. clearData\n";
+    cout << "8. updateData\n";
+    cout << "9. duplicate\n";
+    cout << "10. removeDuplicates\n";
+    cout << "11. reverseData\n";
+    cout << "12. mergeSort\n";
+    cout << "13. getData\n";
+    cout << "14. findData\n";
     cout << "0. toExit\n";
     cout << "Enter selection: ";
-    return checkInt(0,8);
+    return checkInt(0,13);
 }
 
 int main(){
@@ -100,6 +106,18 @@ int main(){
                 }
                 break;
             case 5:
+                cout << "Inserta data at..\n";
+                cout << "Enter index: ";
+                index = checkInt(1,list.getSize());
+                cout << "Enter data: ";
+                cin >> num;
+                try{
+                    list.insertAt(index, num);
+                } catch(runtime_error& e){
+                    cout << e.what();
+                }
+                break;
+            case 6:
                 cout << "Update data at..\n";
                 cout << "Enter index: ";
                 index = checkInt(1, list.getSize());
@@ -111,7 +129,15 @@ int main(){
                     cout << e.what();
                 }
                 break;
-            case 6:
+            case 7:
+                cout << "Clear data..\n";
+                try{
+                    list.clear();
+                } catch(runtime_error& e){
+                    cout << e.what();
+                }
+                break;
+            case 8:
                 cout << "Update data..\n";
                 cout << "Enter data: ";
                 cin >> index;
@@ -123,7 +149,39 @@ int main(){
                     cout << e.what();
                 }
                 break;
-            case 7:
+            case 9:
+                cout << "Duplicate..\n";
+                try{
+                    list.duplicate();
+                } catch(runtime_error& e){
+                    cout << e.what();
+                }
+                break;
+            case 10:
+                cout << "Remove duplicates..\n";
+                try{
+                    list.removeDuplicates();
+                } catch(runtime_error& e){
+                    cout << e.what();
+                }
+                break;
+            case 11:
+                cout << "Reverse data..\n";
+                try{
+                    list.reverse();
+                } catch(runtime_error& e){
+                    cout << e.what();
+                }
+                break;
+            case 12:
+                cout << "Merge sort..\n";
+                try{
+                    list.order();
+                } catch(runtime_error& e){
+                    cout << e.what();
+                }
+                break;
+            case 13:
                 cout << "Get data at..\n";
                 cout << "Enter index: ";
                 index = checkInt(1, list.getSize());
@@ -133,7 +191,7 @@ int main(){
                     cout << e.what();
                 }
                 break;
-            case 8:
+            case 14:
                 cout << "Find data..\n";
                 cout << "Enter data: ";
                 cin >> num;

@@ -4,14 +4,15 @@
 // 26 de septiembre 2020
 #pragma once
 #include "Node.h"
-template<class T>
+#include <vector>
+template <class T>
 class LinkedList{
     private:
         Node<T> *head;
         int size;
     public:
         LinkedList();
-        
+
         void addFirst(T data);
         void addLast(T data);
         
@@ -23,8 +24,18 @@ class LinkedList{
         bool updateAt(int index, T newData);
         bool updateData(T data, T newData);
 
+        void insertAt(int index, T data);
+        void clear();
+        void duplicate();
+        void removeDuplicates();
+        void reverse();
+
+        void mergeSort(vector<T> &vect, int l, int r);
+        void merge(vector<T> &vect, int l, int m, int r);
+        void order();
+
         Node<T> *operator[](int index);
-        LinkedList<T> operator=(T list[]);
+        /* void operator=(initializer_list<T> list); */
 
         void print();
         bool isEmpty(){return size == 0;};
@@ -85,8 +96,7 @@ bool LinkedList<T>::deleteData(T data){
             return true;
         }
         Node<T> *auxF = head;
-        int count = 0;
-        while(count < size){
+        while(aux != NULL){
             if(aux->data == data){
                 auxF->next = aux->next;
                 delete aux;
@@ -94,7 +104,6 @@ bool LinkedList<T>::deleteData(T data){
                 cout << "Succes: node deleted\n";
                 return true;
             }
-            count++;
             auxF = aux;
             aux = aux->next;
         }
@@ -120,7 +129,7 @@ bool LinkedList<T>::deleteAt(int index){
             return true;
         }
         Node<T> *auxF = head;
-        while(count <= size){
+        while(aux != NULL){
             cout << count << " ";
             if(count == index){
                 auxF->next = aux->next;
@@ -226,21 +235,215 @@ Node<T>* LinkedList<T>::operator[](int index){
     throw runtime_error("Error: index out of range or list is empty\n");
 }
 
+//Method: insertAt
+//Description: insert data at the given index
+//Input: index (the index where to insert data), data (the data to be inserted)
+//Output: The list with the new value|| runtime error if invalid index or empty Linkedlist
+//Complexity: O(n)
+template<class T>
+void LinkedList<T>::insertAt(int index, T data){
+    if(!isEmpty() && index > 0 && index <= size){
+        if(index == 1){
+            addFirst(data);
+        } else {
+            Node<T> *aux = head;
+            Node<T> *auxF = head;
+            int count = 1;
+            while(aux != NULL){
+                if(count == index){
+                    auxF->next = new Node<T>(data,aux);
+                    size++;
+                }
+                count++;
+                auxF = aux;
+                aux = aux->next;
+            }
+        }
+    } else{
+        throw runtime_error("Error: index out of range or list is empty\n");
+    }
+}
+
+//Method: clear
+//Description: Deletes all the elements of the list
+//Input: NA
+//Output: empty list
+//Complexity: O(n)
+template<class T>
+void LinkedList<T>::clear(){
+    while(!isEmpty()){
+        deleteAt(1);
+    }
+    cout << "Succes: data deleted..\n";
+}
+
+//Method: duplicate
+//Description: Duplicates all the elements of the list
+//Input: NA
+//Output: List with a duplicate of each element
+//Complexity: O(n)
+template<class T>
+void LinkedList<T>::duplicate(){
+    if(!isEmpty()){
+        Node<T> *aux = head;
+        int count = 2;
+        while(aux != NULL){
+            count > size ? addLast(aux->data) : insertAt(count, aux->data);
+            count += 2;
+            cout << count << endl;
+            print();
+            aux = aux->next->next;
+        }
+    } else{
+        throw runtime_error("Error: list is empty\n");
+    }
+}
+
+//Method: removeDuplicates
+//Description: Removes all duplicate elements of the list
+//Input: NA
+//Output: List with solely unique elements
+//Complexity: O(n^2)
+template<class T>
+void LinkedList<T>::removeDuplicates(){
+    if(!isEmpty()){
+        vector<T> vect;
+        Node<T> *aux = head;
+        while(aux != NULL){
+            bool condition = true;
+            for(T i : vect){
+                if(aux->data == i){
+                    condition = false;
+                }
+            }
+            if(condition){
+                vect.push_back(aux->data);
+            } else{
+                deleteData(aux->data);
+            }
+            aux = aux->next;
+        }
+        cout << "Succes: Duplicates removed\n";
+    } else{
+        throw runtime_error("Error: list is empty\n");
+    }
+}
+
+//Method: reverse
+//Description: Reverses all the elements of the list
+//Input: NA
+//Output: List with reversed elements
+//Complexity: O(n^2)
+template<class T>
+void LinkedList<T>::reverse(){
+    if(!isEmpty()){
+        vector<T> vect;
+        Node<T> *aux = head;
+        while(aux != NULL){
+            vect.push_back(aux->data);
+            aux = aux->next;
+        }
+        clear();
+        for(T i : vect){
+            addFirst(i);
+        }
+    } else{
+        throw runtime_error("Error: list is empty\n");
+    }
+}
+
+//Method: reverse
+//Description: Reverses all the elements of the list
+//Input: NA
+//Output: List with reversed elements
+//Complexity: O(n^2)
+template<class T>
+void LinkedList<T>::merge(vector<T> & vect, int l, int  m, int r){
+    int i = 0, j = 0, count = l;
+    vector<T> vect1, vect2;
+    for(int e = l; e <= m; e++){
+        vect1.push_back(vect[e]);
+    }
+    for(int k = m+1; k <= r; k++){
+        vect2.push_back(vect[k]);
+    }
+    while(i < (m-l+1) && j < (r-m)){
+        if(vect1[i] > vect2[j]){
+            vect[count] = vect2[j];
+            j++;
+        } else{
+            vect[count] = vect1[i];
+            i++;
+        }
+        count++;
+    }
+    while(i < (m - l + 1)){
+        vect[count] = vect1[i];
+        count++;
+        i++;
+    }
+    while(j < (r-m)){
+        vect[count] = vect2[j];
+        count++;
+        j++;
+    }
+}
+
+//Method: reverse
+//Description: Reverses all the elements of the list
+//Input: NA
+//Output: List with reversed elements
+//Complexity: O(n^2)
+template<class T>
+void LinkedList<T>::mergeSort(vector<T> & vect, int l, int r){
+    if(!isEmpty()){
+        if(l < r){
+            int m = l + (r-l) / 2;
+            mergeSort(vect, l, m);
+            mergeSort(vect, m + 1, r);
+            merge(vect, l, m, r);
+        }
+    } else{
+        throw runtime_error("Error: list is empty\n");
+    }
+}
+
+//Method: reverse
+//Description: Reverses all the elements of the list
+//Input: NA
+//Output: List with reversed elements
+//Complexity: O(n^2)
+template<class T>
+void LinkedList<T>::order(){
+    if(!isEmpty()){
+        vector<T> vect;
+        Node<T> *aux = head;
+        while(aux != NULL){
+            vect.push_back(aux->data);
+            aux = aux->next;
+        }
+        mergeSort(vect, 0, size-1);
+        for(int i = 1; i <= vect.size(); i++){
+            updateAt(i, vect[i-1]);
+        }
+    }
+}
+
 //Method: operator=
 //Description: overloading the operator "=" to assing a linked list a set of values. It also keeps the values that the list may already have
 //Input: list[] (an array of elements to be add to the linked list)
 //Output: a linked list with the given set of elements || runtime error the array is empty
 //Complexity: O(n)
-template<class T>
-LinkedList<T> LinkedList<T>::operator=(T list[]){
+/* template<class T>
+void LinkedList<T>::operator=(initializer_list<T> list){
     if(sizeof(list) != 0){
-        for (int i = 0; i <= sizeof(list)/sizeof(list[0]); i++){
-            this->addLast(list[i]);
+        for (T listItem : list){
+            addLast(listItem);
         }
-        return *this;
+    } else{
+        throw runtime_error("Error: enter a non empty list\n");
     }
-    throw runtime_error("Error: enter a non empty list\n");
-}
+} */
 
 //Method: findData
 //Description: Finds the index of the node that has the given data
