@@ -5,7 +5,9 @@
 #pragma once
 #include "Node.h"
 #include <vector>
+#include <iostream>
 template <class T>
+
 class LinkedList{
     private:
         Node<T> *head;
@@ -35,7 +37,7 @@ class LinkedList{
         void order();
 
         Node<T> *operator[](int index);
-        /* void operator=(initializer_list<T> list); */
+        LinkedList<T> operator=(vector<T> list);
 
         void print();
         bool isEmpty(){return size == 0;};
@@ -290,8 +292,6 @@ void LinkedList<T>::duplicate(){
         while(aux != NULL){
             count > size ? addLast(aux->data) : insertAt(count, aux->data);
             count += 2;
-            cout << count << endl;
-            print();
             aux = aux->next->next;
         }
     } else{
@@ -352,10 +352,10 @@ void LinkedList<T>::reverse(){
     }
 }
 
-//Method: reverse
-//Description: Reverses all the elements of the list
+//Method: merge
+//Description: Merges two lists
 //Input: NA
-//Output: List with reversed elements
+//Output: merged list
 //Complexity: O(n^2)
 template<class T>
 void LinkedList<T>::merge(vector<T> & vect, int l, int  m, int r){
@@ -389,10 +389,10 @@ void LinkedList<T>::merge(vector<T> & vect, int l, int  m, int r){
     }
 }
 
-//Method: reverse
-//Description: Reverses all the elements of the list
+//Method: mergeSort
+//Description: Orders a list  by diving it into two and then merges them
 //Input: NA
-//Output: List with reversed elements
+//Output: Ordered list
 //Complexity: O(n^2)
 template<class T>
 void LinkedList<T>::mergeSort(vector<T> & vect, int l, int r){
@@ -408,10 +408,10 @@ void LinkedList<T>::mergeSort(vector<T> & vect, int l, int r){
     }
 }
 
-//Method: reverse
-//Description: Reverses all the elements of the list
+//Method: order
+//Description: Wirtes the list's data into a vector for more simple ordering
 //Input: NA
-//Output: List with reversed elements
+//Output: Orders the list
 //Complexity: O(n^2)
 template<class T>
 void LinkedList<T>::order(){
@@ -434,16 +434,17 @@ void LinkedList<T>::order(){
 //Input: list[] (an array of elements to be add to the linked list)
 //Output: a linked list with the given set of elements || runtime error the array is empty
 //Complexity: O(n)
-/* template<class T>
-void LinkedList<T>::operator=(initializer_list<T> list){
+template<class T>
+LinkedList<T> LinkedList<T>::operator=(vector<T> list){
     if(sizeof(list) != 0){
         for (T listItem : list){
-            addLast(listItem);
+            this->addLast(listItem);
         }
+        return *this;
     } else{
         throw runtime_error("Error: enter a non empty list\n");
     }
-} */
+}
 
 //Method: findData
 //Description: Finds the index of the node that has the given data

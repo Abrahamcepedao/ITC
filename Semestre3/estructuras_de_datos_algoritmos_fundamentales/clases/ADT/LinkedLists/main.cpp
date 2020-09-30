@@ -41,21 +41,21 @@ int checkInt(int min, int max){
 int menu(){
     int ans;
     cout << "\n\n<---Menu: select an option--->\n\n";
-    cout << "1. addFirst\n";
-    cout << "2. addLast\n";
-    cout << "3. deleteData\n";
-    cout << "4. deleteAt\n";
-    cout << "5. insertAt\n";
-    cout << "6. updateAt\n";
-    cout << "7. clearData\n";
-    cout << "8. updateData\n";
-    cout << "9. duplicate\n";
+    cout << "1.  addFirst\n";
+    cout << "2.  addLast\n";
+    cout << "3.  deleteData\n";
+    cout << "4.  deleteAt\n";
+    cout << "5.  insertAt\n";
+    cout << "6.  updateAt\n";
+    cout << "7.  clearData\n";
+    cout << "8.  updateData\n";
+    cout << "9.  duplicate\n";
     cout << "10. removeDuplicates\n";
     cout << "11. reverseData\n";
     cout << "12. mergeSort\n";
     cout << "13. getData\n";
     cout << "14. findData\n";
-    cout << "0. toExit\n";
+    cout << "0.  toExit\n";
     cout << "Enter selection: ";
     return checkInt(0,13);
 }
@@ -65,9 +65,11 @@ int main(){
     int n;
     cout << "Enter number of values: ";
     cin >> n;
+    vector<int> vect;
     for(int i = n; i > 0; i--){
-        list.addFirst(i);
+        vect.push_back(i);
     }
+    list = vect;
     list.print();
     int ans = menu();
     while(ans != 0){
