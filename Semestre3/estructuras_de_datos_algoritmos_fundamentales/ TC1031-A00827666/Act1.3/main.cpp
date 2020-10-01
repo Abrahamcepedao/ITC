@@ -12,10 +12,11 @@
 #include <iomanip>
 using namespace std;
 
-int daysMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-string months[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dic"};
+int daysMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}; // number of days of each month
+string months[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dic"}; // months
 
-// Input validation
+// Function: checkInt
+// This function validates that the input is a number and between a given range
 int checkInt(int min, int max, string inquiry){
     int num;
     cout << "Enter " << inquiry << ": ";
@@ -39,6 +40,8 @@ int checkInt(int min, int max, string inquiry){
     return num;
 }
 
+// Function: checkMonth
+// This function verifies that a given month is valid
 string checkMonth(int num){
     cout << (num == -1 ? "Enter a valid month: " : num == 0 ? "Enter month: " : "Enter a prior month: ");
     string mon;
@@ -52,6 +55,8 @@ string checkMonth(int num){
     return (accept ? mon : checkMonth(-1));
 }
 
+// Function: getMonthIndex
+// This function returns the index of a given month
 int getMonthIndex(string str){
     for(int i = 0; i < 12; i++){
         if(str == months[i]){
@@ -61,6 +66,8 @@ int getMonthIndex(string str){
     return -1;
 }
 
+// Struct: Registry
+// This structs has the attributes of the file data as well as operator overloading to make comparisons
 struct Registry{
     string mon;
     int day;
@@ -78,17 +85,19 @@ struct Registry{
     }
 };
 
+// Function: split
+// This function splits a string given a pattern
 void split(vector<string> &vect, string str, string pattern){
     int beg = 0, end = 0;
     string value;
     while(end >= 0){
         end = str.find(pattern, beg);
-        value = str.substr(beg, end - beg);
+        vect.push_back(str.substr(beg, end - beg));
         beg = end + 1;
-        vect.push_back(value);
     }   
 }
-
+// Function: exchange
+// This function exchanges two values from a vector
 template<class T>
 void exchange(vector<T> &vect, int elem1, int elem2){
     T elem = vect[elem1];
@@ -96,7 +105,8 @@ void exchange(vector<T> &vect, int elem1, int elem2){
     vect[elem2] = elem;
 }
 
-
+// Function: separate
+// This is a fundamental part for the orderQuick algorithm
 template<class T>
 int separate(vector<T> &vect, int begin, int end){
     int pos = begin+1, r = end;
@@ -109,12 +119,11 @@ int separate(vector<T> &vect, int begin, int end){
         }
         (r > pos) ? exchange(vect, pos, r) : exchange(vect, begin, r);
     }
-    if(vect[begin] > vect[r]){
-        exchange(vect, begin, r);
-    }
+    vect[begin] > vect[r] ? exchange(vect, begin, r) : void();
     return r;
 }
 
+// Function: orderQuick 
 // Quick sort algorithm - Comlplexity O(nlogn)
 template<class T>
 void orderQuick(vector<T> &vect, int l, int r){
@@ -131,6 +140,8 @@ void printRegistry(Registry registry){
     cout << setw(5) << left << registry.mon << setw(4) << left << registry.day << setw(10) << left << date << setw(20) << left << registry.ip << setw(20) << registry.err << "\n";
 }
 
+// Function: fetchPrint
+// This function recieves a vector and to ints. It prints the data from the vector within the indexes.
 void fecthPrint(vector<Registry> &registries, int indexF, int indexL){
     cout << "Printing database ...\n\n";
     cout << "From-> ";
@@ -154,13 +165,11 @@ void fecthPrint(vector<Registry> &registries, int indexF, int indexL){
         getline( cin, ans );
         
     }
-    
-    /* for(int i = indexF; i <= indexL; i++){
-        printRegistry(registries[i]);
-    } */
     cout << "\n\n";
 }
 
+// Function: getErrorData
+// This function recieves a vector and a string, and uses the values of the vector to concatenate a string and save it on the string
 void getErrorData(string &str, vector<string> values){
     str = values[4];
     for(int i = 5; i < values.size(); i++){
@@ -168,12 +177,11 @@ void getErrorData(string &str, vector<string> values){
     }
 }
 
-
+// Function: reaData
+// This function reads data from "bitacora.txt" and saves it in a vector of type Registry (struct)
 void readData(vector<Registry> &registries){
-    //open file
-    ifstream file("bitacora.txt");
-    //initialize necessary vectors and variables
-    vector<string> values;
+    ifstream file("bitacora.txt"); //open file
+    vector<string> values; //initialize necessary vectors and variables
     vector<string> date;
     string line;
     while(getline(file, line)){
@@ -185,21 +193,25 @@ void readData(vector<Registry> &registries){
         registry.hour = stoi(date[0]); // get hour (numeric)
         registry.min = stoi(date[1]); //get minute (numeric)
         registry.sec = stoi(date[2]); //get second (numeric)
-        registry.ip = values[3];
-        getErrorData(registry.err, values);
-        registries.push_back(registry);
-        values.clear();
+        registry.ip = values[3]; // get ip (string)
+        getErrorData(registry.err, values); //get error (concatenate strings)
+        registries.push_back(registry); // push new registry
+        values.clear(); // clear temporal vectors
         date.clear();
     }
 }
 
-
+// Function: getIndexF ()
+/* This function get the first index where the element can be found.
+Furthermore, it is relevant to note that this functions can find the index  of months, days, hours, minutes, and seconds.
+If the function does not find the value, it calls its self with the value + 1 while the value its less than the maximum value
+ */
 int getIndexF(int elem, vector<Registry> &registries, int low, int high, int num, int monIndex){
     int index, lowT = low, highT = high;
     int comparison[] = {11, daysMonth[monIndex]-1, 23, 59, 59};
+    vector<int> numbers;
     while(low <= high){
         index = (high + low) / 2;
-        vector<int> numbers;
         for(int i = -1; i < 1; i++){
             numbers.push_back(getMonthIndex(registries[index+i].mon));
             numbers.push_back(registries[index + i].day);
@@ -218,16 +230,22 @@ int getIndexF(int elem, vector<Registry> &registries, int low, int high, int num
         } else{
             low = index + 1;
         }
+        numbers.clear();
     }
     return elem < comparison[num] ? getIndexF(elem + 1, registries, lowT, highT, num, monIndex) : -1;
 }
 
+// Function: getIndexL ()
+/* This function get the last index where the element can be found.
+Furthermore, it is relevant to note that this functions can find the index  of months, days, hours, minutes, and seconds.
+If the function does not find the value, it calls its self with the value + 1 while the value its less than the maximum value
+ */
 int getIndexL(int elem, vector<Registry> &registries, int low, int high, int num, int monIndex){
     int index, lowT = low, highT = high;
     int comparison[] = {11, daysMonth[monIndex] - 1, 23, 59, 59};
+    vector<int> numbers;
     while(low <= high){
         index = (high + low) / 2;
-        vector<int> numbers;
         for(int i = 0; i < 2; i++){
             numbers.push_back(getMonthIndex(registries[index+i].mon));
             numbers.push_back(registries[index + i].day);
@@ -246,19 +264,23 @@ int getIndexL(int elem, vector<Registry> &registries, int low, int high, int num
         } else{
             low = index + 1;
         }
+        numbers.clear();
     }
     return elem < comparison[num] ? getIndexL(elem + 1, registries, lowT, highT, num, monIndex) : -1;
 }
 
+// Function: Search by date
+/* This function reads the date and hour of the first and last date to be outputed.
+Then it gets the first and final index of each date.
+Finally it calls fectPrint to print the registries within those dates
+ */
 void searchByDate(vector<Registry> registries){
     cout << "-> Searching by date...\n\n";
     string valuesText[] = {"month", "day", "hour", "minute", "second"};
     vector<int> indexes;
+    vector<int> values;
     for(int j = 0; j < 2; j++){
         cout << (j == 0 ? "Enter first date..\n" : "\n\nEnter last date..\n");
-    
-        vector<int> newValues(5, -1);
-        vector<int> values;
         int indexF = 0, indexL = registries.size() - 1;
 
         values.push_back(getMonthIndex(checkMonth(0)));
@@ -269,7 +291,7 @@ void searchByDate(vector<Registry> registries){
         
         for(int i = 0; i < 5; i++){
             int tempIndex = indexF;
-            indexF = getIndexF(values[i], registries, indexF, indexL, i, newValues[1] != -1 ? newValues[1] : values[1]);
+            indexF = getIndexF(values[i], registries, indexF, indexL, i, values[0]);
             while(indexF ==  -1){
                 values[i]--;
                 values[i + 1] = i == 0 ? 1 : 0;
@@ -277,13 +299,14 @@ void searchByDate(vector<Registry> registries){
             }
             indexL = getIndexL(values[i], registries, indexF, indexL, i, values[0]);
         }
-        newValues.clear();
         values.clear();
         j == 0 ? indexes.push_back(indexF) : indexL != 0 && registries[indexL].day == registries[indexL+1].day ? indexes.push_back(indexL-1) : indexes.push_back(indexL);
     }
     registries[indexes[1]] > registries[indexes[0]] ? fecthPrint(registries, indexes[0], indexes[1]) : fecthPrint(registries, indexes[1], indexes[0]);
 }
 
+// Function: writeData
+// This function writes the values of all the registries in a new file "bitacoraOrdenada.txt"
 void writeData(vector<Registry> &registries){
     ofstream orderedData("bitacoraOrdenada.txt");
     for(int i = 0; i < registries.size(); i++){
@@ -293,6 +316,8 @@ void writeData(vector<Registry> &registries){
     orderedData.close();
 }
 
+// Function: menu
+// This function has an input for the user to choose what does he/she wants to do. It also calls itself while the answer 1= 3
 void menu(vector<Registry> &registries){
     cout << "\n\n\n-> Select an option\n";
     cout << "1. Print entire database\n";
@@ -317,11 +342,10 @@ void menu(vector<Registry> &registries){
 
 int main(){
     vector<Registry> registries; // create vector
-    readData(registries); // read data
-    orderQuick(registries, 0, registries.size()-1); // order vector using quick sort
-    //printRegistries(registries); // print registries
+    readData(registries); // read data from file
+    orderQuick(registries, 0, registries.size()-1); // order vector using the quick sort method
     cout << "\n\n\n<-----------------Welcome to the registry database!---------------->\n\n\n";
-    writeData(registries);
-    menu(registries);
+    writeData(registries); // write data on new file
+    menu(registries); // call menu
     return 0;
 }
