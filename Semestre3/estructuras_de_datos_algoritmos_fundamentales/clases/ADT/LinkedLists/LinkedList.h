@@ -475,7 +475,7 @@ int LinkedList<T>::findData(T data){
 template<class T>
 void LinkedList<T>::print(){
     Node<T> *aux = head;
-    if(size > 0){
+    if(!isEmpty()){
         for(int i = 0; i < size; i++){
             cout << aux->data << " ";
             aux = aux->next;
