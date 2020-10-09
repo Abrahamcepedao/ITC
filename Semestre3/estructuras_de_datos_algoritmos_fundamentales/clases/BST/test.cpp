@@ -28,7 +28,7 @@ int main(){
     bts.insert(16);
     bts.insert(23);
     bts.print();
-    bts.deleteData(15);
+    bts.deleteData(14);
     bts.print();
     
     return 0;

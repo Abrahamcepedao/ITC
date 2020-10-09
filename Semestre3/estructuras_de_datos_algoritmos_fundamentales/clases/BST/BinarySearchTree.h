@@ -110,8 +110,6 @@ template<class T>
 void BinarySearchTree<T>::deleteData(T data){
     Node<T> *aux = findNode(data);
     numChild(aux);
-    cout << "numChilds: " << numChilds << endl;
-    
     if(numChilds == 0){
         Node<T> *auxPrev = findPrevNode(data);
         auxPrev->left == aux ? auxPrev->left = NULL : auxPrev->right = NULL;
@@ -122,22 +120,26 @@ void BinarySearchTree<T>::deleteData(T data){
         delete aux;
     } else{
         Node<T> *auxTemp = aux;
-        aux->left != NULL ? aux = aux->left : aux = aux->right;
         if(aux->left != NULL){
             aux = aux->left;
-            Node<T> *auxPrev = findPrevNode(aux->data);
             if(aux->right == NULL){
-
+                auxTemp->data = aux->data;
+                auxTemp->left = aux->left;
             } else{
                 while(aux->right != NULL){
                     aux = aux->right;
                 }
-                
+                Node<T> *auxPrev = findPrevNode(aux->data);
                 auxTemp->data = aux->data;
                 auxPrev->left == aux ? auxPrev->left = NULL : auxPrev->right = NULL;
             }
         } else{
-            
+            while(aux->right != NULL){
+                aux = aux->right;
+            }
+            Node<T> *auxPrev = findPrevNode(aux->data);
+            auxTemp->data = aux->data;
+            auxPrev->left == aux ? auxPrev->left = NULL : auxPrev->right = NULL;
         }
         delete aux;
     }
