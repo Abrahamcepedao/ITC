@@ -111,10 +111,34 @@ void BinarySearchTree<T>::deleteData(T data){
     Node<T> *aux = findNode(data);
     numChild(aux);
     cout << "numChilds: " << numChilds << endl;
-    Node<T> *auxPrev = findPrevNode(data);
-    cout << "prev: " << auxPrev->data << endl;
+    
     if(numChilds == 0){
+        Node<T> *auxPrev = findPrevNode(data);
         auxPrev->left == aux ? auxPrev->left = NULL : auxPrev->right = NULL;
+        delete aux;
+    } else if(numChilds == 1){
+        Node<T> *auxPrev = findPrevNode(data);
+        auxPrev->left == aux ? (aux->left != NULL ? auxPrev->left = aux->left : auxPrev->left = aux->right) : (aux->left != NULL ? auxPrev->right = aux->left : auxPrev->right = aux->right);
+        delete aux;
+    } else{
+        Node<T> *auxTemp = aux;
+        aux->left != NULL ? aux = aux->left : aux = aux->right;
+        if(aux->left != NULL){
+            aux = aux->left;
+            Node<T> *auxPrev = findPrevNode(aux->data);
+            if(aux->right == NULL){
+
+            } else{
+                while(aux->right != NULL){
+                    aux = aux->right;
+                }
+                
+                auxTemp->data = aux->data;
+                auxPrev->left == aux ? auxPrev->left = NULL : auxPrev->right = NULL;
+            }
+        } else{
+            
+        }
         delete aux;
     }
 }
