@@ -27,9 +27,12 @@ int main(){
     bts.insert(12);
     bts.insert(16);
     bts.insert(23);
+    bts.insert(24);
+    bts.insert(25);
     bts.print();
     bts.deleteData(14);
     bts.print();
-    
+    cout << "bts height: " << bts.getHeight() << endl;
+    cout << "level: " << bts.whatlevelamI(17) << endl;
     return 0;
 }

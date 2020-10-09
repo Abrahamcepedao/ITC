@@ -13,7 +13,10 @@ class BinarySearchTree{
     private:
         Node<T> *root;
         int numChilds;
+        int treeHeight;
         void printTree(Node<T> *node, int level);
+        Node<T> *findRoot();
+        void height(Node<T> *node);
         void numChild(Node<T> *node);
     public:
         BinarySearchTree();
@@ -24,8 +27,10 @@ class BinarySearchTree{
         void deleteData(T data);
         Node<T>* findNode(T data);
         Node<T> *findPrevNode(T data);
-
-        //void clear();
+        
+        int whatlevelamI(T data);
+        int getHeight();
+        void setHeight(int height){treeHeight = height;};
         void print();
 };
 
@@ -34,6 +39,7 @@ template<class T>
 BinarySearchTree<T>::BinarySearchTree(){
     root = NULL;
     numChilds = 0;
+    treeHeight = 0;
 }
 
 template<class T>
@@ -108,6 +114,9 @@ Node<T>* BinarySearchTree<T>::findPrevNode(T data){
 //delete
 template<class T>
 void BinarySearchTree<T>::deleteData(T data){
+    if(isEmpty()){
+        throw runtime_error("Error (height): list is empty..\n");
+    }
     Node<T> *aux = findNode(data);
     numChild(aux);
     if(numChilds == 0){
@@ -143,6 +152,53 @@ void BinarySearchTree<T>::deleteData(T data){
         }
         delete aux;
     }
+}
+
+
+template<class T>
+Node<T>* BinarySearchTree<T>::findRoot(){
+    if(isEmpty()){
+        throw runtime_error("Error (height): list is empty..\n");
+    }
+    return root;
+}
+
+template<class T>
+int BinarySearchTree<T>::whatlevelamI(T data){
+    if(!isEmpty()){
+        Node<T> *aux = root;
+        int count = 0;
+        while(aux != NULL){
+            if(aux->data == data){
+                return count;
+            }
+            count++;
+            aux->data > data ? aux = aux->left : aux = aux->right;
+        }
+    }
+    throw runtime_error("Error (findNode): node not found..\n");
+}
+
+template<class T>
+int BinarySearchTree<T>::getHeight(){
+    height(findRoot());
+    return treeHeight;
+}
+
+template<class T>
+void BinarySearchTree<T>::height(Node<T> *node){
+    if(isEmpty()){
+        throw runtime_error("Error (height): list is empty..\n");
+    }
+    if(node->left != NULL){
+        height(node->left);
+    }
+    if(node->right != NULL){
+        height(node->right);
+    }
+    int number = whatlevelamI(node->data);
+    treeHeight = number > treeHeight ? number + 1 :  treeHeight;
+    setHeight(treeHeight);
 }
 
 template<class T>
