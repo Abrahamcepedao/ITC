@@ -1,0 +1,18 @@
+﻿/ Abraham Cepeda - A00827666
+/ Example 4.2
+If, Load X
+	Subt Y
+    Skipcond 01
+    Jump Else
+Then, Load X
+	Add X
+    Store X
+    Jump Endif
+Else, Load Y
+	Subt X
+    Store Y
+Endif, Output
+	Halt
+
+X, Dec 12
+Y, Dec 20

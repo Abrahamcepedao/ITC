@@ -1,0 +1,46 @@
+﻿/ Abraham Cepeda - A00827666
+/ Realiza un programa que calcule: Y=5*(A-B+C)
+
+Clear
+Input
+Store A
+Input
+Store B
+Input
+Store C
+
+/ calcular (A-B+C)
+Load ABC
+Add A
+Store ABC
+Subt B
+Store ABC
+Add C
+Store ABC
+
+mult, Load Y / 5*(A-B+C)
+	Add ABC
+    Store Y
+    Load Co
+    Subt One
+    Store Co
+    Skipcond 400 / multiplicacion terminada ?
+    Jump mult
+    
+/ imprimir resultado (Y)
+Load Y
+Output
+Halt
+
+/ Variables (inicializar)
+Y, Dec 0
+A, Dec 0
+B, Dec 0
+C, Dec 0
+
+/ Numeros (sirven como contadores)
+One, Dec 1 / uno
+Co, Dec 5 / cinco
+
+/ resultados nombres(numero, variable)
+ABC, Dec 0 / A-B+C

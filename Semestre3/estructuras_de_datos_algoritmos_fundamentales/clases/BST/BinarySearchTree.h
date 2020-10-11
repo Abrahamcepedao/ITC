@@ -23,15 +23,23 @@ class BinarySearchTree{
 
         bool isEmpty(){return root == NULL;};
 
+        // Manage data
         void insert(T data);
         void deleteData(T data);
+
+        // Find data
         Node<T>* findNode(T data);
         Node<T> *findPrevNode(T data);
         
+        
+        // Get levels and height
         int whatlevelamI(T data);
         int getHeight();
         void setHeight(int height){treeHeight = height;};
+
+        // Misc
         void print();
+        void ancestors(T data); 
 };
 
 // constructor
@@ -89,7 +97,7 @@ Node<T>* BinarySearchTree<T>::findNode(T data){
             if(aux->data == data){
                 return aux;
             }
-            aux->data > data ? aux = aux->left : aux = aux->right;
+            aux = aux->data > data ? aux->left : aux->right;
         }
     }
     throw runtime_error("Error (findNode): node not found..\n");
@@ -105,11 +113,12 @@ Node<T>* BinarySearchTree<T>::findPrevNode(T data){
                 return auxTemp;
             }
             auxTemp = aux;
-            aux->data > data ? aux = aux->left : aux = aux->right;
+            aux = aux->data > data ? aux->left : aux->right;
         }
     }
     throw runtime_error("Error (findNode): node not found..\n");
 }
+
 
 //delete
 template<class T>
@@ -139,7 +148,7 @@ void BinarySearchTree<T>::deleteData(T data){
                     aux = aux->right;
                 }
                 Node<T> *auxPrev = findPrevNode(aux->data);
-                auxTemp->data = aux->data;
+                auxTemp = aux;
                 auxPrev->left == aux ? auxPrev->left = NULL : auxPrev->right = NULL;
             }
         } else{
@@ -147,7 +156,8 @@ void BinarySearchTree<T>::deleteData(T data){
                 aux = aux->right;
             }
             Node<T> *auxPrev = findPrevNode(aux->data);
-            auxTemp->data = aux->data;
+            //auxTemp->data = aux->data;
+            auxTemp = aux;
             auxPrev->left == aux ? auxPrev->left = NULL : auxPrev->right = NULL;
         }
         delete aux;
@@ -216,8 +226,27 @@ void BinarySearchTree<T>::printTree(Node<T> *node, int level){
 
 template<class T>
 void BinarySearchTree<T>::print(){
+    if(isEmpty()){
+        throw runtime_error("Error (print): tree is empty..\n");
+    }
     int level = 0;
     cout << endl;
     printTree(root, level);
     cout << "\n";
+}
+
+
+// Ancestors
+template<class T>
+void BinarySearchTree<T>::ancestors(T data){
+    if(isEmpty()){
+        throw runtime_error("Error: (ancestors): tree is empty..\n");
+    }
+    BinarySearchTree<T> tempBts;
+    Node<T> *aux = root;
+    while(aux->data != data){
+        tempBts.insert(aux->data);
+        aux = aux->data > data ? aux->left : aux->right;
+    }
+    tempBts.print();
 }
