@@ -77,6 +77,9 @@ int menu(){
     cout << "4.  Get height of tree\n";
     cout << "5.  Print ancestors of node\n";
     cout << "6.  Print tree\n";
+    cout << "7.  Visit tree (preorder)\n";
+    cout << "8.  Visit tree (inorder)\n";
+    cout << "9.  Visit tree (postorder)\n";
     cout << "0.  toExit\n";
     cout << "Enter selection: ";
     return checkIntR(0,13);
@@ -161,6 +164,18 @@ int main(){
                 } catch(runtime_error& e){
                     cout << e.what();
                 }
+                break;
+            case 7:
+                cout << "Visiting tree (preorder)..\n";
+                bts.visit(1);
+                break;
+            case 8:
+                cout << "Visiting tree (inorder)..\n";
+                bts.visit(2);
+                break;
+            case 9:
+                cout << "Visiting tree (postorder)..\n";
+                bts.visit(3);
                 break;
             default:
                 break;

@@ -18,6 +18,9 @@ class BinarySearchTree{
         Node<T> *findRoot();
         void height(Node<T> *node);
         void numChild(Node<T> *node);
+        void preorder(Node<T> *node);
+        void inorder(Node<T> *node);
+        void postorder(Node<T> *node);
     public:
         BinarySearchTree();
 
@@ -40,6 +43,7 @@ class BinarySearchTree{
         // Misc
         void print();
         void ancestors(T data); 
+        void visit(int type);
 };
 
 // constructor
@@ -209,6 +213,48 @@ void BinarySearchTree<T>::height(Node<T> *node){
     int number = whatlevelamI(node->data);
     treeHeight = number > treeHeight ? number + 1 :  treeHeight;
     setHeight(treeHeight);
+}
+
+template<class T>
+void BinarySearchTree<T>::preorder(Node<T> *node){
+    cout << node->data << " ";
+    node->left != NULL ? preorder(node->left) : void();
+    node->right != NULL ? preorder(node->right): void();
+}
+
+template<class T>
+void BinarySearchTree<T>::inorder(Node<T> *node){
+    node->left != NULL ? inorder(node->left) : void();
+    cout << node->data << " ";
+    node->right != NULL ? inorder(node->right): void();
+}
+
+template<class T>
+void BinarySearchTree<T>::postorder(Node<T> *node){
+    node->left != NULL ? postorder(node->left) : void();
+    node->right != NULL ? postorder(node->right) : void();
+    cout << node->data << " ";
+}
+
+template<class T>
+void BinarySearchTree<T>::visit(int type){
+    if(isEmpty()){
+        throw runtime_error("Error (preorder): list is empty..\n");
+    }
+    switch(type){
+        case 1:
+            cout << "preorder: ";
+            preorder(root);
+            break;
+        case 2:
+            cout << "inorder: ";
+            inorder(root);
+            break;
+        case 3:
+            cout << "postorder: ";
+            postorder(root);
+            break;
+    }
 }
 
 template<class T>
