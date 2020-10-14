@@ -1,0 +1,33 @@
+﻿/ Abraham Cepeda - A00827666
+/ Realiza un programa que tome la primera localidad de memoria de una secuencia de 6 números, llenando las restantes cinco con en valor de la anterior más uno.
+Input
+Store num
+
+loop, Load num / loop para asignar numero a la posicion del apuntador.. al numero se le agrega 1
+	StoreI apuntador
+    LoadI apuntador
+    Output
+    Load num
+    Add one
+    Store num
+    Load apuntador
+    Add one
+    Store apuntador
+    Load count
+    Subt one
+    Store count
+    Skipcond 400
+    Jump loop
+	
+halt
+
+/ Apuntadores
+apuntador, hex 050  / apuntador principal
+
+/ Variables
+count, dec 6 / cantidad de numeros
+num, dec 0 / initial value
+
+/ Numeros
+one, dec 1
+

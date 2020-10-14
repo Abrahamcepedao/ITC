@@ -254,7 +254,10 @@ void BinarySearchTree<T>::visit(int type){
             cout << "postorder: ";
             postorder(root);
             break;
+        default:
+            break;
     }
+    cout << "\n";
 }
 
 template<class T>

@@ -1,0 +1,44 @@
+﻿/ Abraham Cepeda - A00827666
+/ Realiza un programa que nos diga la longitud de un string, del cual conoces la dirección donde inicia, y termina cuando encuentra el NULL en el contenido de memoria; asume que el string está en ASCII.
+
+/loop, loadI apuntador
+
+
+loop, Input
+	Store numCode
+	Load numCode 
+	StoreI apuntador
+    LoadI apuntador
+    Output
+    
+    Load acum
+    Add one
+    Store acum
+   
+    Load apuntador
+    Add one
+    Store apuntador
+    
+    Load numCode
+    Skipcond 400
+    Jump loop
+	
+Load acum
+Subt one
+Store acum
+Output
+halt
+
+
+/ Apuntadores
+apuntador, hex 050  / apuntador principal
+
+/ Variables
+count, dec 6 / cantidad de numeros
+numCode, dec 0 / initial value
+acum, dec 1 
+
+/ Numeros
+one, dec 1
+
+
