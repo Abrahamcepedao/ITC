@@ -1,9 +1,6 @@
 ﻿/ Abraham Cepeda - A00827666
 / Realiza un programa que nos diga la longitud de un string, del cual conoces la dirección donde inicia, y termina cuando encuentra el NULL en el contenido de memoria; asume que el string está en ASCII.
 
-/loop, loadI apuntador
-
-
 loop, Input
 	Store numCode
 	Load numCode 

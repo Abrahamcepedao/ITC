@@ -4,6 +4,7 @@
 // 5 de octubre 2020
 #pragma once
 #include "Node.h"
+//include "Queue.h"
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -31,6 +32,7 @@ class BinarySearchTree{
         void deleteData(T data);
 
         // Find data
+        bool find(T data);
         Node<T>* findNode(T data);
         Node<T> *findPrevNode(T data);
         
@@ -94,6 +96,21 @@ void BinarySearchTree<T>::insert(T data){
 }
 
 template<class T>
+bool BinarySearchTree<T>::find(T data){
+    if(!isEmpty()){
+        Node<T> *aux = root;
+        while(aux != NULL){
+            if(aux->data == data){
+                return true;
+            }
+            aux = aux->data > data ? aux->left : aux->right;
+        }
+    }
+    return false;
+}
+
+
+template<class T>
 Node<T>* BinarySearchTree<T>::findNode(T data){
     if(!isEmpty()){
         Node<T> *aux = root;
@@ -128,7 +145,7 @@ Node<T>* BinarySearchTree<T>::findPrevNode(T data){
 template<class T>
 void BinarySearchTree<T>::deleteData(T data){
     if(isEmpty()){
-        throw runtime_error("Error (height): list is empty..\n");
+        throw runtime_error("Error (deleteData): list is empty..\n");
     }
     Node<T> *aux = findNode(data);
     numChild(aux);

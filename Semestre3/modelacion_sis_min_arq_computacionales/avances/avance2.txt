@@ -1,0 +1,29 @@
+﻿/ Abraham Cepeda - A00827666
+/  Tomando como referencia un sensor que entrega una lectura a través de un bus paralelo a razón de 12 bits/ms, realizar un programa dentro del entorno de MARIE, que almacene las primeras 50 mediciones en memoria.
+
+loop, Input
+	StoreI apuntador
+   
+    Load apuntador
+    Add one
+    Store apuntador
+    
+    Load count
+    Subt one
+    Store count
+    Skipcond 400
+    Jump loop
+	
+halt
+
+
+/ Apuntadores
+apuntador, hex 050  / apuntador principal
+
+/ Variables
+count, dec 50 / cantidad de numeros
+
+/ Numeros
+one, dec 1
+
+

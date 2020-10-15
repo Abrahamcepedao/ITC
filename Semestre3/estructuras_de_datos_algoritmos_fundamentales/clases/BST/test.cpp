@@ -10,10 +10,6 @@
 
 using namespace std;
 
-// what do you thinks are the top five daily choices  we can make that have the biggest impact on our carbon footprint?
-// Why do you think that most of society is unwilling to do one of the best ways to decrease their carbon footprint?, which is decresing their meat and dairy consumption
-// How do you think we can motivate society to change their lifestyle into one more environmentaly friendly?
-
 // Function: checkInt
 // Description: validates input to be of type (int)
 // Input: NA
@@ -21,6 +17,7 @@ using namespace std;
 // Complexity: best case O(1), worst case O(n) - depends on the user input
 int checkInt(){
     int num;
+    cout << "Enter num: ";
     cin >> num;
     while(1){
         if(cin.fail()){
@@ -80,6 +77,7 @@ int menu(){
     cout << "7.  Visit tree (preorder)\n";
     cout << "8.  Visit tree (inorder)\n";
     cout << "9.  Visit tree (postorder)\n";
+    cout << "10. Find node\n";
     cout << "0.  toExit\n";
     cout << "Enter selection: ";
     return checkIntR(0,13);
@@ -116,15 +114,13 @@ int main(){
             case 1:
                 cout << "Inserting node..\n";
                 cout << "Enter node value: ";
-                num = checkInt();
-                bts.insert(num);
+                bts.insert(checkInt());
                 break;
             case 2:
                 cout << "Deleting node..\n";
                 cout << "Enter value: ";
-                num = checkInt();
-                try{ 
-                    bts.deleteData(num);
+                try{
+                    bts.deleteData(checkInt());
                 } catch(runtime_error& e){
                     cout << e.what();
                 }
@@ -150,9 +146,8 @@ int main(){
             case 5:
                 cout << "Printing ancestors of node..\n";
                 cout << "Enter value: ";
-                num = checkInt();
                 try{
-                    bts.ancestors(num);
+                    bts.ancestors(checkInt());
                 } catch(runtime_error& e){
                     cout << e.what();
                 }
@@ -176,6 +171,10 @@ int main(){
             case 9:
                 cout << "Visiting tree (postorder)..\n";
                 bts.visit(3);
+                break;
+            case 10:
+                cout << "Finding node..\n";
+                cout << (bts.find(checkInt()) ? "The node was found..\n" : "The node was not found..\n");
                 break;
             default:
                 break;
