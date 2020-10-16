@@ -265,12 +265,8 @@ void BinarySearchTree<T>::levelByLevel(){
     while(!queue.isEmpty()){
         Node<T> *aux = queue.dequeue();
         cout << aux->data << " ";
-        if(aux->left != NULL){
-            queue.enqueue(aux->left);
-        }
-        if(aux->right != NULL){
-            queue.enqueue(aux->right);
-        }
+        aux->left != NULL ? queue.enqueue(aux->left) : void();
+        aux->right != NULL ? queue.enqueue(aux->right) : void();
     }
     /* Node<T> *aux = node;
     int count = 0;
