@@ -4,7 +4,8 @@
 // 5 de octubre 2020
 #pragma once
 #include "Node.h"
-//include "Queue.h"
+#include "Queue.h"
+#include <math.h>
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -22,6 +23,7 @@ class BinarySearchTree{
         void preorder(Node<T> *node);
         void inorder(Node<T> *node);
         void postorder(Node<T> *node);
+        void levelByLevel();
     public:
         BinarySearchTree();
 
@@ -219,7 +221,7 @@ int BinarySearchTree<T>::getHeight(){
 template<class T>
 void BinarySearchTree<T>::height(Node<T> *node){
     if(isEmpty()){
-        throw runtime_error("Error (height): list is empty..\n");
+        throw runtime_error("Error (height): bts is empty..\n");
     }
     if(node->left != NULL){
         height(node->left);
@@ -254,6 +256,75 @@ void BinarySearchTree<T>::postorder(Node<T> *node){
 }
 
 template<class T>
+void BinarySearchTree<T>::levelByLevel(){
+    if(isEmpty()){
+        throw runtime_error("Error: (levelBylevel): bts is empty..");
+    }
+    Queue<Node<T>*> queue;
+    queue.enqueue(root);
+    while(!queue.isEmpty()){
+        Node<T> *aux = queue.dequeue();
+        cout << aux->data << " ";
+        if(aux->left != NULL){
+            queue.enqueue(aux->left);
+        }
+        if(aux->right != NULL){
+            queue.enqueue(aux->right);
+        }
+    }
+    /* Node<T> *aux = node;
+    int count = 0;
+    if(node->left != NULL){
+        cout << "  -" << node->left->data << "-  ";
+    }
+    if(node->right != NULL){
+        cout << "  -" << node->right->data << "-  ";
+    }
+
+    int max = pow(2, level - 1);
+    if(index == max){
+        cout << "Index max: \n";
+        while(count < (level - 1)){
+            aux = findPrevNode(aux->data);
+            count++;
+        }
+        count = 0;
+        while(count < level){
+            aux = aux->left != NULL ? aux->left : aux->right != NULL ? aux->right : NULL;
+            count++;
+        }
+        levelByLevel(aux, 1, level + 1, 1);
+        return;
+    } else if(num == 1){
+        cout << "Going right: ";
+        aux = findPrevNode(node->data);
+        if(aux->right != NULL){
+            if(aux->right->data != node->data){
+                levelByLevel(aux->right, 0, level, index + 1) : void();
+            }
+            return;
+        }
+        index++;
+    }
+    cout << "Going left: ";
+    aux = findPrevNode(node->data);
+    while(count < (level-2)){
+        aux =  findPrevNode(aux->data);
+        count++;
+    }
+    if(aux->right != NULL){
+        aux = aux->right;
+    }
+    count = 0;
+    while(count < (level-2)){
+        aux = aux->left;
+        count++;
+    }
+    levelByLevel(aux, 1, level, index + 1);
+    return;*/
+}
+
+template<class T>
 void BinarySearchTree<T>::visit(int type){
     if(isEmpty()){
         throw runtime_error("Error (preorder): list is empty..\n");
@@ -270,6 +341,10 @@ void BinarySearchTree<T>::visit(int type){
         case 3:
             cout << "postorder: ";
             postorder(root);
+            break;
+        case 4:
+            cout << "Level by level: ";
+            levelByLevel();
             break;
         default:
             break;

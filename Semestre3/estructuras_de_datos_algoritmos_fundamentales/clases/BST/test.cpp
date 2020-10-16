@@ -77,7 +77,8 @@ int menu(){
     cout << "7.  Visit tree (preorder)\n";
     cout << "8.  Visit tree (inorder)\n";
     cout << "9.  Visit tree (postorder)\n";
-    cout << "10. Find node\n";
+    cout << "10. Visit tree (level by level)\n";
+    cout << "11. Find node\n";
     cout << "0.  toExit\n";
     cout << "Enter selection: ";
     return checkIntR(0,13);
@@ -173,6 +174,10 @@ int main(){
                 bts.visit(3);
                 break;
             case 10:
+                cout << "Visiting tree (level by level)..\n";
+                bts.visit(4);
+                break;
+            case 11:
                 cout << "Finding node..\n";
                 cout << (bts.find(checkInt()) ? "The node was found..\n" : "The node was not found..\n");
                 break;
