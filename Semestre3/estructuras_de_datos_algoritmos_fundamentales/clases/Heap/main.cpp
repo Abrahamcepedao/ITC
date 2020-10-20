@@ -7,9 +7,10 @@
 #include <ctime>
 #include <iomanip>
 #include "MinHeap.h"
+#include "MaxHeap.h"
 
 using namespace std;
-
+int type;
 // Function: checkInt
 // Description: validates input to be of type (int)
 // Input: NA
@@ -60,15 +61,25 @@ int checkIntR(int min, int max){
 }
 
 template<class T>
-void heapSort(MinHeap<T> &minHeap, DLinkedList<T> &list){
+void heapSortMin(MinHeap<T> &heap, DLinkedList<T> &list){
     list.clear();
-    while(minHeap.getSize() > 0){
-        list.addBack(minHeap[1]->data);
-        minHeap.remove();
+    while(heap.getSize() > 0){
+        list.addBack(heap[1]->data);
+        heap.remove();
     }
 }
 
 
+template<class T>
+void heapSortMax(MaxHeap<T> &heap, DLinkedList<T> &list){
+    list.clear();
+    while(heap.getSize() > 0){
+        list.addBack(heap[1]->data);
+        heap.remove();
+    }
+    cout << "Sorted heap: ";
+    list.printReverse();
+}
 
 // Function: menu
 // Description: Prints the available choices for the user to select
@@ -84,13 +95,16 @@ int menu(){
     cout << "4.  Print\n";
     cout << "0.  toExit\n";
     cout << "Enter selection: ";
-    return checkIntR(0,13);
+    return checkIntR(0,4);
 }
 
 
-
 int main(){
-    
+    cout << "<---------Welcome to the Heap implementation---------->\n";
+    cout << "Choose the type heap\n";
+    cout << "1. Min Heap\n";
+    cout << "2. Max Heap\n";
+    type = checkIntR(1,2);
     DLinkedList<int> dList;
     dList.addBack(9);
     dList.addBack(4);
@@ -98,36 +112,64 @@ int main(){
     dList.addBack(8);
     dList.addBack(7);
     dList.addBack(3);
-    MinHeap<int> minHeap(dList);
-
-    int ans = menu();
-     while(ans != 0){
-        int num;
-        switch(ans){
-            case 1:
-                cout << "Inserting node..\n";
-                cout << "Enter node value: ";
-                minHeap.insert(checkInt());
-                break;
-            case 2:
-                cout << "Deleting node..\n";
-                minHeap.remove();
-                break;
-            case 3:
-                cout << "Heap sort..\n";
-                heapSort(minHeap, dList);
-                minHeap = dList;
-                cout << "Sorted heap: ";
-                minHeap.print();
-                break;
-            case 4:
-                cout << "Printing heap..\n";
-                minHeap.print();
-                break;
-            default:
-                break;
+    if(type == 1){
+        MinHeap<int> heap(dList);
+        int ans = menu();
+        while(ans != 0){
+            int num;
+            switch(ans){
+                case 1:
+                    cout << "Inserting node..\n";
+                    cout << "Enter node value: ";
+                    heap.insert(checkInt());
+                    break;
+                case 2:
+                    cout << "Deleting node..\n";
+                    heap.remove();
+                    break;
+                case 3:
+                    cout << "Heap sort..\n";
+                    heapSortMin(heap, dList);
+                    heap = dList;
+                    break;
+                case 4:
+                    cout << "Printing heap..\n";
+                    heap.print();
+                    break;
+                default:
+                    break;
+            }
+            ans = menu();
         }
-        ans = menu();
+    } else{
+        MaxHeap<int> heap(dList);
+        int ans = menu();
+        while(ans != 0){
+            int num;
+            switch(ans){
+                case 1:
+                    cout << "Inserting node..\n";
+                    cout << "Enter node value: ";
+                    heap.insert(checkInt());
+                    break;
+                case 2:
+                    cout << "Deleting node..\n";
+                    heap.remove();
+                    break;
+                case 3:
+                    cout << "Heap sort..\n";
+                    heapSortMax(heap, dList);
+                    heap = dList;
+                    break;
+                case 4:
+                    cout << "Printing heap..\n";
+                    heap.print();
+                    break;
+                default:
+                    break;
+            }
+            ans = menu();
+        }
     }
     cout << "The program has finished with ease..\n\n\n";
     return 0;

@@ -1,7 +1,7 @@
-// Act 2.3 - DoubleLinkedClass class
+// Act 3.2 - DoubleLinkedClass class
 // Abraham Cepeda Oseguera
 // A00827666
-// 7 de octubre 2020
+// 19 de octubre 2020
 #pragma once
 #include "Node.h"
 #include <vector>
@@ -29,7 +29,7 @@ class DLinkedList{
 
         void clear();
         void print();
-        void printReverse(int n, int m);
+        void printReverse();
 };
 
 // constructor
@@ -109,7 +109,8 @@ template<class T>
 void DLinkedList<T>::addBack(T data){
     if(!isEmpty()){
         tail->next = new Node<T>(data);
-        tail= tail->next;
+        tail->next->prev = tail;
+        tail = tail->next;
     } else{
         head = new Node<T>(data);
         tail = head;
@@ -132,6 +133,26 @@ void DLinkedList<T>::print(){
         while(aux != NULL){
             cout << aux->data << " ";
             aux = aux->next;
+        }
+    } else{
+        cout << "The linked list is empty..";
+    }
+    cout << "\n";
+}
+
+
+//Method: print
+//Description: prints the elements of the doubled linked list
+//Input: NA
+//Output: The elements of the doubled linked list || message if the list is empty
+//Complexity: O(n)
+template<class T>
+void DLinkedList<T>::printReverse(){
+    if(!isEmpty()){
+        Node<T> *aux = tail;
+        while(aux != NULL){
+            cout << aux->data << " ";
+            aux = aux->prev;
         }
     } else{
         cout << "The linked list is empty..";
