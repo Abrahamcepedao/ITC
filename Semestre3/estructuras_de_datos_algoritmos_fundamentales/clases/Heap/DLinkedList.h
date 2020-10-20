@@ -19,8 +19,8 @@ class DLinkedList{
         bool isEmpty(){return size == 0;};
         int getSize() { return size; };
         void setSize(int size){this->size = size;};
+
         Node<T>* getData(int index);
-        
         void addBack(T data);
 
 
@@ -128,7 +128,6 @@ void DLinkedList<T>::addBack(T data){
 template<class T>
 void DLinkedList<T>::print(){
     if(!isEmpty()){
-        cout << "printing list..\n";
         Node<T> *aux = head;
         while(aux != NULL){
             cout << aux->data << " ";
@@ -140,13 +139,15 @@ void DLinkedList<T>::print(){
     cout << "\n";
 }
 
-
+//Method: clear
+//Description: removes all the elements of  the  
+//Input: NA
+//Output: The elements of the doubled linked list || message if the list is empty
+//Complexity: O(n)
 template<class T>
 void DLinkedList<T>::clear() {
     Node<T> *aux = head;
     while (head->next != NULL) {
-        cout << "Entered while..\n";
-        cout << head->data << " ";
         Node<T> *aux = head;
         head = aux->next;
         delete aux;

@@ -21,9 +21,7 @@ class MinHeap{
 
         void insert(T data);
         void remove();
-
-        void heapSort();
-
+        
         Node<T> *operator[](int index);
         void operator=(DLinkedList<T> list);
         Node<T> *getNodeAt(int index);
@@ -34,15 +32,15 @@ class MinHeap{
 
         void clear();
         void print();
-        void printHead();
 };
 
-// constructor
+// default constructor
 template<class T>
 MinHeap<T>::MinHeap(){
     size = 0;
 }
 
+//constructor from a Double Linked List
 template<class T>
 MinHeap<T>::MinHeap(DLinkedList<T> list){
     if(list.isEmpty()){
@@ -55,7 +53,11 @@ MinHeap<T>::MinHeap(DLinkedList<T> list){
     }
 }
 
-// methods
+// Method: insert
+// Description: inserts elements at end of the list and rearranges it if necessary
+// Input: data (data of  the new element)
+// Output: NA
+// Complexity: O(n)
 template<class T>
 void MinHeap<T>::insert(T data){
     if(isEmpty()){
@@ -69,6 +71,11 @@ void MinHeap<T>::insert(T data){
     dList.setSize(size);
 }
 
+// Method: remove
+// Description: removes the first element of the list
+// Input: NA
+// Output: NA
+// Complexity: O(n)
 template<class T>
 void MinHeap<T>::remove(){
     if(isEmpty()){
@@ -77,18 +84,20 @@ void MinHeap<T>::remove(){
     if(size == 1){
         dList.clear();
         size--;
-        cout << "list should be empty.. size: " << size << endl;
     } else{
         dList[1]->data = dList[size]->data;
         size--;
-        //dList[size] = getNodeAt(size);
         dList[size]->next = NULL;
         heapifyDown(1);
     }
     dList.setSize(size);
 }
 
-
+// Method: swap
+// Description: interchanges the values of to elements
+// Input: i1 (index of first element), i2 (index  of  second element)
+// Output: NA
+// Complexity: O(1)
 template<class T>
 void MinHeap<T>::swap(int i1, int i2){
     Node<T> *aux = dList[i1];
@@ -99,26 +108,8 @@ void MinHeap<T>::swap(int i1, int i2){
 }
 
 
-template<class T>
-Node<T>* MinHeap<T>::getNodeAt(int index){
-    if(!isEmpty() && index > 0 && index <= size){
-        Node<T> *aux = dList[1];
-        int count = 1;
-        while(count <= size){
-            if(count == index){
-                return aux;
-            }
-            count++;
-            aux = aux->next;
-        }
-    }
-    throw runtime_error("Error (getNodeAt): index out of range or list is empty\n");
-}
-
-
-
 //Method: operator[]
-//Description: overloading the operator "[]" for the LinkedList to be used as an array
+//Description: overloading the operator "[]" for the heap to be used as an array
 //Input: index (the index of the needed node)
 //Output: the node at the given index || runtime error if invalid index or empty Linkedlist
 //Complexity: O(n)
@@ -138,10 +129,10 @@ Node<T>* MinHeap<T>::operator[](int index){
     throw runtime_error("Error (operator[]): index out of range or list is empty\n");
 }
 
-//Method: operator[]
-//Description: overloading the operator "[]" for the LinkedList to be used as an array
-//Input: index (the index of the needed node)
-//Output: the node at the given index || runtime error if invalid index or empty Linkedlist
+//Method: operator=
+//Description: overloading the operator "=" to initialize a heap from a Double Linked List
+//Input: list (a Double Linked List)
+//Output: NA
 //Complexity: O(n)
 template<class T>
 void MinHeap<T>::operator=(DLinkedList<T> list){
@@ -155,16 +146,11 @@ void MinHeap<T>::operator=(DLinkedList<T> list){
     }
 }
 
-template<class T>
-void MinHeap<T>::heapSort(){
-    while(size > 0){
-        cout << dList[1]->data << " ";
-        remove();
-    }
-    cout << "\n";
-}
-
-
+// Method: heapifyUp
+// Description: swaps the recently add element with its parent elements while they are greater
+// Input: i1 (index of element to be swapped if necessary)
+// Output: NA
+// Complexity: O(n)
 template<class T>
 void MinHeap<T>::heapifyUp(int i1){
     if(i1 == 1){
@@ -179,6 +165,11 @@ void MinHeap<T>::heapifyUp(int i1){
     heapifyUp(i2);
 }
 
+// Method: heapifyDown
+// Description: Swaps the parent element with the smallest of it's children elements
+// Input: i1 (index of element to be swapped if necessary)
+// Output: NA
+// Complexity: O(n)
 template<class T>
 void MinHeap<T>::heapifyDown(int i1){
     if(i1 * 2 > size){
@@ -208,13 +199,11 @@ void MinHeap<T>::heapifyDown(int i1){
     }
 }
 
-template<class T>
-void MinHeap<T>::printHead(){
-    if(!isEmpty()){
-        cout <<  "head->data: " <<  dList[1]->data << endl;
-    }
-}
-
+// Method: heapiprintfyUp
+// Description: prints the entire heap if it is not empty
+// Input: NA
+// Output: Entire list
+// Complexity: O(n)
 template<class T>
 void MinHeap<T>::print(){
     if(isEmpty()){

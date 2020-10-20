@@ -104,6 +104,7 @@ int main(){
     bts.insert(23);
     bts.insert(24);
     bts.insert(25);
+    bts.insert(0);
 
     cout << "<------Current tree------>\n";
     bts.print();

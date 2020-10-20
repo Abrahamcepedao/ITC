@@ -61,16 +61,11 @@ int checkIntR(int min, int max){
 
 template<class T>
 void heapSort(MinHeap<T> &minHeap, DLinkedList<T> &list){
-    list.print();
     list.clear();
-    list.print();
     while(minHeap.getSize() > 0){
-        cout << "heap head: " << minHeap[1]->data << endl;
         list.addBack(minHeap[1]->data);
         minHeap.remove();
     }
-    cout << "list size: " << list.getSize() << endl; 
-    list.print();
 }
 
 
@@ -122,6 +117,8 @@ int main(){
                 cout << "Heap sort..\n";
                 heapSort(minHeap, dList);
                 minHeap = dList;
+                cout << "Sorted heap: ";
+                minHeap.print();
                 break;
             case 4:
                 cout << "Printing heap..\n";
