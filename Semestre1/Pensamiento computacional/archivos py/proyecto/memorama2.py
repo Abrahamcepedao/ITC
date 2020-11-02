@@ -13,7 +13,6 @@ def create_board():
             iJ += 1
     return board
     
-#desplegar matriz de 6*6 con números del 0 al 35
 def display_board(board):
     for ex in range(6):
             for ey in range(6):

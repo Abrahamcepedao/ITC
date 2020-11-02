@@ -1,32 +1,31 @@
-﻿/ Abraham Cepeda - A00827666
-/  Tomando como referencia un sensor que entrega una lectura a través de un bus paralelo a razón de 12 bits/ms, realizar un programa dentro del entorno de MARIE, que almacene las primeras 50 mediciones en memoria.
+/ Abraham Cepeda - A00827666
+/ Problema de situación problema: avance final
 
 Load ten
 Store count
 
-storeLoop, Input
-	StoreI apuntador
-   	LoadI apuntador
+storeLoop, Input / loop para guardar los datos que ingresa el usuario
+    StoreI apuntador
+    LoadI apuntador
     Store check
-	Load check
+    Load check
     Subt end
-    Skipcond 000
+    Skipcond 000 / checar si el numero ingresado es 3567
     Jump done
     Load apuntador
     Add one
     Store apuntador
-    
     Load count
     Subt one
     Store count
-    Skipcond 400
-    Jump storeLoop
+    Skipcond 400 / checar si ya se ingresaron 10 datos
+    Jump storeLoop / regresar al loop
     Load ten
     Store count
-    Jump subtLoop
+    Jump subtLoop / ir al loop para reiniciar el apuntador
     
 subtLoop, Load apuntador
-	Subt one
+    Subt one
     Store apuntador
     Load count
     Subt one
@@ -37,41 +36,40 @@ subtLoop, Load apuntador
     Store count
     Jump sumLoop
     
-    
-sumLoop, Load acum
-		 AddI apuntador
-         Store acum
-         Load apuntador
-         Add one
-         Store apuntador
-         Load count
-		 Subt one
-         Store count
-         Skipcond 400
-         Jump sumLoop
-		 Load ten
-	     Store count
-         Jump aveLoop
+sumLoop, Load acum / loop para sumar los 10 datos ingresados
+    AddI apuntador
+    Store acum
+    Load apuntador
+    Add one
+    Store apuntador
+    Load count
+    Subt one
+    Store count
+    Skipcond 400 / checar si ya se sumaron los 10 datos
+    Jump sumLoop / regresar al loop
+    Load ten
+    Store count
+    Jump aveLoop / ir al loop que saca el promedio
 
-aveLoop, Load acum
-		 Subt ten
-         Store acum
-         Load prom
-         Add one
-         Store prom
-         Load acum
-         Skipcond 000 /acum menor a cero?
-         Jump aveLoop
-		 Load prom
-         Subt one
-         Store prom
-         Output
-         Load cero
-         Store prom
-         Store acum
-         Load ten
-         Store count
-         Jump storeLoop
+aveLoop, Load acum / loop para sacar el promedio de la suma de los datos
+    Subt ten
+    Store acum
+    Load prom
+    Add one
+    Store prom
+    Load acum
+    Skipcond 000 / checar si el acumulador ya es menor a cero
+    Jump aveLoop / regresar al loop
+    Load prom
+    Subt one
+    Store prom
+    Output
+    Load cero
+    Store prom
+    Store acum
+    Load ten
+    Store count
+    Jump storeLoop  / ir al loop para ingresar de nuevo 10 datos
 
 done, Halt
 
