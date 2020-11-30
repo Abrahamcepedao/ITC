@@ -1,7 +1,7 @@
-// Act 2.1.1 - Linked List class
+// Act 5.1 -Linked List
 // Abraham Cepeda Oseguera
 // A00827666
-// 26 de septiembre 2020
+// 30 de noviembre 2020
 #pragma once
 #include "Node.h"
 #include <vector>

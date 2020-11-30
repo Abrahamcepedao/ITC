@@ -20,6 +20,7 @@ int main(){
         hashTable.insert(key);
         hastTableC.insert(key);
     }
+    
     cout << "\n\nHashTable Quadratic probing\n\n";
     hashTable.print();
     cout << "\n\nHashTable Chain probing\n\n";
