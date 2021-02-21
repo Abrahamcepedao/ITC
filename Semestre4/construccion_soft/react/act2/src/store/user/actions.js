@@ -1,7 +1,7 @@
 import { NAME, F_LASTNAME, M_LASTNAME, EMAIL, DATE } from "./actionType";
 
 export const setName = (data) => {
-    /* localStorage.setItem("city", JSON.stringify(city)); */
+    localStorage.setItem("name", data)
     console.log("data: ", data)
     return {
         type: NAME,
@@ -10,6 +10,7 @@ export const setName = (data) => {
 };
 
 export const setFLastName = (data) => {
+    localStorage.setItem("fLastName", data)
     return {
         type: F_LASTNAME,
         data: data
@@ -17,6 +18,7 @@ export const setFLastName = (data) => {
 };
 
 export const setMLastName = (data) => {
+    localStorage.setItem("mLastName", data)
     return {
         type: M_LASTNAME,
         data: data
@@ -24,6 +26,7 @@ export const setMLastName = (data) => {
 };
 
 export const setEmail = (data) => {
+    localStorage.setItem("email", data)
     return {
         type: EMAIL,
         data: data
@@ -31,6 +34,7 @@ export const setEmail = (data) => {
 };
 
 export const setDate = (data) => {
+    localStorage.setItem("date", data)
     return {
         type: DATE,
         data: data

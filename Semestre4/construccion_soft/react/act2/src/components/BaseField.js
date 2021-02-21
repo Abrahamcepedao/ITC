@@ -17,6 +17,9 @@ class BaseField extends React.Component{
     setValue = (value) => {
         this.setState({value:value})
     }
+    deleteValue = () => {
+        this.setState({value: ""})
+    }
 }
 
 BaseField.propTypes = {

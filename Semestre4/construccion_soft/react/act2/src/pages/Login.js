@@ -10,7 +10,7 @@ class Login extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            name: "hola",
+            name: "",
             fLastName: "",
             mLastName: "",
             email: "",
@@ -40,16 +40,34 @@ class Login extends React.Component{
     }
 
     savedata = () =>{
-        //localStorage.setItem("input1", this.input1.current.getValue())
-        console.log("hola")
-        console.log(this.inputName.current.getValue())
-        localStorage.setItem("name", this.inputName.current.getValue())
-        localStorage.setItem("fLastName", this.inputfLastName.current.getValue())
-        localStorage.setItem("mLastName", this.inputmLastName.current.getValue())
-        localStorage.setItem("email", this.inputEmail.current.getValue())
-        localStorage.setItem("date", this.inputDate.current.getValue())
         this.props.setName(this.inputName.current.getValue())
+        this.props.setFLastName(this.inputfLastName.current.getValue())
+        this.props.setMLastName(this.inputmLastName.current.getValue())
+        this.props.setEmail(this.inputEmail.current.getValue())
+        this.props.setDate(this.inputDate.current.getValue())
+        this.printData();
+        
+    }
+
+    printData = () => {
         console.log("name: ", this.props.name)
+        console.log("last name: ", this.props.fLastName)
+        console.log("last name: ", this.props.mLastName)
+        console.log("email: ", this.props.email)
+        console.log("date: ", this.props.date)
+    }
+
+    deleteData = () => {
+        this.inputName.current.deleteValue()
+        this.inputfLastName.current.deleteValue()
+        this.inputmLastName.current.deleteValue()
+        this.inputEmail.current.deleteValue()
+        this.inputDate.current.deleteValue()
+        localStorage.setItem("name", "")
+        localStorage.setItem("fLastName", "")
+        localStorage.setItem("mLastName", "")
+        localStorage.setItem("email", "")
+        localStorage.setItem("date", "")
     }
 
     render(){
@@ -91,6 +109,15 @@ class Login extends React.Component{
                     
                     <Button 
                         onClick={()=>{
+                            this.deleteData();
+
+                        }}
+                    >
+                        Limpiar
+                    </Button>
+
+                    <Button 
+                        onClick={()=>{
                             this.savedata();
 
                         }}
@@ -108,7 +135,11 @@ class Login extends React.Component{
 
 const mapStateToProps = (store) => {
     return {
-        name: store.userState.name
+        name: store.userState.name,
+        fLastName: store.userState.fLastName,
+        mLastName: store.userState.mLastName,
+        email: store.userState.email,
+        date: store.userState.date,
     }
 }
 
