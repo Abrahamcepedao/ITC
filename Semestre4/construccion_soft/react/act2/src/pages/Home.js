@@ -42,22 +42,22 @@ class Home extends React.Component{
             <Container>
                   
                 <Form>
-                <Input 
-                    ref={this.input1} 
-                    fieldtype={"password"}
-                    label={"Input 1"} 
-                    defaultValue={localStorage.getItem("input1")}/>
-                
-                <Button 
-                    onClick={()=>{
-                        this.saveValue("input1", this.input1);
-                        this.saveValue();
-                        this.saveValue();
+                    <Input 
+                        ref={this.input1} 
+                        fieldtype={"password"}
+                        label={"Input 1"} 
+                        defaultValue={localStorage.getItem("input1")}/>
+                    
+                    <Button 
+                        onClick={()=>{
+                            this.saveValue("input1", this.input1);
+                            this.saveValue();
+                            this.saveValue();
 
-                    }}
-                >
-                    Guardar en LocalStorage  valor
-                </Button>
+                        }}
+                    >
+                        Guardar en LocalStorage  valor
+                    </Button>
            
                 </Form>
             

@@ -46,6 +46,7 @@ class Login extends React.Component{
         this.props.setEmail(this.inputEmail.current.getValue())
         this.props.setDate(this.inputDate.current.getValue())
         this.printData();
+        this.props.history.push("/books")
         
     }
 

@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import MyFavoriteCity from './pages/MyFavoriteCity';
 import Login from './pages/Login';
+import Books from './pages/Books';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/home" component={Home}/>
         <Route path="/city" component={MyFavoriteCity}/>
         <Route path="/login" component={Login}/>
+        <Route path="/books" component={Books}/>
         <Route component={Login}/>
 
       </Switch>
