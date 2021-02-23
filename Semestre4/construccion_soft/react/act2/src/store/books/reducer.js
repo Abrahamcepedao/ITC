@@ -1,7 +1,7 @@
 import { ADD_BOOK, DELETE_BOOKS } from "./actionType";
 
 const INIT_STATE = {
-    books: [],
+    books: JSON.parse(localStorage.getItem("books")) || [],
 }
 
 const user = (state = INIT_STATE, action) => {

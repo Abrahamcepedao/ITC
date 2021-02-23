@@ -22,34 +22,23 @@ class Books extends React.Component{
         super(props);
         this.state = {
             currentBook: {},
-            inputISBN: ""
+            inputISBN: localStorage.getItem("ISBN") || ""
         }
     }
 
     componentDidMount(){
-        /* Api.GET(
-            "9780140328721",
-            (data)=>{
-                this.setState({currentBook:data})
-            }
-        ) */
-        if(Object.keys(this.state.currentBook).length !== 0){
-            console.log("ok")
-        } else{
-            console.log("error")
-        }
-
-        console.log(this.state.currentBook)
+        console.log("books",this.props.books)
         
     }
 
 
 
     searchBook = () => {
-        //localStorage.setItem("ISBN", this.inputBook.current.getValue());
+        localStorage.setItem("ISBN", this.state.inputISBN);
         //9780140328721
         //0914846922
         //5699611185
+        //0870995111
         Api.GET(
             this.state.inputISBN,
             (data)=>{
@@ -61,7 +50,6 @@ class Books extends React.Component{
 
     addBook = () => {
         this.props.addBook(this.state.currentBook);
-        console.log(this.props.books)
     }
 
     logout = () => {
@@ -106,8 +94,8 @@ class Books extends React.Component{
                             <h3>{this.state.currentBook.title}</h3>
                             <p><strong>Number of pages:</strong> {this.state.currentBook.number_of_pages}</p>
                             <p><strong>Published date:</strong> {this.state.currentBook.publish_date}</p>
-                            {this.state.currentBook.publishers.map((item) => (
-                                <p><strong>Publishers:</strong> {item}</p>
+                            {this.state.currentBook.publishers.map((item, i) => (
+                                <p key={i}><strong>Publisher {i}:</strong> {item}</p>
                             ))}
                             
                         </div>
@@ -121,14 +109,14 @@ class Books extends React.Component{
                     <div style={{background: 'rgb(240,240,240)', marginTop: '50px', borderRadius: '25px', padding: '50px', marginBottom: '50px'}}>
                         <h2 style={{fontWeight: 'bold'}}><FavoriteRoundedIcon style={{fontSize: '45px'}}/> Favorites</h2>
                         <Row>
-                            {this.props.books.map((book) => (
-                                <Col md={6}>
+                            {this.props.books.map((book, index) => (
+                                <Col key={index} md={6}>
                                     <div style={{background: 'rgb(255,255,255)', margin: 'auto', marginTop: '50px', borderRadius: '25px', padding: '20px', marginBottom: '50px'}}>
                                         <h3>{book.title}</h3>
                                         <p><strong>Number of pages:</strong> {book.number_of_pages}</p>
                                         <p><strong>Published date:</strong> {book.publish_date}</p>
-                                        {book.publishers.map((item) => (
-                                            <p><strong>Publishers:</strong> {item}</p>
+                                        {book.publishers.map((item, i) => (
+                                            <p key={i}><strong>Publisher {i}:</strong> {item}</p>
                                         ))}
                                         
                                     </div>

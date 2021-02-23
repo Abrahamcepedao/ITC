@@ -1,12 +1,11 @@
 import { NAME, F_LASTNAME, M_LASTNAME, EMAIL, DATE } from "./actionType";
 
 const INIT_STATE = {
-    /* city: JSON.parse(localStorage.getItem("city")) || {} */
-    name: "",
-    fLastName: "",
-    mLastName: "",
-    email: "",
-    date: null
+    name: localStorage.getItem("name") || "",
+    fLastName: localStorage.getItem("fLastName") || "",
+    mLastName: localStorage.getItem("mLastName") || "",
+    email: localStorage.getItem("email") || "",
+    date: localStorage.getItem("date") || null
 }
 
 const user = (state = INIT_STATE, action) => {

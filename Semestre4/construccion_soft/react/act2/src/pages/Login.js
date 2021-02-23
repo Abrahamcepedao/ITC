@@ -25,14 +25,6 @@ class Login extends React.Component{
     }
 
     componentDidMount(){
-       /*  Api.GET(
-            "b043df5a",
-            (data)=>{
-                this.setState({data:data})
-            }
-        )
-
-        console.log(this.props.city) */
         
     }
 
