@@ -10,8 +10,8 @@ class Form extends React.Component{
     render(){
 
         return (
-            <div {...this.props}>
-
+            <div {...this.props} style={{background: 'rgb(240,240,240)', padding: '50px', marginTop: '50px', borderRadius: '25px'}}>
+                
             </div>
         )
     }

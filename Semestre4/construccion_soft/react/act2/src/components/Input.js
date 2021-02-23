@@ -1,6 +1,6 @@
 import React from "react"
 import BaseField from "./BaseField"
-
+import "./Input.css"
 
 class Input extends BaseField{
 
@@ -13,11 +13,7 @@ class Input extends BaseField{
 
         return (
             <div {...this.props}>
-                <label style={{marginRight: '20px'}}>{this.props.label}</label>
-                <input type={this.props.fieldtype} value={this.state.value} onChange={(e)=>{this.setState({value: e.target.value})}}/>
-
-                {/* <h3>{this.state.value}</h3> */}
-
+                <input className="input" type={this.props.fieldtype} placeholder={this.props.label} value={this.state.value} onChange={(e)=>{this.setState({value: e.target.value})}}/>
             </div>
         )
     }

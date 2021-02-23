@@ -5,6 +5,10 @@ import Api from "../utils/Api";
 import {setName, setFLastName, setMLastName, setEmail, setDate, addBook, deleteBooks } from "../store/actions"
 import { withRouter } from "react-router-dom"
 
+//MaterialUI
+import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
+import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
+import AccessibilityRoundedIcon from '@material-ui/icons/AccessibilityRounded';
 
 class Books extends React.Component{
 
@@ -71,7 +75,7 @@ class Books extends React.Component{
         return (
             <Container>
                 {/* Header with info */}
-                <div>
+                <div style={{background: 'rgb(240,240,240)'}}>
                     <p>{this.props.name} {this.props.fLastName} {this.props.mLastName}</p>
                     <p>{this.props.email}</p>
                     <p>{this.props.date}</p>

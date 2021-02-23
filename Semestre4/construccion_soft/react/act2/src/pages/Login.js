@@ -15,6 +15,7 @@ class Login extends React.Component{
             mLastName: "",
             email: "",
             date: "",
+            error: ""
         }
         this.inputName = React.createRef()
         this.inputfLastName = React.createRef()
@@ -35,18 +36,42 @@ class Login extends React.Component{
         
     }
 
-    displayValue = () =>{
+    displayValue = () => {
         console.log(this.input1.current.getValue())
     }
 
+    checkData = () => {
+        if(this.inputName.current.getValue() === ""){
+            return false;
+        }
+        if(this.inputfLastName.current.getValue() === ""){
+            return false;
+        }
+        if(this.inputmLastName.current.getValue() === ""){
+            return false;
+        }
+        if(this.inputEmail.current.getValue() === ""){
+            return false;
+        }
+        if(this.inputDate.current.getValue() === ""){
+            return false;
+        }
+        return true;
+    }
+
     savedata = () =>{
-        this.props.setName(this.inputName.current.getValue())
-        this.props.setFLastName(this.inputfLastName.current.getValue())
-        this.props.setMLastName(this.inputmLastName.current.getValue())
-        this.props.setEmail(this.inputEmail.current.getValue())
-        this.props.setDate(this.inputDate.current.getValue())
-        this.printData();
-        this.props.history.push("/books")
+        if(this.checkData()){
+            this.props.setName(this.inputName.current.getValue())
+            this.props.setFLastName(this.inputfLastName.current.getValue())
+            this.props.setMLastName(this.inputmLastName.current.getValue())
+            this.props.setEmail(this.inputEmail.current.getValue())
+            this.props.setDate(this.inputDate.current.getValue())
+            this.printData();
+            this.props.history.push("/books")
+        } else{
+            this.setState({error: "Fill all the information"})
+        }
+        
         
     }
 
@@ -77,6 +102,7 @@ class Login extends React.Component{
             <Container>
                   
                 <Form>
+                    <h1 style={{textAlign: 'center', fontWeight: 'bold', marginBottom: '50px'}}>Login</h1>
                     <Input 
                         ref={this.inputName} 
                         fieldtype={"text"}
@@ -107,25 +133,35 @@ class Login extends React.Component{
                         label={"Birthdate: "} 
                         defaultValue={localStorage.getItem("date")}
                     />
-                    
-                    <Button 
-                        onClick={()=>{
-                            this.deleteData();
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                        <Button 
+                            color="danger"
+                            onClick={()=>{
+                                this.deleteData();
 
-                        }}
-                    >
-                        Limpiar
-                    </Button>
+                            }}
+                            style={{borderRadius: '25px', marginTop: '30px'}}
+                        >
+                            Limpiar
+                        </Button>
 
-                    <Button 
-                        onClick={()=>{
-                            this.savedata();
+                        <Button
+                            color="primary"
+                            onClick={()=>{
+                                this.savedata();
 
-                        }}
-                    >
-                        Guardar en LocalStorage  valor
-                    </Button>
-           
+                            }}
+                            style={{borderRadius: '25px', marginTop: '30px'}}
+                        >
+                            Guardar en LocalStorage  valor
+                        </Button>
+                        
+                    </div>
+                    {this.state.error && 
+                        <div style={{marginTop: '30px'}}>
+                            <h3 style={{textAlign: 'center'}}>{this.state.error}</h3>
+                        </div>
+                    }
                 </Form>
             
             </Container>
