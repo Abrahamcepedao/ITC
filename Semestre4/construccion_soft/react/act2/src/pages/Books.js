@@ -5,10 +5,16 @@ import Api from "../utils/Api";
 import {setName, setFLastName, setMLastName, setEmail, setDate, addBook, deleteBooks } from "../store/actions"
 import { withRouter } from "react-router-dom"
 
+//Css
+import "./Books.css"
+
 //MaterialUI
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
 import AccessibilityRoundedIcon from '@material-ui/icons/AccessibilityRounded';
+import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
+import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
+import DoneOutlineRoundedIcon from '@material-ui/icons/DoneOutlineRounded';
 
 class Books extends React.Component{
 
@@ -41,8 +47,11 @@ class Books extends React.Component{
 
     searchBook = () => {
         //localStorage.setItem("ISBN", this.inputBook.current.getValue());
+        //9780140328721
+        //0914846922
+        //5699611185
         Api.GET(
-            "9780140328721",
+            this.state.inputISBN,
             (data)=>{
                 this.setState({currentBook:data})
             }
@@ -75,35 +84,54 @@ class Books extends React.Component{
         return (
             <Container>
                 {/* Header with info */}
-                <div style={{background: 'rgb(240,240,240)'}}>
-                    <p>{this.props.name} {this.props.fLastName} {this.props.mLastName}</p>
-                    <p>{this.props.email}</p>
-                    <p>{this.props.date}</p>
-                    <Button onClick={this.logout}>Cerrar sesión</Button>
+                <div style={{background: 'rgb(240,240,240)', marginTop: '50px', borderRadius: '25px', padding: '50px', marginBottom: '50px'}}>
+                    <h2 style={{fontWeight: 'bold'}}>Personal information</h2>
+                    <p><PersonRoundedIcon/> {this.props.name} {this.props.fLastName} {this.props.mLastName}</p>
+                    <p><EmailRoundedIcon/> {this.props.email}</p>
+                    <p><AccessibilityRoundedIcon/> {this.props.date}</p>
+                    <Button className="button" color="danger" onClick={this.logout}>Logout</Button>
                 </div>
                 {/* search */}
-                <div>
-                    <input value={this.state.inputISBN} placeholder="Ingresa ISBN: " onChange={(e) => {this.setState({inputISBN: e.target.value})}}/>
-                    <Button onClick={this.searchBook}>Buscar libro</Button>
+                <div style={{background: 'rgb(240,240,240)', marginTop: '50px', borderRadius: '25px', padding: '50px', marginBottom: '50px'}}>
+                    <h2 style={{fontWeight: 'bold', marginBottom: '30px'}}><SearchRoundedIcon style={{fontSize: '45px'}}/> Search book by ISBN</h2>
+                    <input className="input" value={this.state.inputISBN} placeholder="Ingresa ISBN: " onChange={(e) => {this.setState({inputISBN: e.target.value})}}/>
+                    <Button className="button" color="primary" onClick={this.searchBook}>Search book</Button>
                 </div>
 
                 {/* Search result */}
                 {Object.keys(this.state.currentBook).length !== 0 && 
-                    <div>
-                        <p>Hola</p>
-                        <h2>{this.state.currentBook.title}</h2>
-                        <Button onClick={this.addBook}>Add to favorites</Button>
+                    <div style={{background: 'rgb(240,240,240)', marginTop: '50px', borderRadius: '25px', padding: '50px', marginBottom: '50px'}}>
+                        <h2 style={{fontWeight: 'bold', marginBottom: '30px'}}><DoneOutlineRoundedIcon style={{fontSize: '45px'}}/> Result of request</h2>
+                        <div style={{background: 'rgb(255,255,255)', margin: 'auto', marginTop: '50px', borderRadius: '25px', padding: '20px', marginBottom: '50px', width: '300px'}}>
+                            <h3>{this.state.currentBook.title}</h3>
+                            <p><strong>Number of pages:</strong> {this.state.currentBook.number_of_pages}</p>
+                            <p><strong>Published date:</strong> {this.state.currentBook.publish_date}</p>
+                            {this.state.currentBook.publishers.map((item) => (
+                                <p><strong>Publishers:</strong> {item}</p>
+                            ))}
+                            
+                        </div>
+                        <Button className="button" color="primary" onClick={this.addBook}>Add to favorites</Button>
                     </div>
                 }
                 
                 
                 {/* Books */}
                 {this.props.books.length !== 0 &&
-                    <div>
+                    <div style={{background: 'rgb(240,240,240)', marginTop: '50px', borderRadius: '25px', padding: '50px', marginBottom: '50px'}}>
+                        <h2 style={{fontWeight: 'bold'}}><FavoriteRoundedIcon style={{fontSize: '45px'}}/> Favorites</h2>
                         <Row>
                             {this.props.books.map((book) => (
-                                <Col>
-                                    <h2>{book.title}</h2>
+                                <Col md={6}>
+                                    <div style={{background: 'rgb(255,255,255)', margin: 'auto', marginTop: '50px', borderRadius: '25px', padding: '20px', marginBottom: '50px'}}>
+                                        <h3>{book.title}</h3>
+                                        <p><strong>Number of pages:</strong> {book.number_of_pages}</p>
+                                        <p><strong>Published date:</strong> {book.publish_date}</p>
+                                        {book.publishers.map((item) => (
+                                            <p><strong>Publishers:</strong> {item}</p>
+                                        ))}
+                                        
+                                    </div>
                                 </Col>
                             ))}
                             

@@ -129,7 +129,7 @@ class Login extends React.Component{
                     />
                     <Input 
                         ref={this.inputDate} 
-                        fieldtype={"text"}
+                        fieldtype={"date"}
                         label={"Birthdate: "} 
                         defaultValue={localStorage.getItem("date")}
                     />
@@ -142,7 +142,7 @@ class Login extends React.Component{
                             }}
                             style={{borderRadius: '25px', marginTop: '30px'}}
                         >
-                            Limpiar
+                            Clean form
                         </Button>
 
                         <Button
@@ -153,7 +153,7 @@ class Login extends React.Component{
                             }}
                             style={{borderRadius: '25px', marginTop: '30px'}}
                         >
-                            Guardar en LocalStorage  valor
+                            Save and continue
                         </Button>
                         
                     </div>
