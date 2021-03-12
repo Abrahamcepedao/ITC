@@ -1,0 +1,3 @@
+export const LOGIN_USER = "LOGIN_USER"
+export const SUCCESS_LOGIN_USER = "SUCCESS_LOGIN_USER"
+export const TOKEN_LOGIN = "TOKEN_LOGIN"

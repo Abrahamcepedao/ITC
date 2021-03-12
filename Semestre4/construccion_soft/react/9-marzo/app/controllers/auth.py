@@ -7,6 +7,7 @@ api = Namespace("Auth")
 auth_obj = api.model("AuthObj", {
     "email": fields.String(required = True),
     "password": fields.String(required = True),
+    "authToken": fields.String(),
 })
 
 class AuthController:
@@ -14,6 +15,7 @@ class AuthController:
     @api.route("/login")
     class Login(Resource):
         @api.expect(auth_obj, validate = True)
+        @api.marshal_with(auth_obj)
         def post(self):
             data = request.json
             return AuthService.login(data["email"], data["password"])
@@ -30,4 +32,18 @@ class AuthController:
         @api.marshal_with(auth_obj)
         def get(self):
             return AuthService.validate_token()
+
+    @api.route("/delete-user")
+    class DeleteUser(Resource):
+        @api.marshal_with(auth_obj)
+        def post(self):
+            data = request.json
+            return AuthService.delete_user(data["email"])
+    
+    @api.route("/users")
+    class GetUsers(Resource):
+        @api.marshal_with(auth_obj)
+        def post(self):
+            data = request.json
+            return AuthService.delete_user(data["email"])
 
