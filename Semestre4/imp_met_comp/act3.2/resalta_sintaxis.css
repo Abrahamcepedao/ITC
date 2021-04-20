@@ -1,0 +1,103 @@
+#container {
+    width: 90%;
+    max-width: 600px;
+    padding: 50px;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background-color: rgb(245,245,255);
+    border-radius: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+.title {
+    color: black;
+    text-align: center;
+    font-size: 45px;
+    font-weight: bold;
+}
+
+#itemContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#circle{
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: none;
+    margin-right: 20px;
+}
+
+
+/* <----circles----> */
+.atomo{
+    background-color: black;
+}
+
+.entero{
+    background-color: green;
+}
+
+.parentesis{
+    background-color: red;
+}
+
+.string{
+    background-color: orange;
+}
+
+
+.booleano{
+    background-color: purple;
+}
+
+.fin{
+    background-color: blue;
+}
+
+.error{
+    background-color: gray;
+}
+
+/* <-----items-----> */
+.int  {
+    color: green;
+    margin-right: 5px;
+}
+
+.del  {
+    color: red;
+}
+
+.end  {
+    color: blue;
+}
+
+.str  {
+    color: orange;
+    margin-right: 5px;
+}
+
+.bul  {
+    color: purple;
+    margin-right: 5px;
+}
+
+.ato  {
+    color: black;
+    margin-right: 5px;
+}
+
+.err  {
+    color: gray;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.int  {
+    color: green;
+}
