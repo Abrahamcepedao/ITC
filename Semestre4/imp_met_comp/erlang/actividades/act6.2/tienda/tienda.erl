@@ -44,8 +44,22 @@ validar_pedidos([H|T], PR, PN) ->
     PNTEMP = append([validar_pedido(H, PR)], PN),
     validar_pedidos(T, PR, PNTEMP).
 
+%Agregar a producto
+actualizar_producto1(H, PR) ->
+    io:fwrite("H------: ~p~n", [H]),
+    Prod = tuple_to_list(H),
+    PRTEMP = [X || X <- PR, X#producto.nombre==nth(1,Prod)],
+    Prod2 = nth(1, PRTEMP),
+    io:fwrite("PR-----: ~p~n", [PR]),
+    io:fwrite("Prod---: ~p~n", [Prod]),
+    io:fwrite("PRTEMP-: ~p~n", [PRTEMP]),
+    io:fwrite("Prod2--: ~p~n", [Prod2]),
+    PRTEMP2 = [X || X <- PR, X#producto.nombre/=nth(1,Prod)],
+    Cant = Prod2#producto.cantidad + nth(2, Prod),
+    append([#producto{nombre=nth(1, Prod), cantidad=Cant}],PRTEMP2).
 
-actualizar_producto(H, PR, Type) ->
+% Disminuir a producto
+actualizar_producto0(H, PR) ->
     io:fwrite("H------: ~p~n", [H]),
     Prod = tuple_to_list(H),
     PRTEMP = [X || X <- PR, X#producto.nombre==nth(2,Prod)],
@@ -55,15 +69,17 @@ actualizar_producto(H, PR, Type) ->
     io:fwrite("PRTEMP-: ~p~n", [PRTEMP]),
     io:fwrite("Prod2--: ~p~n", [Prod2]),
     PRTEMP2 = [X || X <- PR, X#producto.nombre/=nth(2,Prod)],
-    if
-        (Type == 0) -> Cant = Prod2#producto.cantidad - nth(3, Prod);
-        (Type == 1) -> Cant = Prod2#producto.cantidad + nth(3, Prod)
-    end,
+    Cant = Prod2#producto.cantidad - nth(3, Prod),
     append([#producto{nombre=nth(2, Prod), cantidad=Cant}],PRTEMP2).
 
 actualizar_productos(PR, [], _) -> PR;
 actualizar_productos(PR, [H|T], Type) ->
-    PRTEMP = actualizar_producto(H, PR, Type),
+    io:fwrite("H--: ~p~n", [H]),
+    io:fwrite("T--: ~p~n", [T]),
+    if
+        (Type == 0) -> PRTEMP = actualizar_producto0(H, PR);
+        (Type == 1) -> PRTEMP = actualizar_producto1(H, PR)
+    end,
     actualizar_productos(PRTEMP, T, Type).
 
 servidor(SO, PR, PE, PP, N) -> 
@@ -150,6 +166,7 @@ servidor(SO, PR, PE, PP, N) ->
             PN = validar_pedidos(ListaDeProductos, PR, []),
 
             % editar disponivilidad
+            io:fwrite("PN--: ~p~n", [PN]),
             PRTEMP = actualizar_productos(PR, PN, 0),
 
             P ! {response, PN, N},
@@ -181,9 +198,10 @@ servidor(SO, PR, PE, PP, N) ->
             
             % editar disponivilidad
             io:fwrite("PPTEMP2: ~p~n", PPTEMP2),
+            io:fwrite("PPTEMP2 child: ~p~n", [nth(1,PPTEMP2)]),
             %PPTEMP3 = PPTEMP2#pedido.lista_productos,
             %io:fwrite("PPTEMP3: ~p~n", [PPTEMP3]),
-            PRTEMP = actualizar_productos(PR, PPTEMP2, 1),
+            PRTEMP = actualizar_productos(PR, nth(1,PPTEMP2), 1),
 
             P ! {response, "Pedido rechazado correctamente..."},
             servidor(SO, PRTEMP, PE, PPTEMP, N) ;
