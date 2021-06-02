@@ -24,6 +24,48 @@
 % PR => lista de productos
 % PE => lista de pedidos atendidos
 % PP => lista de pedidos en proceso
+% 
+
+
+validar_pedido(T, PR) ->
+    
+    Prod = tuple_to_list(T),
+    PRTEMP = [X || X <- PR, X#producto.nombre==nth(1,Prod)],
+    Prod2 = nth(1, PRTEMP),
+    Cant = Prod2#producto.cantidad - nth(2, Prod),
+    if
+        (Cant < 0) -> Cant2 = Prod2#producto.cantidad;
+        (Cant > 0) -> Cant2 = nth(2, Prod)
+    end,
+    #producto{nombre=nth(1, Prod), cantidad=Cant2}.
+    
+validar_pedidos([], _, PN) -> PN;
+validar_pedidos([H|T], PR, PN) -> 
+    PNTEMP = append([validar_pedido(H, PR)], PN),
+    validar_pedidos(T, PR, PNTEMP).
+
+
+actualizar_producto(H, PR, Type) ->
+    io:fwrite("H------: ~p~n", [H]),
+    Prod = tuple_to_list(H),
+    PRTEMP = [X || X <- PR, X#producto.nombre==nth(2,Prod)],
+    Prod2 = nth(1, PRTEMP),
+    io:fwrite("PR-----: ~p~n", [PR]),
+    io:fwrite("Prod---: ~p~n", [Prod]),
+    io:fwrite("PRTEMP-: ~p~n", [PRTEMP]),
+    io:fwrite("Prod2--: ~p~n", [Prod2]),
+    PRTEMP2 = [X || X <- PR, X#producto.nombre/=nth(2,Prod)],
+    if
+        (Type == 0) -> Cant = Prod2#producto.cantidad - nth(3, Prod);
+        (Type == 1) -> Cant = Prod2#producto.cantidad + nth(3, Prod)
+    end,
+    append([#producto{nombre=nth(2, Prod), cantidad=Cant}],PRTEMP2).
+
+actualizar_productos(PR, [], _) -> PR;
+actualizar_productos(PR, [H|T], Type) ->
+    PRTEMP = actualizar_producto(H, PR, Type),
+    actualizar_productos(PRTEMP, T, Type).
+
 servidor(SO, PR, PE, PP, N) -> 
     receive
         exit -> io:fwrite("Se ha cerrado la tienda...~n");
@@ -104,8 +146,14 @@ servidor(SO, PR, PE, PP, N) ->
             PPTEMP = append([Po], PP),
             NTEMP = N+1,
 
-            P ! {response, "Pedido creado correctamente..."},
-            servidor(SO, PR, PE, PPTEMP, NTEMP);
+            % revisar disponibilidad
+            PN = validar_pedidos(ListaDeProductos, PR, []),
+
+            % editar disponivilidad
+            PRTEMP = actualizar_productos(PR, PN, 0),
+
+            P ! {response, PN, N},
+            servidor(SO, PRTEMP, PE, PPTEMP, NTEMP);
 
         % Aceptar pedido
         {acepta_pedido, Socio, Pedido, P} ->
@@ -129,8 +177,16 @@ servidor(SO, PR, PE, PP, N) ->
         % Rechazar pedido
         {rechaza_pedido, _, Pedido, P} ->
             PPTEMP = [X || X <- PP, X#pedido.numero/=Pedido],
+            PPTEMP2 = [X#pedido.lista_productos || X <- PP, X#pedido.numero==Pedido],
+            
+            % editar disponivilidad
+            io:fwrite("PPTEMP2: ~p~n", PPTEMP2),
+            %PPTEMP3 = PPTEMP2#pedido.lista_productos,
+            %io:fwrite("PPTEMP3: ~p~n", [PPTEMP3]),
+            PRTEMP = actualizar_productos(PR, PPTEMP2, 1),
+
             P ! {response, "Pedido rechazado correctamente..."},
-            servidor(SO, PR, PE, PPTEMP, N) ;
+            servidor(SO, PRTEMP, PE, PPTEMP, N) ;
         
         % Lista de pedidos en proceso
         {pedidos_en_proceso, P} ->
@@ -148,4 +204,4 @@ servidor(SO, PR, PE, PP, N) ->
 abrir_tienda() ->
     %spawn('tienda@Abrahams-MacBook-Pro-2', tienda, servidor, [[],[],[],[], 0]).
     Pid = spawn(tienda, servidor, [[],[],[],[], 0]),
-    register(pidtienda, Pid).
+    register(tienda, Pid).

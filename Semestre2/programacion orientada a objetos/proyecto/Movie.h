@@ -58,7 +58,7 @@ Movie::Movie(string ID, string name, string genre, string ageClassification, str
     this->top = top;
     this->crew = crew;
 }
-Movie::Movie(string videoID, string title, string videoGenre, int duration, float videoRating, Crew crew):Video(videoID, title, videoGenre, duration, videoRating){
+Movie::Movie(string casillavideoID, string title, string videoGenre, int duration, float videoRating, Crew crew):Video(videoID, title, videoGenre, duration, videoRating){
     this->crew = crew;
 }
 //methods
