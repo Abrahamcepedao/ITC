@@ -3,6 +3,11 @@
         acepta_pedido/2, rechaza_pedido/2, pedidos_en_proceso/0,
         pedidos_atendidos/0, lista_existencias/0]).
 
+% Para cada funcion del modulo 'socios' se utiliza el pid generado con la tienda para mandar el mensaje correspondiente 
+% y hacer pattern matching con la funcion que corresponda
+% se indica el pid y la ubicacion del modulo dentro de cada funcion. 
+
+% <-------Matriz------->
 matriz() -> 'tienda@Abrahams-MacBook-Pro-2'.
 
 % <------------------Socios------------------>

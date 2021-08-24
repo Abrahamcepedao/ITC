@@ -1,0 +1,58 @@
+/*% Act 7.2 Programación lógica avanzada en Prolog */
+/*% Lucas idigoras - A00827751 */
+/*% Abraham Cepeda - A00827666*/
+
+/* <-----fgeneral----->*/
+auxiliar(A,B,C,X) :-
+    X is B*B-4*A*C.
+
+fgeneral(A,B,C,X1,X2) :-
+    auxiliar(A,B,C,U),
+    SU is sqrt(U),
+    X1 is (-B-SU)/(2*A),
+    X2 is (-B+SU)/(2*A).
+
+/* <-----comprime----->*/
+comprime([],[]).
+comprime([X],[X]).
+comprime([X,X | L1],L2) :-
+    comprime([X|L1], L2).
+comprime([X,Y | L1], [X | L2]) :-
+    X \= Y,
+    comprime([Y | L1], L2).
+
+
+/* <-----multiplo----->*/
+multiplo(N,M):- 
+    Cont is 1,
+    auxiliar(N, M, Cont).
+
+auxiliar(N,M,Cont):-
+    N1 is N * Cont,
+    N1 =< M, ! , 
+    write(N1), write(" "),
+    Cont1 is Cont + 1,
+    auxiliar(N,M,Cont1).
+
+auxiliar(,,_).
+
+
+/* <-----duplica----->*/
+duplica([],[]).
+duplica([[X]|T], [[X,X]|Y]) :-
+    duplica(T,Y). 
+duplica([H|T],[H,H|Y]) :-
+    duplica(T,Y). 
+
+
+
+/* <------hoja------->*/
+hojas(nil,[]).
+hojas(arbol(E,nil,nil),[E]):-!.
+hojas(arbol(_,HI,HD), R ) :- hojas(HI,RI), hojas(HD,RD), 
+    write("RI: "), write(RI), write(" "),
+    write("RD: "), write(RD), write(" "),
+    write("R: "), write(R), write(" "),
+    append(RI,RD,R).
+
+
