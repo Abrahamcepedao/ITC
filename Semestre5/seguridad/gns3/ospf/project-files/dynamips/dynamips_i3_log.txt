@@ -1,0 +1,45 @@
+Aug 28 10:30:37.312 HYPERVISOR: Release 0.2.17-amd64/Darwin (tag 2017072410)
+Aug 28 10:30:37.313 HYPERVISOR: Started on IP = 127.0.0.1, TCP port = 52566.
+Aug 28 10:30:37.323 HYPERVISOR: exec_cmd: hypervisor version 
+Aug 28 10:30:37.323 HYPERVISOR: exec_cmd: hypervisor working_dir /Users/abrahamcepedaoseguera/Downloads/TC2007B_01_7200 2/project-files/dynamips 
+Aug 28 10:30:37.323 GENERAL: working_dir=/Users/abrahamcepedaoseguera/Downloads/TC2007B_01_7200 2/project-files/dynamips
+Aug 28 10:30:37.324 HYPERVISOR: exec_cmd: hypervisor working_dir /Users/abrahamcepedaoseguera/Downloads/TC2007B_01_7200 2/project-files/dynamips/d9778502-1258-4760-93bd-08f034104189 
+Aug 28 10:30:37.324 GENERAL: working_dir=/Users/abrahamcepedaoseguera/Downloads/TC2007B_01_7200 2/project-files/dynamips/d9778502-1258-4760-93bd-08f034104189
+Aug 28 10:30:37.324 HYPERVISOR: exec_cmd: vm create R3 3 c7200 
+Aug 28 10:30:37.326 VM: VM R3 created.
+Aug 28 10:30:37.327 HYPERVISOR: exec_cmd: vm set_con_tcp_port R3 5003 
+Aug 28 10:30:37.327 HYPERVISOR: exec_cmd: c7200 get_mac_addr R3 
+Aug 28 10:30:37.327 HYPERVISOR: exec_cmd: vm get_status R3 
+Aug 28 10:30:37.328 HYPERVISOR: exec_cmd: vm slot_add_binding R3 0 0 C7200-IO-FE 
+Aug 28 10:30:37.328 HYPERVISOR: exec_cmd: vm set_disk0 R3 32 
+Aug 28 10:30:37.329 HYPERVISOR: exec_cmd: vm get_status R3 
+Aug 28 10:30:37.329 HYPERVISOR: exec_cmd: vm set_idle_pc R3 0x6062f94c 
+Aug 28 10:30:37.330 HYPERVISOR: exec_cmd: vm set_ios R3 /Users/abrahamcepedaoseguera/GNS3/images/IOS/c7200-advipservicesk9-mz.152-4.M6.extracted.bin 
+Aug 28 10:30:37.330 HYPERVISOR: exec_cmd: c7200 set_mac_addr R3 ca03.71de.0000 
+Aug 28 10:30:37.331 HYPERVISOR: exec_cmd: vm set_nvram R3 512 
+Aug 28 10:30:37.331 HYPERVISOR: exec_cmd: vm set_ram R3 512 
+Aug 28 10:30:37.331 HYPERVISOR: exec_cmd: vm get_status R3 
+Aug 28 10:30:37.332 HYPERVISOR: exec_cmd: vm slot_remove_binding R3 0 0 
+Aug 28 10:30:37.332 HYPERVISOR: exec_cmd: vm get_status R3 
+Aug 28 10:30:37.333 HYPERVISOR: exec_cmd: vm slot_add_binding R3 0 0 C7200-IO-2FE 
+Aug 28 10:30:37.333 HYPERVISOR: exec_cmd: vm get_status R3 
+Aug 28 10:30:37.333 HYPERVISOR: exec_cmd: vm slot_add_binding R3 1 0 PA-2FE-TX 
+Aug 28 10:30:37.334 HYPERVISOR: exec_cmd: vm get_status R3 
+Aug 28 10:30:37.334 HYPERVISOR: exec_cmd: vm slot_add_binding R3 2 0 PA-4T+ 
+Aug 28 10:30:38.239 HYPERVISOR: exec_cmd: nio create_udp udp-b6b39448-397d-4c34-a8d3-0a828a9b9778 10016 127.0.0.1 10017 
+Aug 28 10:30:38.463 HYPERVISOR: exec_cmd: vm slot_add_nio_binding R3 2 0 udp-b6b39448-397d-4c34-a8d3-0a828a9b9778 
+Aug 28 10:30:38.464 HYPERVISOR: exec_cmd: vm get_status R3 
+Aug 28 11:15:37.022 HYPERVISOR: exec_cmd: vm create Ghost 0 c7200 
+Aug 28 11:15:37.022 VM: VM Ghost created.
+Aug 28 11:15:37.023 HYPERVISOR: exec_cmd: vm set_ios Ghost /Users/abrahamcepedaoseguera/GNS3/images/IOS/c7200-advipservicesk9-mz.152-4.M6.extracted.bin 
+Aug 28 11:15:37.023 HYPERVISOR: exec_cmd: vm set_ghost_status Ghost 1 
+Aug 28 11:15:37.023 HYPERVISOR: exec_cmd: vm set_ghost_file Ghost '/Users/abrahamcepedaoseguera/Downloads/TC2007B_01_7200 2/project-files/dynamips/c7200-advipservicesk9-mz.152-4.M6.extracted.bin-512.ghost' 
+Aug 28 11:15:37.024 HYPERVISOR: exec_cmd: vm get_status R3 
+Aug 28 11:15:37.024 HYPERVISOR: exec_cmd: vm set_config R3 configs/i3_startup-config.cfg configs/i3_private-config.cfg 
+Aug 28 11:15:37.024 HYPERVISOR: exec_cmd: vm start R3 
+Aug 28 11:33:22.382 HYPERVISOR: exec_cmd: vm get_status R3 
+Aug 28 11:33:22.396 HYPERVISOR: exec_cmd: vm stop R3 
+Aug 28 11:33:22.574 VM: VM R3 shutdown.
+Aug 28 11:33:22.575 HYPERVISOR: exec_cmd: vm extract_config R3 
+Aug 28 11:33:27.078 HYPERVISOR: exec_cmd: vm get_status R3 
+Aug 28 11:33:27.079 HYPERVISOR: exec_cmd: vm extract_config R3 

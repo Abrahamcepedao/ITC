@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController storyboardIdentifier="ViewController" id="BYZ-38-t0r" customClass="ViewController" customModule="Authentication" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="55e-RC-diY">
+                                <rect key="frame" x="20" y="170" width="374" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KAs-sO-GDc">
+                                <rect key="frame" x="20" y="254" width="374" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" textContentType="password"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eO9-zp-wdo">
+                                <rect key="frame" x="20" y="338" width="374" height="30"/>
+                                <color key="backgroundColor" red="0.99607843137254903" green="0.0023510623719999999" blue="0.1842713654" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <state key="normal" title="Sign up">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="signUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="EHg-vi-SRI"/>
+                                </connections>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="biblioteca" translatesAutoresizingMaskIntoConstraints="NO" id="uwX-qi-4T7">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="oy0-cc-GNT"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="55e-RC-diY" secondAttribute="trailing" constant="20" id="0J9-0t-AWa"/>
+                            <constraint firstItem="KAs-sO-GDc" firstAttribute="top" secondItem="55e-RC-diY" secondAttribute="bottom" constant="50" id="0oK-6N-zuZ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="KAs-sO-GDc" secondAttribute="trailing" constant="20" id="2kh-Yy-Cj3"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="uwX-qi-4T7" secondAttribute="trailing" id="EpA-13-iy2"/>
+                            <constraint firstItem="eO9-zp-wdo" firstAttribute="top" secondItem="KAs-sO-GDc" secondAttribute="bottom" constant="50" id="Ic4-8K-Z2P"/>
+                            <constraint firstItem="eO9-zp-wdo" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Jqw-sb-TXJ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="eO9-zp-wdo" secondAttribute="trailing" constant="20" id="RbB-VZ-BUs"/>
+                            <constraint firstItem="uwX-qi-4T7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="RrY-Lp-bAZ"/>
+                            <constraint firstItem="uwX-qi-4T7" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Sgn-Te-CCa"/>
+                            <constraint firstItem="55e-RC-diY" firstAttribute="top" secondItem="uwX-qi-4T7" secondAttribute="bottom" constant="20" id="VcB-Iy-aOa"/>
+                            <constraint firstItem="55e-RC-diY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="fqp-Lx-YDU"/>
+                            <constraint firstItem="KAs-sO-GDc" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="jWA-xq-jna"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="emailTxtField" destination="55e-RC-diY" id="hZs-rK-whR"/>
+                        <outlet property="imageView" destination="uwX-qi-4T7" id="hrn-N8-Z62"/>
+                        <outlet property="passwordTxtField" destination="KAs-sO-GDc" id="kV1-Mk-mrw"/>
+                        <outlet property="signUpButton" destination="eO9-zp-wdo" id="AyM-o9-z8f"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="139" y="69"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="biblioteca" width="512" height="356"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

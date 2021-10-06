@@ -1,0 +1,47 @@
+Aug 27 14:48:25.400 HYPERVISOR: Release 0.2.17-amd64/Darwin (tag 2017072410)
+Aug 27 14:48:25.400 HYPERVISOR: Started on IP = 127.0.0.1, TCP port = 54748.
+Aug 27 14:48:25.413 HYPERVISOR: exec_cmd: hypervisor version 
+Aug 27 14:48:25.414 HYPERVISOR: exec_cmd: hypervisor working_dir /Users/abrahamcepedaoseguera/Downloads/TC2007B_01_7200 2/project-files/dynamips 
+Aug 27 14:48:25.414 GENERAL: working_dir=/Users/abrahamcepedaoseguera/Downloads/TC2007B_01_7200 2/project-files/dynamips
+Aug 27 14:48:25.414 HYPERVISOR: exec_cmd: hypervisor working_dir /Users/abrahamcepedaoseguera/Downloads/TC2007B_01_7200 2/project-files/dynamips/23b71cb8-217e-4c5c-888e-b105c1d11c69 
+Aug 27 14:48:25.414 GENERAL: working_dir=/Users/abrahamcepedaoseguera/Downloads/TC2007B_01_7200 2/project-files/dynamips/23b71cb8-217e-4c5c-888e-b105c1d11c69
+Aug 27 14:48:25.415 HYPERVISOR: exec_cmd: vm create R2 2 c7200 
+Aug 27 14:48:25.415 VM: VM R2 created.
+Aug 27 14:48:25.415 HYPERVISOR: exec_cmd: vm set_con_tcp_port R2 5002 
+Aug 27 14:48:25.416 HYPERVISOR: exec_cmd: c7200 get_mac_addr R2 
+Aug 27 14:48:25.416 HYPERVISOR: exec_cmd: vm get_status R2 
+Aug 27 14:48:25.416 HYPERVISOR: exec_cmd: vm slot_add_binding R2 0 0 C7200-IO-FE 
+Aug 27 14:48:25.417 HYPERVISOR: exec_cmd: vm set_disk0 R2 32 
+Aug 27 14:48:25.417 HYPERVISOR: exec_cmd: vm get_status R2 
+Aug 27 14:48:25.418 HYPERVISOR: exec_cmd: vm set_idle_pc R2 0x6062f94c 
+Aug 27 14:48:25.418 HYPERVISOR: exec_cmd: vm set_ios R2 /Users/abrahamcepedaoseguera/GNS3/images/IOS/c7200-advipservicesk9-mz.152-4.M6.extracted.bin 
+Aug 27 14:48:25.419 HYPERVISOR: exec_cmd: c7200 set_mac_addr R2 ca02.71da.0000 
+Aug 27 14:48:25.419 HYPERVISOR: exec_cmd: vm set_nvram R2 512 
+Aug 27 14:48:25.419 HYPERVISOR: exec_cmd: vm set_ram R2 512 
+Aug 27 14:48:25.420 HYPERVISOR: exec_cmd: vm get_status R2 
+Aug 27 14:48:25.420 HYPERVISOR: exec_cmd: vm slot_remove_binding R2 0 0 
+Aug 27 14:48:25.420 HYPERVISOR: exec_cmd: vm get_status R2 
+Aug 27 14:48:25.421 HYPERVISOR: exec_cmd: vm slot_add_binding R2 0 0 C7200-IO-2FE 
+Aug 27 14:48:25.421 HYPERVISOR: exec_cmd: vm get_status R2 
+Aug 27 14:48:25.421 HYPERVISOR: exec_cmd: vm slot_add_binding R2 1 0 PA-2FE-TX 
+Aug 27 14:48:25.421 HYPERVISOR: exec_cmd: vm get_status R2 
+Aug 27 14:48:25.422 HYPERVISOR: exec_cmd: vm slot_add_binding R2 2 0 PA-4T+ 
+Aug 27 14:48:26.108 HYPERVISOR: exec_cmd: nio create_udp udp-38b13a91-2a20-4523-b2e7-827ec65b656e 10010 127.0.0.1 10011 
+Aug 27 14:48:26.329 HYPERVISOR: exec_cmd: vm slot_add_nio_binding R2 0 0 udp-38b13a91-2a20-4523-b2e7-827ec65b656e 
+Aug 27 14:48:26.330 HYPERVISOR: exec_cmd: vm get_status R2 
+Aug 27 14:48:26.376 HYPERVISOR: exec_cmd: nio create_udp udp-7303870e-be49-4c36-b0ed-fa45cdf8f24f 10014 127.0.0.1 10015 
+Aug 27 14:48:26.378 HYPERVISOR: exec_cmd: vm slot_add_nio_binding R2 2 0 udp-7303870e-be49-4c36-b0ed-fa45cdf8f24f 
+Aug 27 14:48:26.378 HYPERVISOR: exec_cmd: vm get_status R2 
+Aug 27 14:48:26.658 HYPERVISOR: exec_cmd: nio create_udp udp-64167433-5b20-494c-8d98-5af64c947544 10020 127.0.0.1 10021 
+Aug 27 14:48:26.659 HYPERVISOR: exec_cmd: vm slot_add_nio_binding R2 2 1 udp-64167433-5b20-494c-8d98-5af64c947544 
+Aug 27 14:48:26.660 HYPERVISOR: exec_cmd: vm get_status R2 
+Aug 27 14:48:34.145 HYPERVISOR: exec_cmd: vm create Ghost 0 c7200 
+Aug 27 14:48:34.145 VM: VM Ghost created.
+Aug 27 14:48:34.146 HYPERVISOR: exec_cmd: vm set_ios Ghost /Users/abrahamcepedaoseguera/GNS3/images/IOS/c7200-advipservicesk9-mz.152-4.M6.extracted.bin 
+Aug 27 14:48:34.147 HYPERVISOR: exec_cmd: vm set_ghost_status Ghost 1 
+Aug 27 14:48:34.147 HYPERVISOR: exec_cmd: vm set_ghost_file Ghost '/Users/abrahamcepedaoseguera/Downloads/TC2007B_01_7200 2/project-files/dynamips/c7200-advipservicesk9-mz.152-4.M6.extracted.bin-512.ghost' 
+Aug 27 14:48:34.147 HYPERVISOR: exec_cmd: vm get_status R2 
+Aug 27 14:48:34.149 HYPERVISOR: exec_cmd: vm set_config R2 configs/i2_startup-config.cfg configs/i2_private-config.cfg 
+Aug 27 14:48:34.149 HYPERVISOR: exec_cmd: vm start R2 
+Aug 27 14:49:04.847 HYPERVISOR: exec_cmd: vm extract_config R2 
+Aug 27 15:37:05.268 HYPERVISOR: exec_cmd: vm extract_config R2 
