@@ -7,19 +7,27 @@
 #include <vector>
 using namespace std;
 
+//safe
+//input: v (número de vertice), graph (todo el grafo), colors (dominio de colores), c (color a revisar)
+//output: true/false si el color es válido para el vertice
+//O(N)
 bool safe(int v, vector< vector<bool> > graph, vector<int> colors, int c){
     for(int i = 0; i < graph[0].size(); i++) if (graph[v][i] && c == colors[i]) return false;
     return true;
 }
- 
-bool graphColoringUtil(vector< vector<bool> > graph, int m, vector<int> &colors, int v){
+
+//util
+//input: graph (todo el grafo), colors (dominio de colores),  v (vertice)
+//output: true/false si se puede colorear el grafo
+//O(m^V) (m = cantidad de colores; V = cantidad de vertices)
+bool util(vector< vector<bool> > graph, vector<int> &colors, int v){
     if (v == graph[0].size()) return true;
  
-    for(int i = 1; i <= m; i++){
+    for(int i = 1; i <= graph[0].size(); i++){
         if (safe(v, graph, colors, i)){
             colors[v] = i;
  
-            if (graphColoringUtil(graph, m, colors, v + 1) == true) return true;
+            if (util(graph, colors, v + 1) == true) return true;
  
             colors[v] = 0;
         }
@@ -27,19 +35,27 @@ bool graphColoringUtil(vector< vector<bool> > graph, int m, vector<int> &colors,
     return false;
 }
 
-void printSolution(vector<int> colors){
+//print
+//input: colors (vertices coloreados)
+//output: vertices coloreados
+//O(V) 
+void print(vector<int> colors){
     cout << "Solución: \n";
     for (int i = 0; i < colors.size(); i++) cout << "Node: " << i << ", Assigned Color: " << (colors[i]-1) << "\n";
     cout << "\n";
 }
 
-void graphColoring(vector< vector<bool> > graph, int m){
+//colorGraph
+//input: graph (grafo)
+//output: vertices coloreados o "no hay solucion"
+//O(m^V)
+void colorGraph(vector< vector<bool> > graph){
     vector<int> colors(graph[0].size(), 0);
  
-    if(!graphColoringUtil(graph, m, colors, 0)) {
+    if(!util(graph, colors, 0)) {
         cout << "No hay solucion";
      } else {
-        printSolution(colors);
+         print(colors);
      }
 }
 
@@ -53,6 +69,8 @@ int main(){
     cout << "----------------------------------------------------------------------------------------\n";
     cout<<"Ingresa el valor de n: >\n"; cin >> n;
     vector< vector<bool> > graph(n, vector<bool>(n, 0));
+    
+    //leer grafo
     for(int i = 0; i < n; i++){
         for(int j = 0; j < n; j++){
             cin >> num;
@@ -60,17 +78,8 @@ int main(){
         }    
     }
 
+    //colorear grafo
+    colorGraph(graph);
 
-
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            cout << graph[i][j] << " ";
-        }    
-        cout << "\n";
-    }
-
-    int m = 3;
-    graphColoring(graph, m);
-    
     return(0);
 }
