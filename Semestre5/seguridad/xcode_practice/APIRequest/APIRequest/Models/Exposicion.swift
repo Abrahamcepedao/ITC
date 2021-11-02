@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct Exposicion: Codable {
+    var title: String
+    var description: String
+}
