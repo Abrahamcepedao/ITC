@@ -12,7 +12,7 @@ using namespace std;
 //Function insertionSort
 //Ordena el arreglo
 //Complejidad O(n^2)
-void insertionSort(int arr[], int n){
+void insertionSort(vector<int> &arr, int n){
     int i, key, j;
     for (i = 1; i < n; i++){
         key = arr[i];
@@ -29,14 +29,32 @@ void insertionSort(int arr[], int n){
 //Funcion calculate
 //Calcula la cantidad de monedas necesarias de cada valor para sumar el cambio
 //Complejidad O(n)
-void minCoins(int monedas[], int n, int num){
-    int table[n][num+1];
-	for(int i = 0; i < n; i++) table[i][0] = 0;
+void minCoins(vector<int> monedas, int n, int num){
+	for (int i = 0; i < n; i++){
+		if(monedas[i] > num){
+			monedas.pop_back();
+			n--;
+		}
+	}
+	n = monedas.size();
+	
+	vector< vector<int> > table(n, vector<int>(num+1, 0));
 
-	for(int i = 0; i < 1; i++) for(int j = 1; j < num+1; j++) table[i][j] = monedas[i] <= j ? j/monedas[i] : 0;
-		
-	for(int i = 1; i < n; i++) for(int j = 1; j < num + 1; j++) table[i][j] = monedas[i] <= j ? min(abs(table[i - 1][j]), 1 + table[i][j - monedas[i]]) : table[i - 1][j];
-		
+	
+
+	for(int i = 0; i < n; i++){
+		cout << monedas[i] << " ";
+	}
+	cout << endl;
+
+	for (int i = 0; i < 1; i++)
+		for (int j = 1; j < num + 1; j++)
+			table[i][j] = monedas[i] <= j ? j / monedas[i] : 0;
+
+	for (int i = 1; i < n; i++)
+		for (int j = 1; j < num + 1; j++)
+			table[i][j] = monedas[i] <= j ? min(abs(table[i - 1][j]), 1 + table[i][j - monedas[i]]) : table[i - 1][j];
+
 
 	int min = INT_MAX;
 	int l = 0, r = num, count = 0;
@@ -45,6 +63,13 @@ void minCoins(int monedas[], int n, int num){
 			min = table[i][num];
 			l = i;
 		}
+	}
+
+	for(int i = 0; i < n; i++){
+		for(int j = 0; j < num+1; j++){
+			cout << table[i][j] << " ";
+		}
+		cout << endl;
 	}
 
 	bool found = false;
@@ -59,14 +84,11 @@ void minCoins(int monedas[], int n, int num){
 			found = r == 0;
 		}
 	}
-
-
 	for(int i = n-1; i >= 0; i--){
 		count = 0;
 		for(int j = 0; j < min; j++) if(monedas[i] == coins[j]) count++;
 		cout << monedas[i] << ": " << count << endl;
 	}
-
 }
 
 
@@ -83,17 +105,17 @@ int main() {
     cout<<"----------------------------------------------------------------------------------------"<<endl;
 
 	cout << "\nIngresa el numero de monedas disponibles >";cin >> n; cout<<endl;
-	int monedas[n];
+	vector<int> monedas(n, 0);
 	cout << "Ingresa el valor de cada moneda (uno por linea) >"; cout<<endl;
 	for (int i = 0; i < n; ++i)	cin >> monedas[i];
 	
-	insertionSort(monedas, n);
 
-	cout << "Ingresa el precio del producto";  cin >>  p; cout << endl;
-	cout << "Ingresa el billete o moneda con el que se paga dicho producto";  cin >>  q; cout << endl;
 
-	cout << endl;
+	cout << "Ingresa el precio del producto\n";  cin >>  p;
+	cout << "Ingresa el billete o moneda con el que se paga dicho producto\n";  cin >>  q;
 
+	
+	//cout << monedas.size() << endl;
 	minCoins(monedas, n, q-p);
 
 	cout<<endl<<endl;

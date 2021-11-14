@@ -69,14 +69,24 @@ int main(){
 
     cin >> n;
 
-    vector< vector<int> > coordinates(n, vector<int>(8, 0));
+    vector< vector<int> > coordinates;
     vector<bool> results;
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < 8; j++){
-            cin >> coordinates[i][j];
-        }
-    }
 
+    string text;
+    for(int i = 0; i < n; i++){
+        cin >> text;
+        vector<int> temp;
+        int count = 0;
+        while(count < 8){
+            int pos = text.find(",");
+            string num = text.substr(0, pos);
+            text.erase(0, pos + 1);
+            temp.push_back(stoi(num));
+            count++;
+        }
+        temp.push_back(stoi(text));
+        coordinates.push_back(temp);
+    }
 
     for(int i = 0; i < n; i++)
         results.push_back(segmentIntersection(coordinates[i][0], coordinates[i][1], coordinates[i][2], coordinates[i][3], coordinates[i][4], coordinates[i][5], coordinates[i][6], coordinates[i][7]));
