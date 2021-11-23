@@ -37,35 +37,58 @@ void findShortestPath(vector< vector<int> > &permutations, vector< vector<int> >
 }
 
 //Display elements of the array
-void display(vector<int> a, int n){
+/* void display(vector<int> a, int n){
     for (int i = 0; i < n; i++)
         cout << a[i] << " ";
     cout << endl;
-}
-
-//function bfs for finding shortest path for a graph
-
-
-//function to find maximum flux in the graph using Ford-Fulkerson algorithm
-/* int fordFulkerson(vector< vector<int> > &graph, int source, int sink, int n){
-    int max_flow = 0;
-    vector<int> parent(n, -1);
-    while(bfs(graph, source, sink, parent, n)){
-        int path_flow = INT_MAX;
-        for(int v = sink; v != source; v = parent[v]){
-            int u = parent[v];
-            path_flow = min(path_flow, graph[u][v]);
-        }
-        for(int v = sink; v != source; v = parent[v]){
-            int u = parent[v];
-            graph[u][v] -= path_flow;
-            graph[v][u] += path_flow;
-        }
-        max_flow += path_flow;
-    }
-    return max_flow;
 } */
 
+
+//function to find the shortest path for a graph using Dijkstra algorithm
+void dijkstra(vector< vector<int> > &graph, int source, int n, vector<string> &paths){
+    vector<int> dist(n, INT_MAX);
+    vector<bool> visited(n, false);
+    vector<int> parent(n, -1);
+    dist[source] = 0;
+    for(int i = 0; i < n; i++){
+        int u = -1;
+        for(int v = 0; v < n; v++){
+            if(!visited[v] && (u == -1 || dist[v] < dist[u]))
+                u = v;
+        }
+        if(dist[u] == INT_MAX)
+            break;
+        visited[u] = true;
+        for(int v = 0; v < n; v++){
+            if(!visited[v] && graph[u][v] > 0 && dist[u] != INT_MAX && dist[u] + graph[u][v] < dist[v]){
+                dist[v] = dist[u] + graph[u][v];
+                parent[v] = u;
+            }
+        }
+    }
+
+
+    char albet[26];
+
+    for (int ch = 'A'; ch <= 'Z'; ch++)
+        albet[ch - 'A'] = ch;
+    
+
+
+    for(int i = 0; i < n; i++){
+        int parnode = parent[i];
+        int son = i;
+        string path = "";
+        while(parnode != -1){
+            path = "(" + string(1,albet[parnode]) + "," + string(1,albet[son]) + ")";
+            if(find(paths.begin(), paths.end(), path) == paths.end())
+                paths.push_back(path);
+            son = parnode;
+            parnode = parent[parnode];
+        }
+        
+    }
+}
 
 
 int  main(){
@@ -111,6 +134,21 @@ int  main(){
         input.clear();
     }
 
+
+    vector<string> paths;
+    for(int i = 0; i < n; i++){
+        dijkstra(distancias, i, n, paths);
+    }
+
+    cout << "----------------------------------------------------------------------------------------\n";
+    //print pahts
+    sort(paths.begin(), paths.end());
+    cout << "Forma de cablear las colonias: \n";
+    for(int i = 0; i < paths.size(); i++)
+        cout << paths[i] << endl;
+    
+    cout << "\n\n";
+
     vector<int> numbers(n, 0);
     vector< vector<int> > permutations;
     vector<bool> visited(n, false);
@@ -119,7 +157,6 @@ int  main(){
         numbers[i] = i;
 
     do{
-        display(numbers, n);
         if(numbers[0] == 0){
             vector<int> aux = numbers;
             aux.push_back(0);
@@ -128,18 +165,8 @@ int  main(){
         }
     } while (next_permutation(numbers.begin(), numbers.end()));
 
-    cout << "Numero de permutaciones: " << permutations.size() << endl;
+
     findShortestPath(permutations, distancias, n);
-
-    permutations.clear();
-
-    do{
-        display(numbers, n);
-        permutations.push_back(numbers);
-    } while (next_permutation(numbers.begin(), numbers.end()));
-
-    cout << "Numero de permutaciones: " << permutations.size() << endl;
-    //findShortestPath(permutations, distancias, n);
 
     return 0;
 }
